@@ -2,8 +2,8 @@ name: Check Open PRs and Notify Slack
 
 on:
   schedule:
-    # 매 1분마다 실행
-    - cron: '1 * * * *'
+    # 매 1시간마다 실행
+    - cron: '0 * * * *'
 
   workflow_dispatch: # 수동 실행을 위한 트리거
     inputs:
