@@ -11,9 +11,14 @@ import { PrivateVersionModule } from './architecture/private-version/private-ver
 import { RouterModule } from '@nestjs/core';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+import { RedisModule } from '@nestjs-modules/ioredis';
 
 @Module({
     imports: [
+        RedisModule.forRoot({
+            type: 'single',
+            url: 'redis://localhost:6379'
+        }),
         ConfigModule.forRoot(),
         AuthModule,
         UserModule,
