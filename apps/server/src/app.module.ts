@@ -12,10 +12,6 @@ import { MyModule } from './my/my.module';
 
 @Module({
     imports: [
-        RedisModule.forRoot({
-            type: 'single',
-            url: 'redis://localhost:6379'
-        }),
         ConfigModule.forRoot(),
         AuthModule,
         UserModule,
