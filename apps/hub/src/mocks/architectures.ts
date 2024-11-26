@@ -1,5 +1,5 @@
 import { ITEMS_PER_PAGE } from '@/data/constants';
-import { Architecture, ArchitectureResponse, SearchParams } from '@/types';
+import { Architecture, ArchitectureResponse } from '@/types';
 import { faker } from '@faker-js/faker';
 
 export const mockArchitectures = Array(0);
@@ -46,12 +46,16 @@ for (let i = 2; i <= 138; i++) {
     });
 }
 
-export const mockFetch = async ({
-    page = 1,
-    search = '',
-    sortBy = '',
-    order = '',
-}: Partial<SearchParams>): Promise<ArchitectureResponse> => {
+export const mockFetch = async (
+    apiUrl: string,
+): Promise<ArchitectureResponse> => {
+    const [, params] = apiUrl.split('?');
+    const searchParams = new URLSearchParams(params);
+    const page = Number(searchParams.get('page')) || 1;
+    const search = searchParams.get('search') || '';
+    const sortBy = searchParams.get('sort') || '';
+    const order = searchParams.get('order') || '';
+
     let filteredData = [...mockArchitectures];
 
     if (search) {

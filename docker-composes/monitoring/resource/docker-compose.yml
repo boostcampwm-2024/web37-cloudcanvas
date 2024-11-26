@@ -1,0 +1,56 @@
+services:
+    grafana:
+        image: grafana/grafana
+        container_name: grafana
+        ports:
+            - '30000:3000'
+        volumes:
+            - grafana-config:/etc/grafana
+            - grafana-data:/var/lib/grafana
+        networks:
+            - cloud-canvas-network
+        environment:
+            - GF_SECURITY_ADMIN_PASSWORD=${GF_SECURITY_ADMIN_PASSWORD}
+
+    prometheus:
+        image: prom/prometheus
+        container_name: prometheus
+        ports:
+            - '9090:9090'
+        volumes:
+            - ../../../config/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+        networks:
+            - cloud-canvas-network
+
+    mysqld_exporter:
+        image: prom/mysqld-exporter
+        container_name: mysqld_exporter
+        environment:
+            MYSQLD_EXPORTER_PASSWORD: ${MYSQL_EXPORTER_PASSWORD}
+        command:
+            - '--mysqld.username=exporter'
+            - '--mysqld.address=${MYSQL_HOST}:3306'
+        ports:
+            - '9104:9104'
+        networks:
+            - cloud-canvas-network
+
+    redis_exporter:
+        image: oliver006/redis_exporter
+        container_name: redis_exporter
+        ports:
+            - '9121:9121'
+        environment:
+            REDIS_ADDR: '${REDIS_HOST}:6379'
+        networks:
+            - cloud-canvas-network
+
+volumes:
+    grafana-config:
+        driver: local
+    grafana-data:
+        driver: local
+
+networks:
+    cloud-canvas-network:
+        driver: bridge

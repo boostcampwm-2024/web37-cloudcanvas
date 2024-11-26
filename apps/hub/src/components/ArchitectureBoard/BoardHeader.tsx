@@ -20,10 +20,10 @@ export const BoardHeader = ({
 
     const getSortIcon = (columnKey: string) => {
         if (sort === columnKey) {
-            if (order === 'asc') return <ArrowUpIcon size={10} />;
-            if (order === 'desc') return <ArrowDownIcon size={10} />;
+            if (order === 'asc') return <ArrowUpIcon size={8} />;
+            if (order === 'desc') return <ArrowDownIcon size={8} />;
         }
-        return <SortIcon />;
+        return <SortIcon size={9} />;
     };
 
     return (

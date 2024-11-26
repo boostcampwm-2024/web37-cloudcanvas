@@ -1,0 +1,18 @@
+services:
+    back:
+        image: cloud-canvas.kr.ncr.ntruss.com/back:dev
+        container_name: back
+        environment:
+            DATABASE_URL: ${DATABASE_URL}
+            REDIS_HOST: ${REDIS_HOST}
+            REDIS_PORT: ${REDIS_PORT}
+        ports:
+            - '3000:3000'
+        entrypoint: sh -c "npx prisma generate && npx prisma migrate reset --force && node ./dist/src/main.js"
+        networks:
+            - cloud-canvas-network
+        restart: unless-stopped
+        pull_policy: always
+networks:
+    cloud-canvas-network:
+        driver: bridge

@@ -22,6 +22,7 @@ async function main() {
                 authorId: userData.id,
                 architecture: {},
                 updatedAt: new Date(),
+                cost: parseFloat(faker.commerce.price()),
             };
             privateArchitectures.push(privateArchitecture);
         }
@@ -47,12 +48,13 @@ async function main() {
                 privateArchitectureId: privateArchitectureData.id,
                 title: faker.git.commitSha(),
                 architecture: {},
+                cost: parseFloat(faker.commerce.price()),
             };
             privateArchitectureVersions.push(privateArchitectureVersion);
         }
     });
     const addPrivateArchitectureVersions = async () =>
-        await prisma.privateArchitectureVersion.createMany({
+        await prisma.version.createMany({
             data: privateArchitectureVersions,
         });
     await addPrivateArchitectureVersions();
@@ -91,7 +93,7 @@ async function main() {
         });
     });
     const addImportedPublicArchitectures = async () =>
-        await prisma.publicArchitectureImport.createMany({
+        await prisma.import.createMany({
             data: importedPublicArchitectures,
         });
     await addImportedPublicArchitectures();
@@ -107,7 +109,7 @@ async function main() {
         });
     });
     const addstaredPublicArchitectures = async () =>
-        await prisma.publicArchitectureStar.createMany({
+        await prisma.star.createMany({
             data: staredPublicArchitectures,
         });
     await addstaredPublicArchitectures();

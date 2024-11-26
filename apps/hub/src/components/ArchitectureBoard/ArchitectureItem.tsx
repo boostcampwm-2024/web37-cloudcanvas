@@ -30,7 +30,7 @@ export const ArchitectureItem = ({
                     <div>{createdAt}</div>
                     <div className="ml-2">{author}</div>
                 </div>
-                <div className="flex text-[10px] gap-2 mt-1">
+                <div className="flex gap-2 mt-1">
                     {tags.map((tag) => (
                         <Tag key={tag} tag={tag} />
                     ))}

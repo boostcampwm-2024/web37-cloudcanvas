@@ -1,0 +1,12 @@
+model Star {
+    id                   Int      @id @default(autoincrement())
+    publicArchitectureId Int      @map("public_architecture_id")
+    userId               Int      @map("user_id")
+    createdAt            DateTime @default(now()) @map("created_at") @db.Timestamp(0)
+
+    publicArchitecture PublicArchitecture @relation(fields: [publicArchitectureId], references: [id])
+    user               User               @relation(fields: [userId], references: [id])
+
+    @@unique([publicArchitectureId, userId], name: "unique_star")
+    @@map("star")
+}

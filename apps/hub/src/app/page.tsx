@@ -2,5 +2,5 @@
 import { ArchitectureBoard } from '@/components/ArchitectureBoard';
 
 export default function Home() {
-    return <ArchitectureBoard />;
+    return <ArchitectureBoard apiUrl="/public-architectures" />;
 }

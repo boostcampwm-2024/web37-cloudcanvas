@@ -17,5 +17,6 @@ provider "ncloud" {
 }
 
 module "dev" {
-  source = "./dev"
+  source                    = "./dev"
+  cc_member_server_image_no = var.cc_member_server_image_no
 }
