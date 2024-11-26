@@ -43,3 +43,6 @@ services:
         networks:
             - cloud-canvas-network
         restart: unless-stopped
+networks:
+    cloud-canvas-network:
+        driver: bridge
