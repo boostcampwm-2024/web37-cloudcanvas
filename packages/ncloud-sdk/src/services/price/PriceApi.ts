@@ -18,38 +18,42 @@ export class PriceApi {
     }
 
     async getPriceList(getPriceRequest: GetPriceListRequest) {
-        return await this.client.request({
+        const response = await this.client.request({
             method: 'POST',
             url: this.resourcePath + '/product/getPriceList',
             params: getPriceRequest,
         });
+        return response.getPriceListResponse;
     }
 
     async getProductCategoryList(
         getProductCategoryListRequest: GetProductCategoryListRequest,
     ) {
-        return await this.client.request({
+        const response = await this.client.request({
             method: 'POST',
             url: this.resourcePath + '/product/getProductCategoryList',
             params: getProductCategoryListRequest,
         });
+        return response.getProductCategoryListResponse;
     }
 
     async getProductList(getProductListRequest: GetProductListRequest) {
-        return await this.client.request({
+        const response = await this.client.request({
             method: 'POST',
             url: this.resourcePath + '/product/getProductList',
             params: getProductListRequest,
         });
+        return response.getProductListResponse;
     }
 
     async getProductPriceList(
         getProductPriceListRequest: GetProductPriceListRequest,
     ) {
-        return await this.client.request({
+        const response = await this.client.request({
             method: 'POST',
             url: this.resourcePath + '/product/getProductPriceList',
             params: getProductPriceListRequest,
         });
+        return response.getProductPriceListResponse;
     }
 }
