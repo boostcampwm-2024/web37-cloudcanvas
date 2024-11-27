@@ -41,6 +41,7 @@ export const selectionReducer = (
                 ...state,
                 selectedGroupId: action.payload.id,
                 selectedEdge: undefined,
+                selectedNodeId: undefined,
             };
         case 'DESELECT_NODE':
             return {

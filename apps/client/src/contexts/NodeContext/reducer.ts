@@ -79,6 +79,7 @@ export const nodeReducer = (
                 nodes: updatedNodes,
             };
         }
+
         case 'UPDATE_NODES': {
             return {
                 ...state,

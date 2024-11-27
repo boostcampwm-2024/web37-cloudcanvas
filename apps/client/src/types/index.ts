@@ -44,6 +44,7 @@ export type Group = {
     nodeIds: string[];
     properties: { [key: string]: any };
     childGroupIds: string[];
+    parentGroupId: string;
 };
 
 export type Connection = {
@@ -59,3 +60,7 @@ export interface Connector {
     point: Point;
     connectorType?: string;
 }
+
+// NCloud
+
+export type Region = 'kr' | 'jp' | 'sg';

@@ -1,4 +1,4 @@
-import useGraphActions from '@hooks/useGraphActions';
+import useNCloud from '@hooks/useNCloud';
 import ListItem, { ListItemProps } from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import { styled } from '@mui/material/styles';
@@ -25,14 +25,10 @@ export default ({
     desc,
     ...props
 }: { title: string; desc: string; type: string } & ListItemProps) => {
-    const { addNode } = useGraphActions();
+    const { addResource } = useNCloud();
 
     return (
-        <StyledServiceInstance
-            key={title}
-            {...props}
-            onClick={() => addNode(type)}
-        >
+        <StyledServiceInstance {...props} onClick={() => addResource(type)}>
             <StyledServiceInstanceText primary={title} secondary={desc} />
         </StyledServiceInstance>
     );

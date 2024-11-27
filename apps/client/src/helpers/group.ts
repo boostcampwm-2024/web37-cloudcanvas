@@ -1,5 +1,5 @@
 import { GRID_2D_SIZE } from '@constants';
-import { Bounds, Dimension } from '@types';
+import { Bounds, Dimension, Group } from '@types';
 import { convert2dTo3dPoint, convert3dTo2dPoint } from '@utils';
 
 export const computeBounds = (_bounds: Bounds[], dimension: Dimension) => {
@@ -40,4 +40,13 @@ export const computeBounds = (_bounds: Bounds[], dimension: Dimension) => {
         width,
         height,
     };
+};
+
+export const findParentGroup = (
+    groups: { [id: string]: Group },
+    childId: string,
+): Group | undefined => {
+    return Object.values(groups).find((group) =>
+        group.childGroupIds.includes(childId),
+    );
 };

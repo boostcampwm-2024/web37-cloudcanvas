@@ -77,7 +77,7 @@ export default ({ node, isSelected, onMove, onSelect, onRemove }: Props) => {
         return () => {
             document.removeEventListener('keydown', handleKeyDown);
         };
-    }, [isSelected]);
+    }, [isSelected, handleKeyDown]);
 
     return (
         <g

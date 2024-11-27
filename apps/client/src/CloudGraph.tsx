@@ -9,14 +9,12 @@ import Node from '@components/Node';
 import { useEdgeContext } from '@contexts/EdgeContext';
 import { useGroupContext } from '@contexts/GroupContext';
 import { useNodeContext } from '@contexts/NodeContext';
-import { useSvgContext } from '@contexts/SvgContext';
 import useConnection from '@hooks/useConnection';
-import useGraphActions from '@hooks/useGraphActions';
+import useGraph from '@hooks/useGraph';
 import useSelection from '@hooks/useSelection';
 import { useEffect } from 'react';
 
 export default () => {
-    const { svgRef } = useSvgContext();
     const {
         state: { nodes },
     } = useNodeContext();
@@ -37,15 +35,19 @@ export default () => {
     } = useSelection();
 
     const {
+        svgRef,
+        prevDimension,
+        dimension,
         moveNode,
         addEdge,
         splitEdge,
+        updatedPointForDimension,
         moveBendingPointer,
         getGroupBounds,
         moveGroup,
         removeNode,
         removeEdge,
-    } = useGraphActions();
+    } = useGraph();
 
     const {
         connection,
@@ -59,28 +61,38 @@ export default () => {
 
     useEffect(() => {
         const handleContextMenu = (e: MouseEvent) => e.preventDefault();
-        const handleMouseDown = () => clearSelection();
+        const handleMouseDown = (e: MouseEvent) => {
+            if (!(e.target as HTMLElement).closest('.graph-ignore-select'))
+                clearSelection();
+        };
+
         document.addEventListener('contextmenu', handleContextMenu);
         document.addEventListener('mousedown', handleMouseDown);
 
         return () => {
             document.removeEventListener('contextmenu', handleContextMenu);
-            svgRef.current?.removeEventListener('mousedown', handleMouseDown);
+            document.removeEventListener('mousedown', handleMouseDown);
         };
     }, []);
 
+    useEffect(() => {
+        if (dimension === prevDimension) return;
+
+        updatedPointForDimension();
+    }, [dimension]);
     return (
         <Graph>
             <GridBackground />
             {Object.values(groups).map((group) => (
                 <Group
+                    key={group.id}
                     group={group}
                     bounds={getGroupBounds(group.id)}
                     onMove={moveGroup}
                 />
             ))}
             {Object.values(nodes).map((node) => (
-                <>
+                <g key={node.id}>
                     <Node
                         node={node}
                         isSelected={selectedNodeId === node.id}
@@ -96,7 +108,7 @@ export default () => {
                         onConnectConnection={connectConnection}
                         onCloseConnection={closeConnection}
                     />
-                </>
+                </g>
             ))}
             {connection && (
                 <Connection
@@ -107,9 +119,8 @@ export default () => {
 
             {edges &&
                 Object.values(edges).map((edge) => (
-                    <>
+                    <g key={edge.id}>
                         <Edge
-                            key={edge.id}
                             edge={edge}
                             selectedEdge={selectedEdge}
                             sourceConnector={
@@ -138,7 +149,7 @@ export default () => {
                                 }
                             />
                         ))}
-                    </>
+                    </g>
                 ))}
         </Graph>
     );

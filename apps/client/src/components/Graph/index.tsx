@@ -3,7 +3,7 @@ import { useSvgContext } from '@contexts/SvgContext';
 import useKey from '@hooks/useKey';
 import { Point } from '@types';
 import { getSvgPoint } from '@utils';
-import { PropsWithChildren, useLayoutEffect, useRef } from 'react';
+import { PropsWithChildren, useRef } from 'react';
 
 export default ({ children }: PropsWithChildren) => {
     const { svgRef } = useSvgContext();
@@ -15,28 +15,6 @@ export default ({ children }: PropsWithChildren) => {
     const isPanning = useRef(false);
     const startPoint = useRef<Point>({ x: 0, y: 0 });
     const spaceActiveKey = useKey('space');
-
-    useLayoutEffect(() => {
-        if (svgRef.current) {
-            const updateViewBoxSize = () => {
-                dispatch({
-                    type: 'SET_VIEWBOX',
-                    payload: {
-                        x: 0,
-                        y: 0,
-                        width: svgRef.current?.clientWidth ?? 0,
-                        height: svgRef.current?.clientHeight ?? 0,
-                    },
-                });
-            };
-            updateViewBoxSize();
-            window.addEventListener('resize', updateViewBoxSize);
-
-            return () => {
-                window.removeEventListener('resize', updateViewBoxSize);
-            };
-        }
-    }, [svgRef.current]);
 
     const zoom = (wheelY: number, point: Point) => {
         if (!svgRef.current) return;
@@ -117,6 +95,7 @@ export default ({ children }: PropsWithChildren) => {
 
     return (
         <svg
+            id="cloud-graph"
             ref={svgRef}
             viewBox={`${viewBox?.x} ${viewBox?.y} ${viewBox?.width} ${viewBox?.height}`}
             width="100%"

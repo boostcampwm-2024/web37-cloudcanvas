@@ -1,14 +1,15 @@
+import Text from '@components/Group/ncloud/Title';
 import { useDimensionContext } from '@contexts/DimensionContext';
-import { Bounds } from '@types';
+import { Bounds, Group } from '@types';
 import { generateRandomRGB, gridToScreen3d, screenToGrid2d } from '@utils';
 import { useMemo } from 'react';
 
-type Props = {
+interface Props extends Partial<Group> {
+    color: string;
     bounds: Bounds;
-    stroke: string;
-};
+}
 
-const Region3D = ({ bounds, stroke }: Props) => {
+const Region3D = ({ bounds, name, color }: Props) => {
     const topLeftGrid = screenToGrid2d({ x: 0, y: 0 });
     const topRightGrid = screenToGrid2d({ x: bounds.width, y: 0 });
     const bottomRightGrid = screenToGrid2d({
@@ -40,35 +41,43 @@ const Region3D = ({ bounds, stroke }: Props) => {
         ${point3.x} ${point3.y}, 
         ${point4.x} ${point4.y}
     `;
+
     return (
-        <polygon
-            points={points}
-            stroke={stroke}
-            strokeWidth="8"
-            fill="none"
-        ></polygon>
+        <>
+            <polygon
+                points={points}
+                stroke={color}
+                strokeWidth="8"
+                fill="none"
+            ></polygon>
+            <Text bounds={bounds} color={color} text={name} />
+        </>
     );
 };
 
-const Region2D = ({ bounds, stroke }: Props) => {
+const Region2D = ({ bounds, color, name }: Props) => {
     const points = `0 0, 0 ${bounds.height}, ${bounds.width} ${bounds.height}, ${bounds.width} 0`;
+
     return (
-        <polygon
-            points={points}
-            stroke={stroke}
-            strokeWidth="8"
-            fill="none"
-        ></polygon>
+        <>
+            <polygon
+                points={points}
+                stroke={color}
+                strokeWidth="8"
+                fill="none"
+            ></polygon>
+            <Text bounds={bounds} color={color} text={name} />
+        </>
     );
 };
 
-export default ({ bounds }: Pick<Props, 'bounds'>) => {
+export default ({ bounds, name }: Pick<Props, 'bounds' | 'name'>) => {
     const { dimension } = useDimensionContext();
-    const stroke = useMemo(() => generateRandomRGB(), []);
+    const color = useMemo(() => generateRandomRGB(), []);
 
     return dimension === '2d' ? (
-        <Region2D bounds={bounds} stroke={stroke} />
+        <Region2D bounds={bounds} name={name} color={color} />
     ) : (
-        <Region3D bounds={bounds} stroke={stroke} />
+        <Region3D bounds={bounds} name={name} color={color} />
     );
 };

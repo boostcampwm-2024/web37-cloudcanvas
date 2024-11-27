@@ -1,4 +1,4 @@
-import { mockInitialState } from '@/src/mocks';
+import { mockInitialState } from '../../../mocks';
 import {
     GroupAction,
     groupReducer,
@@ -19,7 +19,7 @@ type GroupContextProps = {
 const GroupContext = createContext<GroupContextProps | undefined>(undefined);
 
 const initialState: GroupState = {
-    groups: mockInitialState.groups,
+    groups: {},
 };
 
 export const GroupProvider = ({ children }: PropsWithChildren) => {

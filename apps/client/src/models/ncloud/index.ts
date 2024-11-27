@@ -18,17 +18,38 @@ export const NcloudGroupFactory = (type: string) => {
     switch (type) {
         case 'region':
             return Region;
+        case 'vpc':
+            return Vpc;
+        case 'subnet':
+            return Subnet;
+
         default: {
             throw new Error(`Unknown type: ${type}`);
         }
     }
 };
 
-const Server: Node = {
+const GraphNodeProperties = {
     id: '',
     name: '',
-    type: 'server',
+    type: '',
     point: { x: 0, y: 0 },
+    connectors: {},
+};
+
+const GraphGroupProperties = {
+    id: '',
+    name: '',
+    type: '',
+    nodeIds: [],
+    properties: {},
+    childGroupIds: [],
+    parentGroupId: '',
+};
+
+const Server: Node = {
+    ...GraphNodeProperties,
+    type: 'server',
     size: {
         '2d': { width: 90, height: 90 },
         '3d': { width: 128, height: 111 },
@@ -37,51 +58,57 @@ const Server: Node = {
         region: '',
         subnet: '',
         vpc: '',
+        acg: '',
+        server_image_product_code: '',
+        server_product_code: '',
     },
-    connectors: {},
 };
 
 const CloudFunction: Node = {
-    id: '',
+    ...GraphNodeProperties,
     type: 'cloud-function',
-    name: '',
-    point: { x: 0, y: 0 },
     size: {
         '2d': { width: 90, height: 90 },
         '3d': { width: 96, height: 113.438, offset: 10 },
     },
     properties: {
         region: '',
-        subnet: '',
         vpc: '',
+        subnet: '',
     },
-    connectors: {},
 };
 
 const MySQLDB: Node = {
-    id: '',
+    ...GraphNodeProperties,
     type: 'db-mysql',
-    name: '',
-    point: { x: 0, y: 0 },
     size: {
         '2d': { width: 90, height: 90 },
         '3d': { width: 128, height: 137.5 },
     },
     properties: {
+        region: '',
         vpc: '',
         subnet: '',
-        region: '',
     },
-    connectors: {},
 };
 
 const Region: Group = {
-    id: 'region1',
+    ...GraphGroupProperties,
     type: 'region',
-    name: 'KR-1',
-    nodeIds: [],
-    properties: {
-        regionCode: '',
-    },
-    childGroupIds: [],
+};
+
+const Vpc: Group = {
+    ...GraphGroupProperties,
+    type: 'vpc',
+};
+
+const Subnet: Group = {
+    ...GraphGroupProperties,
+    type: 'subnet',
+};
+
+export const Regions: { [key: string]: string } = {
+    kr: 'korea',
+    jp: 'japan',
+    sg: 'singapore',
 };

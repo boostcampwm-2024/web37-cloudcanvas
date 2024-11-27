@@ -2,6 +2,7 @@ import { DimensionProvider } from '@contexts/DimensionContext';
 import { EdgeProvider } from '@contexts/EdgeContext/index.tsx';
 import { GraphProvider } from '@contexts/GraphConetxt';
 import { GroupProvider } from '@contexts/GroupContext/index.tsx';
+import { NCloudProvider } from '@contexts/NCloudContext.tsx';
 import { NodeProvider } from '@contexts/NodeContext/index.tsx';
 import { SelectionProvider } from '@contexts/SelectionContext/index.tsx';
 import { SvgProvider } from '@contexts/SvgContext.tsx';
@@ -22,7 +23,9 @@ createRoot(document.getElementById('root')!).render(
                             <NodeProvider>
                                 <EdgeProvider>
                                     <SelectionProvider>
-                                        <App />
+                                        <NCloudProvider>
+                                            <App />
+                                        </NCloudProvider>
                                     </SelectionProvider>
                                 </EdgeProvider>
                             </NodeProvider>
