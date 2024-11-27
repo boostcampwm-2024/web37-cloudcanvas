@@ -10,10 +10,6 @@
             "persistent": true
         },
         "build": {
-            "dependsOn": [
-                "@cloud-canvas/client#bundle",
-                "@cloud-canvas/server#bundle"
-            ],
             "inputs": ["$TURBO_DEFAULT$", "!README.md", "!CHANGELOG.md"],
             "outputs": ["dist/**"]
         }

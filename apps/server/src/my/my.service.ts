@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { QueryParamsDto } from 'src/types/query-params.dto';
-import { buildQueryOptions } from 'src/utils/build-query-options';
+import { PrismaService } from '../prisma/prisma.service.js';
+import { QueryParamsDto } from '../types/query-params.dto.js';
+import { buildQueryOptions } from '../utils/build-query-options.js';
 
 @Injectable()
 export class MyService {

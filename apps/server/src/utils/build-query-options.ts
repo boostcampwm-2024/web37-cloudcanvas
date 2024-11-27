@@ -1,4 +1,4 @@
-import { QueryParamsDto } from 'src/types/query-params.dto';
+import { QueryParamsDto } from 'src/types/query-params.dto.js';
 
 export const buildQueryOptions = ({
     page,

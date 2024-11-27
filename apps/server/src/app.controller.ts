@@ -4,7 +4,7 @@ import {
     HttpException,
     NotFoundException,
 } from '@nestjs/common';
-import { AppService } from './app.service';
+import { AppService } from './app.service.js';
 
 class CustomError extends Error {}
 

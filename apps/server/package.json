@@ -5,6 +5,7 @@
     "author": "",
     "private": true,
     "license": "UNLICENSED",
+    "type": "module",
     "scripts": {
         "build": "nest build",
         "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
@@ -22,6 +23,9 @@
         "docker": "docker image build -t cloud-canvas-server ."
     },
     "dependencies": {
+        "@cloud-canvas/ncloud-sdk": "workspace:*",
+        "@faker-js/faker": "^9.2.0",
+        "@nestjs-modules/ioredis": "^2.0.2",
         "@nestjs/common": "^10.0.0",
         "@nestjs/config": "^3.3.0",
         "@nestjs/core": "^10.0.0",
@@ -35,11 +39,11 @@
         "class-validator": "^0.14.1",
         "cookie-parser": "^1.4.7",
         "helmet": "^8.0.0",
+        "ioredis": "^5.4.1",
         "passport-jwt": "^4.0.1",
         "prisma": "^5.22.0",
         "reflect-metadata": "^0.2.0",
-        "rxjs": "^7.8.1",
-        "@faker-js/faker": "^9.2.0"
+        "rxjs": "^7.8.1"
     },
     "devDependencies": {
         "@nestjs/cli": "^10.0.0",

@@ -1,6 +1,6 @@
 import { Controller, Get, Query } from '@nestjs/common';
-import { MyService } from './my.service';
-import { QueryParamsDto } from 'src/types/query-params.dto';
+import { MyService } from './my.service.js';
+import { QueryParamsDto } from '../types/query-params.dto.js';
 
 @Controller('my')
 export class MyController {
