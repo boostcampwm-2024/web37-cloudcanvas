@@ -1,36 +1,21 @@
-import { Region } from '@types';
-import { Regions } from '@/src/models/ncloud';
-import useNCloud from '@hooks/useNCloud';
-import { ListItemIcon, Typography } from '@mui/material';
+import { REGIONS } from '@/src/models/ncloud/constants';
+import { ListItemIcon, Tooltip, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import Popover from '@mui/material/Popover';
+import { Region } from '@types';
 import { useState } from 'react';
 
-const REGION_OPTIONS = [
-    {
-        value: 'kr',
-        label: 'Korea',
-    },
-    {
-        value: 'jp',
-        label: 'Japan',
-    },
-    {
-        value: 'sg',
-        label: 'Singapore',
-    },
-];
-
 type Props = {
-    region: string;
-    onUpdateRegion: (region: Region) => void;
+    region: { [key: string]: any };
+    disabled?: boolean;
+    onChangeRegion: (id: string, region: Region) => void;
 };
 
-export default ({ region, onUpdateRegion }: Props) => {
+export default ({ region, disabled = false, onChangeRegion }: Props) => {
     const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
     const handlePopoverOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -41,8 +26,10 @@ export default ({ region, onUpdateRegion }: Props) => {
         setAnchorEl(null);
     };
 
-    const handleListItemClick = (value: Region) => {
-        onUpdateRegion(value);
+    const handleListItemClick = (id: string, value: Region) => {
+        if (region.id !== id) {
+            onChangeRegion(id, value);
+        }
         setAnchorEl(null);
     };
 
@@ -61,9 +48,22 @@ export default ({ region, onUpdateRegion }: Props) => {
                 >
                     Region
                 </Typography>
-                <Button onClick={handlePopoverOpen} variant="text">
-                    {Regions[region]}
-                </Button>
+
+                <Tooltip
+                    title="Region을 변경하려면 VPC를 해제해야 합니다."
+                    disableHoverListener={!disabled}
+                >
+                    <span>
+                        <Button
+                            onClick={handlePopoverOpen}
+                            variant="text"
+                            disabled={disabled}
+                            disableRipple
+                        >
+                            {region.value}
+                        </Button>
+                    </span>
+                </Tooltip>
             </Box>
 
             <Popover
@@ -78,12 +78,15 @@ export default ({ region, onUpdateRegion }: Props) => {
                 }}
             >
                 <List component="nav">
-                    {REGION_OPTIONS.map((option) => (
+                    {Object.values(REGIONS).map((option) => (
                         <ListItemButton
                             key={option.value}
-                            selected={region === option.value}
+                            selected={region.id === option.id}
                             onClick={() =>
-                                handleListItemClick(option.value as Region)
+                                handleListItemClick(
+                                    option.id,
+                                    option.value as Region,
+                                )
                             }
                         >
                             <ListItemIcon>

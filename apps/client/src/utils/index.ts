@@ -162,3 +162,10 @@ const debounce = (func: (...args: any[]) => void, delay: number) => {
         }, delay);
     };
 };
+
+export const findKeyByValue = (
+    value: string,
+    list: { [id: string]: string },
+) => {
+    return Object.keys(list).find((key) => list[key] === value);
+};

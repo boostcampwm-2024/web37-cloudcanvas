@@ -23,9 +23,7 @@ createRoot(document.getElementById('root')!).render(
                             <NodeProvider>
                                 <EdgeProvider>
                                     <SelectionProvider>
-                                        <NCloudProvider>
-                                            <App />
-                                        </NCloudProvider>
+                                        <App />
                                     </SelectionProvider>
                                 </EdgeProvider>
                             </NodeProvider>

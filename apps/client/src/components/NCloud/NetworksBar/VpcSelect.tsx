@@ -13,13 +13,14 @@ import Popover from '@mui/material/Popover';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 import { Tooltip } from '@mui/material';
+import { nanoid } from 'nanoid';
+import { findKeyByValue } from '@utils';
 
 type Props = {
-    vpc: string;
+    vpc: { [id: string]: string } | undefined;
     vpcList: { [id: string]: string };
     disabled?: boolean;
-    disabledRemove?: boolean;
-    onUpdateVpc: (vpc: string) => void;
+    onChangeVpc: (id: string, newVpc: string) => void;
     onRemoveVpc: (vpc: string) => void;
 };
 
@@ -27,8 +28,7 @@ export default ({
     vpc,
     vpcList,
     disabled = false,
-    disabledRemove = false,
-    onUpdateVpc,
+    onChangeVpc,
     onRemoveVpc,
 }: Props) => {
     const theme = useTheme();
@@ -42,16 +42,20 @@ export default ({
         setAnchorEl(null);
     };
 
-    const handleListItemClick = (value: string) => {
-        onUpdateVpc(value);
+    const handleListItemClick = (id: string, value: string) => {
+        if (vpc?.id !== id) {
+            onChangeVpc(id, value);
+        }
         setAnchorEl(null);
     };
 
-    const handleAddVPC = (e: React.FormEvent<HTMLFormElement>) => {
+    //TODO: 숫자 validation
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const vpc = e.currentTarget.vpc.value;
-        if (vpc) {
-            onUpdateVpc(vpc);
+        const newVpc = e.currentTarget.vpc.value;
+        if (newVpc) {
+            const id = findKeyByValue(newVpc, vpcList) ?? `vpc-${nanoid()}`;
+            onChangeVpc(id, newVpc);
         }
         setAnchorEl(null);
     };
@@ -61,7 +65,7 @@ export default ({
 
     return (
         <Box>
-            <Box>
+            <Typography>
                 <Typography
                     variant="subtitle2"
                     sx={{
@@ -71,16 +75,25 @@ export default ({
                 >
                     VPC
                 </Typography>
-                <Button
-                    onClick={handlePopoverOpen}
-                    variant="text"
-                    type="submit"
-                    disabled={disabled}
-                    disableRipple
+
+                <Tooltip
+                    title="Subnet을 해제해야 합니다."
+                    disableHoverListener={!disabled}
+                    disableFocusListener={!disabled}
                 >
-                    {vpc || <AddCircleOutlineIcon />}
-                </Button>
-            </Box>
+                    <span>
+                        <Button
+                            onClick={handlePopoverOpen}
+                            variant="text"
+                            type="submit"
+                            disabled={disabled}
+                            disableRipple
+                        >
+                            {vpc ? vpc.value : <AddCircleOutlineIcon />}
+                        </Button>
+                    </span>
+                </Tooltip>
+            </Typography>
 
             <Popover
                 id={id}
@@ -98,14 +111,14 @@ export default ({
                     },
                 }}
             >
-                <form onSubmit={handleAddVPC}>
+                <form onSubmit={handleSubmit}>
                     <Input
                         name="vpc"
                         fullWidth
                         placeholder="Search services"
                         onKeyDown={(e) => e.stopPropagation()}
                         endAdornment={
-                            <IconButton>
+                            <IconButton type="submit">
                                 <SearchIcon />
                             </IconButton>
                         }
@@ -115,27 +128,24 @@ export default ({
                     {Object.entries(vpcList).map(([id, value]) => (
                         <ListItem
                             key={id}
-                            onClick={() => handleListItemClick(value as string)}
+                            onClick={() =>
+                                handleListItemClick(id, value as string)
+                            }
                             secondaryAction={
-                                <Tooltip
-                                    title="Subnet을 먼저 삭제해주세요"
-                                    disableHoverListener={!disabledRemove}
-                                >
-                                    <span>
-                                        <IconButton
-                                            edge="end"
-                                            aria-label="delete"
-                                            disabled={disabledRemove}
-                                            onClick={() => onRemoveVpc(id)}
-                                        >
-                                            <DeleteIcon />
-                                        </IconButton>
-                                    </span>
-                                </Tooltip>
+                                <span>
+                                    <IconButton
+                                        edge="end"
+                                        color="error"
+                                        aria-label="delete"
+                                        onClick={() => onRemoveVpc(id)}
+                                    >
+                                        <DeleteIcon />
+                                    </IconButton>
+                                </span>
                             }
                             style={{
                                 backgroundColor:
-                                    vpc === value
+                                    vpc?.id === id
                                         ? theme.palette.action.selected
                                         : undefined,
                             }}

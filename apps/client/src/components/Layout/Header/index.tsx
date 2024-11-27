@@ -1,9 +1,10 @@
 import { useDimensionContext } from '@contexts/DimensionContext';
+import { useNodeContext } from '@contexts/NodeContext';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import ManageHistoryIcon from '@mui/icons-material/ManageHistory';
-import { ToggleButton, ToggleButtonGroup } from '@mui/material';
+import { Button, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import Box from '@mui/material/Box';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import Divider from '@mui/material/Divider';
@@ -11,6 +12,7 @@ import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import { styled, useColorScheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
+import { TerraformConvertor } from 'node_modules/terraform/convertor/TerraformConvertor';
 
 const StyledBox = styled(Box)(({ theme }) => ({
     display: 'flex',
@@ -39,6 +41,29 @@ export default () => {
     const { mode: themeMode, setMode: setThemeMode } = useColorScheme();
     const { dimension, toggleDimension } = useDimensionContext();
 
+    const {
+        state: { nodes },
+    } = useNodeContext();
+
+    const Converter = new TerraformConvertor();
+
+    const validateProperties = (node: any) => {
+        const { properties } = node;
+        const isValid = Object.values(properties).every((value) => {
+            return value !== '';
+        });
+
+        return isValid;
+    };
+    // if (Object.values(nodes).length > 0) {
+    //     const node = Object.values(nodes)[0];
+    //     console.log(node);
+    //     if (validateProperties(node)) {
+    //         Converter.addResourceFromJson(node);
+    //         console.log(Converter.generate());
+    //     }
+    // }
+
     const handleToggleTheme = () =>
         setThemeMode(themeMode === 'dark' ? 'light' : 'dark');
 
@@ -52,6 +77,7 @@ export default () => {
                 </Typography>
             </Stack>
             <Stack direction="row" spacing={1} alignItems="center">
+                <Button>Converter</Button>
                 <ToggleButtonGroup
                     value={dimension}
                     exclusive

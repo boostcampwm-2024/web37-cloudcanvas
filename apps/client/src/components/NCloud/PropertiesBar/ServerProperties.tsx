@@ -26,8 +26,8 @@ export default ({}: Props) => {
         if (!selectedResource) return;
         const { properties } = selectedResource;
         setName(properties.name || '');
-        setServerImageCode(properties.server_image || '');
-        setSpecCode(properties.server_product_code || '');
+        setServerImageCode(properties.server_image_number || '');
+        setSpecCode(properties.server_spec_code || '');
     }, [selectedResource]);
 
     const handleChangeImage = (e: SelectChangeEvent) => {
@@ -38,8 +38,8 @@ export default ({}: Props) => {
 
         setSpecCode(firstSpecCode);
         updateProperties(selectedResource.id, {
-            server_image: code,
-            server_product_code: firstSpecCode,
+            server_image_number: code.toLowerCase(),
+            server_spec_code: firstSpecCode.toLowerCase(),
         });
     };
 
@@ -47,7 +47,7 @@ export default ({}: Props) => {
         const code = e.target.value as string;
         if (!selectedResource) return;
         setSpecCode(code);
-        updateProperties(selectedResource.id, { server_product_code: code });
+        updateProperties(selectedResource.id, { server_spec_code: code });
     };
 
     const handleChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {

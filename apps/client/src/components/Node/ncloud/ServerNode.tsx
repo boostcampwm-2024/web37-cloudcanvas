@@ -73,7 +73,7 @@ const Node3D = ({ properties }: Props) => {
                     fill="#ffffff"
                     style={{ userSelect: 'none' }}
                 >
-                    {properties?.server_product_code.split('-')[0].slice(0, 4)}
+                    {properties?.server_spec_code?.split('-')[0].slice(0, 4)}
                 </text>
             </svg>
         </>
@@ -121,7 +121,9 @@ const Node2D = ({ properties }: Props) => {
                     fill="#d86613"
                     style={{ userSelect: 'none' }}
                 >
-                    {properties?.server_product_code.split('-')[0].slice(0, 4)}
+                    {properties?.server_spec_code?.value
+                        .split('-')[0]
+                        .slice(0, 4)}
                 </text>
             </svg>
         </>

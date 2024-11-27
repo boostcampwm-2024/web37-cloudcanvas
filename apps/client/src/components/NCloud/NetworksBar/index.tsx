@@ -8,21 +8,22 @@ import Stack from '@mui/material/Stack';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import { REGIONS } from '@/src/models/ncloud/constants';
 
 export default () => {
     const {
         selectedResource,
-        region,
-        subnet,
-        subnetList,
-        vpc,
         vpcList,
-        updateVpc,
-        updateRegion,
-        updateSubnet,
+        subnetList,
+        changeVpc,
+        changeSubnet,
         removeVpc,
         removeSubnet,
+        changeRegion,
     } = useNCloud();
+
+    if (!selectedResource) return;
+    const { properties } = selectedResource;
 
     return (
         <AppBar
@@ -54,7 +55,7 @@ export default () => {
                         whiteSpace: 'nowrap',
                     }}
                 >
-                    {selectedResource?.type.toUpperCase()}
+                    {selectedResource.type.toUpperCase()}
                 </Typography>
                 <Divider orientation="vertical" flexItem />
                 <Stack
@@ -67,34 +68,28 @@ export default () => {
                     }}
                 >
                     <RegionSelect
-                        region={region}
-                        onUpdateRegion={updateRegion}
+                        region={properties.region ?? REGIONS['KR']}
+                        disabled={Boolean(properties.vpc)}
+                        onChangeRegion={changeRegion}
                     />
-                    {selectedResource &&
-                        Object.hasOwn(selectedResource?.properties, 'vpc') && (
-                            <VpcSelect
-                                vpc={vpc}
-                                vpcList={vpcList}
-                                onUpdateVpc={updateVpc}
-                                disabled={!Boolean(region)}
-                                disabledRemove={Boolean(subnet)}
-                                onRemoveVpc={removeVpc}
-                            />
-                        )}
-                    {selectedResource &&
-                        Object.hasOwn(
-                            selectedResource?.properties,
-                            'subnet',
-                        ) && (
-                            <SubnetSelect
-                                subnet={subnet}
-                                subnetList={subnetList}
-                                disabled={!Boolean(vpc)}
-                                // disabledRemove={!Boolean(scg)} // to be continued
-                                onUpdateSubnet={updateSubnet}
-                                onRemoveSubnet={removeSubnet}
-                            />
-                        )}
+                    {Object.hasOwn(properties, 'vpc') && properties.region && (
+                        <VpcSelect
+                            vpc={properties.vpc}
+                            vpcList={vpcList}
+                            disabled={Boolean(properties.subnet)}
+                            onChangeVpc={changeVpc}
+                            onRemoveVpc={removeVpc}
+                        />
+                    )}
+                    {Object.hasOwn(properties, 'subnet') && properties.vpc && (
+                        <SubnetSelect
+                            subnet={properties.subnet}
+                            subnetList={subnetList}
+                            // disabled={Boolean(properties.subnet)} // scg??
+                            onChangeSubnet={changeSubnet}
+                            onRemoveSubnet={removeSubnet}
+                        />
+                    )}
                 </Stack>
             </Toolbar>
         </AppBar>

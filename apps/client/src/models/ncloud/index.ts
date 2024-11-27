@@ -31,7 +31,6 @@ export const NcloudGroupFactory = (type: string) => {
 
 const GraphNodeProperties = {
     id: '',
-    name: '',
     type: '',
     point: { x: 0, y: 0 },
     connectors: {},
@@ -39,7 +38,6 @@ const GraphNodeProperties = {
 
 const GraphGroupProperties = {
     id: '',
-    name: '',
     type: '',
     nodeIds: [],
     properties: {},
@@ -55,13 +53,12 @@ const Server: Node = {
         '3d': { width: 128, height: 111 },
     },
     properties: {
-        name: '',
-        region: '',
-        subnet: '',
-        vpc: '',
-        acg: '',
-        server_image: '',
-        server_product_code: '',
+        name: undefined,
+        region: undefined,
+        subnet: undefined,
+        vpc: undefined,
+        server_image_number: undefined,
+        server_spec_code: undefined,
     },
 };
 
@@ -96,6 +93,9 @@ const MySQLDB: Node = {
 const Region: Group = {
     ...GraphGroupProperties,
     type: 'region',
+    properties: {
+        name: undefined,
+    },
 };
 
 const Vpc: Group = {
@@ -106,10 +106,4 @@ const Vpc: Group = {
 const Subnet: Group = {
     ...GraphGroupProperties,
     type: 'subnet',
-};
-
-export const Regions: { [key: string]: string } = {
-    kr: 'korea',
-    jp: 'japan',
-    sg: 'singapore',
 };

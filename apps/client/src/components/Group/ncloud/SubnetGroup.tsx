@@ -9,7 +9,7 @@ interface Props extends Partial<Group> {
     bounds: Bounds;
 }
 
-const Subnet3D = ({ bounds, name, color }: Props) => {
+const Region3D = ({ bounds, properties, color }: Props) => {
     const topLeftGrid = screenToGrid2d({ x: 0, y: 0 });
     const topRightGrid = screenToGrid2d({ x: bounds.width, y: 0 });
     const bottomRightGrid = screenToGrid2d({
@@ -50,12 +50,12 @@ const Subnet3D = ({ bounds, name, color }: Props) => {
                 strokeWidth="8"
                 fill="none"
             ></polygon>
-            <Text bounds={bounds} color={color} text={name} />
+            <Text bounds={bounds} color={color} text={properties?.name} />
         </>
     );
 };
 
-const Subnet2D = ({ bounds, color, name }: Props) => {
+const Region2D = ({ bounds, color, properties }: Props) => {
     const points = `0 0, 0 ${bounds.height}, ${bounds.width} ${bounds.height}, ${bounds.width} 0`;
 
     return (
@@ -66,18 +66,18 @@ const Subnet2D = ({ bounds, color, name }: Props) => {
                 strokeWidth="8"
                 fill="none"
             ></polygon>
-            <Text bounds={bounds} color={color} text={name} />
+            <Text bounds={bounds} color={color} text={properties?.name} />
         </>
     );
 };
 
-export default ({ bounds, name }: Pick<Props, 'bounds' | 'name'>) => {
+export default ({ bounds, properties }: Omit<Props, 'color'>) => {
     const { dimension } = useDimensionContext();
     const color = useMemo(() => generateRandomRGB(), []);
 
     return dimension === '2d' ? (
-        <Subnet2D bounds={bounds} name={name} color={color} />
+        <Region2D bounds={bounds} properties={properties} color={color} />
     ) : (
-        <Subnet3D bounds={bounds} name={name} color={color} />
+        <Region3D bounds={bounds} properties={properties} color={color} />
     );
 };
