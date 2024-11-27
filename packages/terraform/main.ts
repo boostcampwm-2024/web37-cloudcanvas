@@ -16,8 +16,8 @@ async function main() {
                 loginKey: 'my-key',
                 vpc: 'my-vpc',
                 acg: 'my-acg',
-                region: 'KR'
-            }
+                region: 'KR',
+            },
         });
         const terraformCode = converter.generate();
         await saveTerraformFiles(terraformCode, { log: true });
@@ -25,7 +25,7 @@ async function main() {
         if (error instanceof Error) {
             console.error(
                 'Error generating Terraform configuration:',
-                error.message
+                error.message,
             );
         } else {
             console.error('An unknown error occurred');

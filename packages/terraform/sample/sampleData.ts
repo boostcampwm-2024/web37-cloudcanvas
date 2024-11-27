@@ -7,8 +7,8 @@ export const sampleNodes: CloudCanvasNode[] = [
         name: 'my-nacl',
         properties: {
             vpcName: 'my-vpc',
-            region: 'KR'
-        }
+            region: 'KR',
+        },
     },
     {
         id: 'server1',
@@ -22,8 +22,8 @@ export const sampleNodes: CloudCanvasNode[] = [
             loginKeyName: 'my-key',
             vpcName: 'my-vpc',
             acgName: 'my-acg',
-            region: 'KR'
-        }
+            region: 'KR',
+        },
     },
     {
         id: 'publicip1',
@@ -31,9 +31,9 @@ export const sampleNodes: CloudCanvasNode[] = [
         name: 'my-public-ip',
         properties: {
             serverName: 'my-server',
-            region: 'KR'
-        }
-    }
+            region: 'KR',
+        },
+    },
     // {
     //     id: 'lb1',
     //     type: 'LoadBalancer',
