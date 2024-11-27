@@ -1,6 +1,6 @@
 services:
     back:
-        image: cloud-canvas.kr.ncr.ntruss.com/back:dev
+        image: t84ar7xr.kr.private-ncr.ntruss.com/back:dev
         container_name: back
         environment:
             DATABASE_URL: ${DATABASE_URL}
