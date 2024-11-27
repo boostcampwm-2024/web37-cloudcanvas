@@ -10,11 +10,11 @@ import {
     Query,
     UseGuards,
 } from '@nestjs/common';
-import { PublicArchitectureService } from './public-architecture.service';
-import { CreatePublicArchitectureDto } from './dto/create-public-architecture.dto';
-import { UpdatePublicArchitectureDto } from './dto/update-public-architecture.dto';
-import { QueryParamsDto } from 'src/types/query-params.dto';
-import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
+import { PublicArchitectureService } from './public-architecture.service.js';
+import { CreatePublicArchitectureDto } from './dto/create-public-architecture.dto.js';
+import { UpdatePublicArchitectureDto } from './dto/update-public-architecture.dto.js';
+import { QueryParamsDto } from '../types/query-params.dto.js';
+import { JwtAuthGuard } from '../guards/jwt-auth.guard.js';
 
 @Controller('public-architectures')
 export class PublicArchitectureController {

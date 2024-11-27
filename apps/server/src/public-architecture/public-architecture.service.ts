@@ -1,8 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreatePublicArchitectureDto } from './dto/create-public-architecture.dto';
-import { UpdatePublicArchitectureDto } from './dto/update-public-architecture.dto';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { QueryParamsDto } from 'src/types/query-params.dto';
+import { CreatePublicArchitectureDto } from './dto/create-public-architecture.dto.js';
+import { UpdatePublicArchitectureDto } from './dto/update-public-architecture.dto.js';
+import { PrismaService } from '../prisma/prisma.service.js';
+import { QueryParamsDto } from '../types/query-params.dto.js';
 
 @Injectable()
 export class PublicArchitectureService {

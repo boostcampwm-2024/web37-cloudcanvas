@@ -1,13 +1,17 @@
 import { HttpAdapterHost, NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
-import { swaggerConfig } from './swagger/swagger.config';
+import { AppModule } from './app.module.js';
+import { swaggerConfig } from './swagger/swagger.config.js';
 import { ValidationPipe } from '@nestjs/common';
 import helmet from 'helmet';
-import * as cookieParser from 'cookie-parser';
-import { PrismaExceptionFilter } from './filters/prisma-exception.filter';
+import cookieParser from 'cookie-parser';
+import { PrismaExceptionFilter } from './filters/prisma-exception.filter.js';
+import { Ncloud } from '@cloud-canvas/ncloud-sdk/Ncloud';
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
+
+    const ncloud = new Ncloud();
+    console.log(ncloud.keys());
 
     swaggerConfig(app);
 

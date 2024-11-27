@@ -4,6 +4,12 @@
     "description": "",
     "private": true,
     "keywords": [],
+    "exports": {
+        "./*": {
+            "types": "./src/index.ts",
+            "default": "./dist/index.js"
+        }
+    },
     "scripts": {
         "start": "cross-env NODE_ENV=development node dist/index.js",
         "dev": "tsx watch src/index.ts",

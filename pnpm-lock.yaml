@@ -121,6 +121,9 @@ importers:
 
   apps/server:
     dependencies:
+      '@cloud-canvas/ncloud-sdk':
+        specifier: workspace:*
+        version: link:../../packages/ncloud-sdk
       '@faker-js/faker':
         specifier: ^9.2.0
         version: 9.2.0

@@ -1,14 +1,14 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { AuthModule } from 'src/auth/auth.module';
-import { UserModule } from 'src/user/user.module';
-import { PublicArchitectureModule } from 'src/public-architecture/public-architecture.module';
+import { AppController } from './app.controller.js';
+import { AppService } from './app.service.js';
+import { AuthModule } from './auth/auth.module.js';
+import { UserModule } from './user/user.module.js';
+import { PublicArchitectureModule } from './public-architecture/public-architecture.module.js';
 // import { PrivateArchitectureModule } from 'src/private-architecture/private-architecture.module';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from './prisma/prisma.service.js';
 // import { routes } from './routes';
-import { MyModule } from './my/my.module';
+import { MyModule } from './my/my.module.js';
 
 @Module({
     imports: [

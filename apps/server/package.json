@@ -5,6 +5,7 @@
     "author": "",
     "private": true,
     "license": "UNLICENSED",
+    "type": "module",
     "scripts": {
         "build": "nest build",
         "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
@@ -22,6 +23,7 @@
         "docker": "docker image build -t cloud-canvas-server ."
     },
     "dependencies": {
+        "@cloud-canvas/ncloud-sdk": "workspace:*",
         "@faker-js/faker": "^9.2.0",
         "@nestjs-modules/ioredis": "^2.0.2",
         "@nestjs/common": "^10.0.0",

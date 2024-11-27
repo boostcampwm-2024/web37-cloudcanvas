@@ -1,6 +1,6 @@
 export interface ApiKeyCredentials {
-    accessKey: string;
-    secretKey: string;
+    accessKey?: string;
+    secretKey?: string;
 }
 
 export interface RequestConfig {
