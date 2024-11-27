@@ -5,7 +5,7 @@ import { ValidationPipe } from '@nestjs/common';
 import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
 import { PrismaExceptionFilter } from './filters/prisma-exception.filter.js';
-import { Ncloud } from '@cloud-canvas/ncloud-sdk';
+import { Ncloud, PriceApiClient, PriceApi } from '@cloud-canvas/ncloud-sdk';
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
