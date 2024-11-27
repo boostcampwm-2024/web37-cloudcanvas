@@ -2,7 +2,12 @@ import RegionSelect from '@components/NCloud/NetworksBar/RegionSelect';
 import SubnetSelect from '@components/NCloud/NetworksBar/SubnetSelect';
 import VpcSelect from '@components/NCloud/NetworksBar/VpcSelect';
 import useNCloud from '@hooks/useNCloud';
-import { AppBar, Divider, Stack, Toolbar, Typography } from '@mui/material';
+import AppBar from '@mui/material/AppBar';
+import Divider from '@mui/material/Divider';
+import Stack from '@mui/material/Stack';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 
 export default () => {
     const {
@@ -40,7 +45,6 @@ export default () => {
                     paddingY: 2,
                 }}
             >
-                {' '}
                 <Typography
                     variant="h6"
                     component="div"
@@ -55,8 +59,12 @@ export default () => {
                 <Divider orientation="vertical" flexItem />
                 <Stack
                     direction="row"
-                    divider={<Divider orientation="vertical" flexItem />}
+                    divider={<ChevronRightIcon />}
                     spacing={2}
+                    sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                    }}
                 >
                     <RegionSelect
                         region={region}

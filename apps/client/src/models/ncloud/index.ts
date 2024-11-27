@@ -55,11 +55,12 @@ const Server: Node = {
         '3d': { width: 128, height: 111 },
     },
     properties: {
+        name: '',
         region: '',
         subnet: '',
         vpc: '',
         acg: '',
-        server_image_product_code: '',
+        server_image: '',
         server_product_code: '',
     },
 };

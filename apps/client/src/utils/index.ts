@@ -151,3 +151,14 @@ export const getDistanceToSegment = (
     const dy = p.y - yy;
     return Math.sqrt(dx * dx + dy * dy);
 };
+
+const debounce = (func: (...args: any[]) => void, delay: number) => {
+    let timeout: ReturnType<typeof setTimeout> | null = null;
+
+    return (...args: any[]) => {
+        if (timeout) clearTimeout(timeout); // 이전 타이머 제거
+        timeout = setTimeout(() => {
+            func(...args); // 지정된 시간 후 함수 실행
+        }, delay);
+    };
+};

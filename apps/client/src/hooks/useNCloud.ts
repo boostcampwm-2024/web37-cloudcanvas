@@ -14,6 +14,7 @@ import { useEffect } from 'react';
 
 export default () => {
     const { selectedNodeId, selectedGroupId } = useSelection();
+    //TODO: region,vpc 등 들고 있을 필요가 없음, 추후 수정
     const {
         region,
         vpc,
@@ -44,20 +45,21 @@ export default () => {
     } = useGraph();
 
     useEffect(() => {
-        if (selectedNodeId) {
-            const node = nodes[selectedNodeId];
-            if (!node) return;
-            setRegion(node.properties.region);
-            setVpc(node.properties.vpc);
-            setSubnet(node.properties.subnet);
-            setSelectedResource({
-                id: selectedNodeId,
-                type: node.type,
-                properties: node.properties,
-            });
-        } else {
+        if (!selectedNodeId || !nodes[selectedNodeId]) {
             setSelectedResource(undefined);
+            return;
         }
+
+        const node = nodes[selectedNodeId];
+        setRegion(node.properties.region);
+        setVpc(node.properties.vpc);
+        setSubnet(node.properties.subnet);
+
+        setSelectedResource({
+            id: selectedNodeId,
+            type: node.type,
+            properties: node.properties,
+        });
     }, [selectedNodeId, nodes]);
 
     useEffect(() => {
@@ -256,6 +258,7 @@ export default () => {
         selectedResource,
         updateVpc,
         addResource,
+        updateProperties,
         createRegion,
         removeVpc,
         removeSubnet,

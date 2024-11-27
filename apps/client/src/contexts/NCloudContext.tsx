@@ -10,7 +10,7 @@ import {
 type SelectedResource = {
     id: string;
     type: string;
-    properties: {};
+    properties: { [key: string]: string };
 };
 
 type NCloudContextProps = {
