@@ -1,3 +1,5 @@
+import { nanoid } from 'nanoid';
+
 export const SERVER_OS_IMAGES = [
     { code: '19463675', name: 'rokcy-8.8-base', hyperVisor: 'KVM' },
     { code: '25624115', name: 'rocky-8.10-base', hyperVisor: 'XEN' },
@@ -30,3 +32,26 @@ export const SERVER_IMAGE_SPEC_CODE: {
         { code: 'ci64-g3', info: 'vCPU 64EA, Memory 128GB' },
     ],
 };
+
+const krRegionId = `kr-${nanoid()}`;
+const jpRegionId = `jp-${nanoid()}`;
+const sgRegionId = `sg-${nanoid()}`;
+export const REGIONS: { [key: string]: any } = {
+    KR: {
+        id: krRegionId,
+        value: 'KR',
+        label: 'Korea',
+    },
+    JP: {
+        id: jpRegionId,
+        value: 'JP',
+        label: 'Japan',
+    },
+    SG: {
+        id: sgRegionId,
+        value: 'SG',
+        label: 'Singapore',
+    },
+};
+
+export const DEFAULT_REGION = 'KR';

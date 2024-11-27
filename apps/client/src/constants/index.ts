@@ -38,5 +38,5 @@ export const NETWORKS_CATEGORIES = [
     'region',
     'vpc',
     'subnet',
-    'security-group',
+    // 'security-group',
 ];
