@@ -5,7 +5,7 @@
     "private": true,
     "keywords": [],
     "exports": {
-        "./*": {
+        ".": {
             "types": "./src/index.ts",
             "default": "./dist/index.js"
         }
