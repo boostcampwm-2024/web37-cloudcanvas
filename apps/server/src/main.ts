@@ -42,21 +42,30 @@ async function bootstrap() {
         payCurrencyCode: 'KRW',
         productCategoryCode: 'COMPUTE',
     });
+    const map: Map<string, Record<string, number | string>[]> = new Map();
     result.productPriceList.forEach((product) => {
         if (
             product.productItemKind.code === 'SVR' &&
             product.serverProductCode &&
             product.serverProductCode.endsWith('50')
         ) {
-            console.log(product.productType.codeName);
-            console.log(product.serverProductCode);
-            console.log('월');
-            console.log(product.priceList[0].price);
-            console.log('시간');
-            console.log(product.priceList[1].price);
-            console.log('gksk');
+            if (!map.has(product.productType.codeName))
+                map.set(product.productType.codeName, []);
+            const {
+                serverProductCode,
+                priceList: [{ price: monthPrice }, { price: hourPrice }],
+            }: {
+                serverProductCode: string;
+                priceList: { price: number }[];
+            } = product;
+            map.get(product.productType.codeName).push({
+                serverProductCode: serverProductCode.toLowerCase(),
+                monthPrice,
+                hourPrice,
+            });
         }
     });
+    console.log(map);
 
     swaggerConfig(app);
 
