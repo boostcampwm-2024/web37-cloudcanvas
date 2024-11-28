@@ -6,10 +6,10 @@ model PublicArchitecture {
     createdAt    DateTime @default(now()) @map("created_at") @db.Timestamp(0)
     cost         Float    @default(0)
 
-    author                User                    @relation(fields: [authorId], references: [id])
-    stars                 Star[]
-    imports               Import[]
-    PublicArchitectureTag PublicArchitectureTag[]
+    author  User                    @relation(fields: [authorId], references: [id])
+    stars   Star[]
+    imports Import[]
+    tags    PublicArchitectureTag[]
 
     @@map("public_architecture")
 }
