@@ -10,38 +10,12 @@ interface Props extends Partial<Group> {
 }
 
 const Region3D = ({ bounds, properties, color }: Props) => {
-    const topLeftGrid = screenToGrid2d({ x: 0, y: 0 });
-    const topRightGrid = screenToGrid2d({ x: bounds.width, y: 0 });
-    const bottomRightGrid = screenToGrid2d({
-        x: bounds.width,
-        y: bounds.height,
-    });
-    const bottomLeftGrid = screenToGrid2d({ x: 0, y: bounds.height });
-
-    const point1 = gridToScreen3d({
-        col: topLeftGrid.col + 1,
-        row: topLeftGrid.row,
-    });
-    const point2 = gridToScreen3d({
-        col: topRightGrid.col + 1,
-        row: topRightGrid.row,
-    });
-    const point3 = gridToScreen3d({
-        col: bottomRightGrid.col + 1,
-        row: bottomRightGrid.row,
-    });
-    const point4 = gridToScreen3d({
-        col: bottomLeftGrid.col + 1,
-        row: bottomLeftGrid.row,
-    });
-
-    const points = `
-        ${point1.x} ${point1.y}, 
-        ${point2.x} ${point2.y}, 
-        ${point3.x} ${point3.y}, 
-        ${point4.x} ${point4.y}
-    `;
-
+    const isoMatrix = new DOMMatrix()
+        .rotate(30)
+        .skewX(-30)
+        .scale(1, 0.8602)
+        .translate(0, 0);
+    const points = `0 0, 0 ${bounds.height}, ${bounds.width} ${bounds.height}, ${bounds.width} 0`;
     return (
         <>
             <polygon
@@ -49,6 +23,7 @@ const Region3D = ({ bounds, properties, color }: Props) => {
                 stroke={color}
                 strokeWidth="8"
                 fill="none"
+                transform={isoMatrix.toString()}
             ></polygon>
             <Text bounds={bounds} color={color} text={properties?.name} />
         </>
