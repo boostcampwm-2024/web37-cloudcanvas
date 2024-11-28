@@ -1,4 +1,3 @@
-import { CloudCanvasNode } from '../interface/CloudCanvasNode';
 import { NCloudModel } from '../interface/NCloudModel';
 import { NCloudVPC } from '../model/NCloudVPC';
 import { NCloudNetworkACL } from '../model/NCloudNetworkACL';
