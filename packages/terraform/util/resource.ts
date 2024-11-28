@@ -10,7 +10,7 @@ import {
 
 export const processDependencies = (node: any): any[] => {
     if (
-        !['server', 'loadbalancer', 'mysql', 'redis'].includes(
+        !['server', 'loadbalancer', 'mysql', 'redis', 'nkscluster'].includes(
             node.type.toLowerCase(),
         )
     )
