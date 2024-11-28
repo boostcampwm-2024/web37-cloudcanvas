@@ -57,6 +57,7 @@ export default ({ code, open, onClose }: Props) => {
                     backgroundColor: theme.palette.background.default,
                     height: '100%',
                     overflow: 'auto',
+                    scrollBehavior: 'smooth',
                 }}
             >
                 <Box
