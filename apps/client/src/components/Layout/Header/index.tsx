@@ -1,8 +1,14 @@
 import { ServerRequiredFields } from '@/src/models/ncloud/Server';
 import { transformObject, validateObject } from '@/src/models/ncloud/utils';
 import CodeDrawer from '@components/CodeDrawer';
+import ServerNode from '@components/Node/ncloud/ServerNode';
 import { useDimensionContext } from '@contexts/DimensionContext';
 import { useNodeContext } from '@contexts/NodeContext';
+import useNCloud from '@hooks/useNCloud';
+import {
+    SettingsInputComponent,
+    SettingsPhoneSharp,
+} from '@mui/icons-material';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import LightModeIcon from '@mui/icons-material/LightMode';
@@ -15,8 +21,9 @@ import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import { styled, useColorScheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
+import { Node } from '@types';
 import { TerraformConvertor } from 'node_modules/terraform/convertor/TerraformConvertor';
-import { useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 const StyledBox = styled(Box)(({ theme }) => ({
     display: 'flex',
@@ -46,27 +53,29 @@ export default () => {
     const { dimension, toggleDimension } = useDimensionContext();
     const [openDrawer, setOpenDrawer] = useState(false);
     const [terraformCode, setTerraformCode] = useState('');
-
+    const { selectedResource } = useNCloud();
     const {
         state: { nodes },
     } = useNodeContext();
 
-    const Converter = new TerraformConvertor();
-
     const handleConvert = () => {
+        if (!selectedResource) return;
+        const nodeProperties = {
+            type: selectedResource.type,
+            name: selectedResource.properties.name,
+            properties: transformObject(selectedResource.properties),
+        };
+
+        console.log(nodeProperties);
+        if (!validateObject(nodeProperties.properties, ServerRequiredFields)) {
+            alert('Is not valid');
+            return;
+        }
+
+        const Converter = new TerraformConvertor();
+        Converter.addResourceFromJson(nodeProperties);
+        setTerraformCode(Converter.generate());
         setOpenDrawer(true);
-        Object.values(nodes).forEach((node) => {
-            const nodeProperties = transformObject(node.properties);
-            if (validateObject(nodeProperties, ServerRequiredFields)) {
-                Converter.addResourceFromJson({
-                    ...node,
-                    properties: nodeProperties,
-                });
-                setTerraformCode(Converter.generate());
-            } else {
-                alert('Required fields are missing');
-            }
-        });
     };
 
     const handleToggleTheme = () =>
@@ -83,7 +92,12 @@ export default () => {
                     </Typography>
                 </Stack>
                 <Stack direction="row" spacing={1} alignItems="center">
-                    <Button onClick={handleConvert}>Converter</Button>
+                    <Button
+                        className="graph-ignore-select"
+                        onClick={handleConvert}
+                    >
+                        Converter
+                    </Button>
                     <ToggleButtonGroup
                         value={dimension}
                         exclusive

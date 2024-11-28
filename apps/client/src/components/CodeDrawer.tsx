@@ -8,10 +8,9 @@ import {
     Typography,
     useTheme,
 } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { materialDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
-import { TypeAnimation } from 'react-type-animation';
 
 type Props = {
     code: string;
@@ -23,6 +22,8 @@ export default ({ code, open, onClose }: Props) => {
     const theme = useTheme();
     const [copied, setCopied] = useState(false);
     const [isFinished, setIsFinished] = useState(false);
+    const containerRef = useRef<HTMLDivElement>(null);
+    const [isLoaded, setIsLoaded] = useState(false);
 
     const handleCopy = () => {
         navigator.clipboard.writeText(code);
@@ -30,9 +31,26 @@ export default ({ code, open, onClose }: Props) => {
         setTimeout(() => setCopied(false), 2000); // 2초 후 복사 상태 리셋
     };
 
+    const scrollToBottom = () => {
+        if (containerRef.current && !isLoaded) {
+            containerRef.current.scrollTop = containerRef.current.scrollHeight;
+            setIsLoaded(true);
+        }
+    };
+
+    useEffect(() => {
+        if (isLoaded) setIsLoaded(false);
+    }, [open]);
+
     return (
-        <Drawer anchor="right" open={open} onClose={onClose}>
+        <Drawer
+            anchor="right"
+            open={open}
+            onClose={onClose}
+            onTransitionEnd={() => scrollToBottom()}
+        >
             <Box
+                ref={containerRef}
                 sx={{
                     width: 500,
                     padding: theme.spacing(2),
@@ -54,27 +72,9 @@ export default ({ code, open, onClose }: Props) => {
                     </IconButton>
                 </Box>
                 <Box sx={{ position: 'relative' }}>
-                    {!isFinished ? (
-                        <Box
-                            sx={{
-                                mb: 2,
-                                fontFamily: 'monospace',
-                                whiteSpace: 'pre-wrap',
-                            }}
-                        >
-                            <TypeAnimation
-                                sequence={[code, () => setIsFinished(true)]}
-                                speed={80}
-                                cursor={true}
-                                style={{ fontSize: '14px', lineHeight: '1.5' }}
-                                repeat={0}
-                            />
-                        </Box>
-                    ) : (
-                        <SyntaxHighlighter language="hcl" style={materialDark}>
-                            {code}
-                        </SyntaxHighlighter>
-                    )}
+                    <SyntaxHighlighter language="hcl" style={materialDark}>
+                        {code}
+                    </SyntaxHighlighter>
 
                     <Button
                         variant="contained"
