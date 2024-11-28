@@ -16,11 +16,11 @@ export class TerraformConverter {
         this.providers = new Map();
     }
 
-    addResourceFromJson(node: { [key: string]: any }): void {
+    addResourceFromJson(node: { [key: string]: any }[]): void {
         if (!node) {
             throw new Error('Invalid node');
         }
-        const nodes = processNodes([node]);
+        const nodes = processNodes(node);
         const regions = collectRegions(nodes);
 
         regions.forEach((region) => {
