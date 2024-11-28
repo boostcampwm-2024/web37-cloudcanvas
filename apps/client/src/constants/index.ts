@@ -22,6 +22,31 @@ export const NCLOUD_SERVICES = [
             },
         ],
     },
+    // {
+    //     title: 'container',
+    //     items: [
+    // {
+    //     title: 'Container Registry',
+    //     desc: 'Container Registry',
+    //     type: 'container-registry',
+    // },
+    //         {
+    //             title: 'Kubernetes',
+    //             desc: 'NCloud Kubernetes Service',
+    //             type: 'Kubernetes',
+    //         },
+    //     ],
+    // },
+    {
+        title: 'storage',
+        items: [
+            {
+                title: 'Object Storage',
+                desc: 'Object Storage',
+                type: 'object-storage',
+            },
+        ],
+    },
     {
         title: 'database',
         items: [
@@ -30,6 +55,26 @@ export const NCLOUD_SERVICES = [
                 desc: 'Managed MySQL database',
                 type: 'db-mysql',
             },
+            // {
+            //     title: 'DB for Redis',
+            //     desc: 'Managed Redis database',
+            //     type: 'db-redis',
+            // },
+            // {
+            //     title: 'DB for MSSQL',
+            //     desc: 'Managed MSSQL database',
+            //     type: 'db-mssql',
+            // },
+            // {
+            //     title: 'DB for MongoDB',
+            //     desc: 'Managed MongoDB database',
+            //     type: 'db-mongo',
+            // },
+            // {
+            //     title: 'DB for PostgreSQL',
+            //     desc: 'Managed PostgreSQL database',
+            //     type: 'db-postgres',
+            // },
         ],
     },
     {

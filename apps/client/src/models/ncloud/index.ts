@@ -3,6 +3,7 @@ import { LoadBalancer } from './LoadBalancer';
 import { MySQLDBNode } from './MySQLDB';
 import { RegionGroup, SubnetGroup, VpcGroup } from './Networks';
 import { ServerNode } from './Server';
+import { ContainerRegistryNode } from './ContainerRegistry';
 
 export const NcloudNodeFactory = (type: string) => {
     switch (type) {
@@ -14,6 +15,8 @@ export const NcloudNodeFactory = (type: string) => {
             return MySQLDBNode;
         case 'load-balancer':
             return LoadBalancer;
+        case 'container-registry':
+            return ContainerRegistryNode;
         default: {
             throw new Error(`Unknown type: ${type}`);
         }

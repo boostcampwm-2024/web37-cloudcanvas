@@ -1,14 +1,9 @@
 import { ServerRequiredFields } from '@/src/models/ncloud/Server';
 import { transformObject, validateObject } from '@/src/models/ncloud/utils';
 import CodeDrawer from '@components/CodeDrawer';
-import ServerNode from '@components/Node/ncloud/ServerNode';
 import { useDimensionContext } from '@contexts/DimensionContext';
 import { useNodeContext } from '@contexts/NodeContext';
 import useNCloud from '@hooks/useNCloud';
-import {
-    SettingsInputComponent,
-    SettingsPhoneSharp,
-} from '@mui/icons-material';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import LightModeIcon from '@mui/icons-material/LightMode';
@@ -21,9 +16,8 @@ import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import { styled, useColorScheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
-import { Node } from '@types';
 import { TerraformConvertor } from 'node_modules/terraform/convertor/TerraformConvertor';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useState } from 'react';
 
 const StyledBox = styled(Box)(({ theme }) => ({
     display: 'flex',
@@ -66,7 +60,6 @@ export default () => {
             properties: transformObject(selectedResource.properties),
         };
 
-        console.log(nodeProperties);
         if (!validateObject(nodeProperties.properties, ServerRequiredFields)) {
             alert('Is not valid');
             return;

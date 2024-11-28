@@ -4,7 +4,12 @@ export type Point = { x: number; y: number };
 
 export type GridPoint = { col: number; row: number };
 
-export type Size = { width: number; height: number; offset?: number };
+export type Size = {
+    width: number;
+    height: number;
+    offset?: number;
+    depth?: number;
+};
 
 export type ViewBox = Point & Size;
 
