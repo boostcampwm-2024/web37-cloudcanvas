@@ -1,0 +1,13 @@
+services:
+    front:
+        image: t84ar7xr.kr.private-ncr.ntruss.com/front:dev
+        container_name: front
+        ports:
+            - '5001:5000'
+        networks:
+            - cloud-canvas-network
+        restart: unless-stopped
+        pull_policy: always
+networks:
+    cloud-canvas-network:
+        driver: bridge

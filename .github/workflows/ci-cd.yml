@@ -1,9 +1,8 @@
 name: CI/CD
 on:
-    pull_request:
+    push:
         branches:
             - development
-        types: [closed]
 
 concurrency:
     group: cloud-canvas

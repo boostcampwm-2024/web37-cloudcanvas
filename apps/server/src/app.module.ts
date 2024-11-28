@@ -8,6 +8,8 @@ import { PublicArchitectureModule } from 'src/public-architecture/public-archite
 import { PrivateArchitectureModule } from 'src/private-architecture/private-architecture.module';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { MyModule } from './my/my.module';
+import { ScheduleModule } from '@nestjs/schedule';
+import { NcloudResourcesService } from './ncloud-resources/ncloud-resources.service.js';
 
 @Module({
     imports: [
@@ -17,8 +19,9 @@ import { MyModule } from './my/my.module';
         PublicArchitectureModule,
         PrivateArchitectureModule,
         MyModule,
+        ScheduleModule.forRoot(),
     ],
     controllers: [AppController],
-    providers: [AppService, PrismaService],
+    providers: [AppService, PrismaService, NcloudResourcesService],
 })
 export class AppModule {}

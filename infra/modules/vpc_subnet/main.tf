@@ -19,6 +19,7 @@ resource "ncloud_subnet" "public_subnets" {
   subnet = each.value.subnet
   zone = each.value.zone
   subnet_type = "PUBLIC"
+  usage_type = each.value.usage_type
   network_acl_no = ncloud_vpc.vpc.default_network_acl_no
 }
 
@@ -29,5 +30,6 @@ resource "ncloud_subnet" "private_subnets" {
   subnet = each.value.subnet
   zone = each.value.zone
   subnet_type = "PRIVATE"
+  usage_type = each.value.usage_type
   network_acl_no = ncloud_vpc.vpc.default_network_acl_no
 }
