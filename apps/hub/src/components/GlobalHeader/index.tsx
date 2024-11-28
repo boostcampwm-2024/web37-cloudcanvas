@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { LinkButton } from '../ui/LinkButton';
+import { LinkButton } from '@/ui/LinkButton';
 
 export const GlobalHeader = () => {
     const router = useRouter();
