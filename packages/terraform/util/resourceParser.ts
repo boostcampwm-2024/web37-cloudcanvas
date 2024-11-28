@@ -122,6 +122,8 @@ export function parseToNCloudModel(resource: any): NCloudModel {
                 userPassword: properties.userPassword,
                 hostIp: properties.hostIp,
                 databaseName: properties.databaseName,
+                subnet: properties.subnet,
+                vpc: properties.vpc,
             });
         default:
             throw new Error(`Unsupported resource type: ${type}`);
