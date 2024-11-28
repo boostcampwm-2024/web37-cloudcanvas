@@ -16,7 +16,7 @@ export class NCloudLoginKey implements LoginKey, NCloudModel {
         if (!json.name && !json.name) {
             throw new Error('key_name is required for Login Key');
         }
-        this.name = json.keyName || json.name;
+        this.name = json.name.toLowerCase();
     }
 
     getProperties() {

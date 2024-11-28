@@ -52,21 +52,17 @@ export class NCloudMySQL implements MySQL, NCloudModel {
         if (!json.hostIp) {
             throw new Error('MySQL requires host_ip');
         }
-        if (
-            !json.databaseName ||
-            json.databaseName.length < 1 ||
-            json.databaseName.length > 30
-        ) {
+        if (!json.databaseName) {
             throw new Error('MySQL requires database_name (1-30 characters)');
         }
 
-        this.serviceName = json.serviceName;
+        this.serviceName = json.serviceName.toLowerCase();
         this.serverNamePrefix = json.serverNamePrefix;
         this.userName = json.userName;
         this.userPassword = json.userPassword;
         this.hostIp = json.hostIp;
         this.databaseName = json.databaseName;
-        this.subnetNo = 'SUBNET_ID_PLACEHOLDER';
+        this.subnetNo = `ncloud_subnet.${json.subnet.toLowerCase()}.id`;
     }
 
     getProperties() {

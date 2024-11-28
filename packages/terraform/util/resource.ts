@@ -5,10 +5,15 @@ import {
     createNicDependency,
     createSubnetDependency,
     createVpcDependency,
+    createRedisConfigGroup,
 } from './dependency';
 
 export const processDependencies = (node: any): any[] => {
-    if (!['server', 'loadbalancer', 'mysql'].includes(node.type.toLowerCase()))
+    if (
+        !['server', 'loadbalancer', 'mysql', 'redis'].includes(
+            node.type.toLowerCase(),
+        )
+    )
         return [];
 
     const dependencies: CloudCanvasNode[] = [];
@@ -17,12 +22,14 @@ export const processDependencies = (node: any): any[] => {
         dependencies.push(createVpcDependency(properties));
     }
     if (properties.subnet) {
-        dependencies.push(createSubnetDependency(properties, node.type));
+        dependencies.push(...createSubnetDependency(properties, node.type));
     }
     if (properties.acg) {
         dependencies.push(...createAcgDependencies(properties, node.name));
     }
-
+    if (properties.configGroup) {
+        dependencies.push(createRedisConfigGroup(properties));
+    }
     // if (node.type.toLowerCase() === 'server') {
     //     // if (properties.nic) {
     //     //     dependencies.push(createNicDependency(properties));

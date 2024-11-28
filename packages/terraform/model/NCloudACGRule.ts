@@ -14,11 +14,11 @@ export class NCloudACGRule implements ACGRule, NCloudModel {
     constructor(json: any) {
         this.serviceType = 'ncloud_access_control_group_rule';
         this.priority = ResourcePriority.ACG_RULE;
-        this.name = json.name || 'acg-rule';
+        this.name = json.name.toLowerCase();
         this.protocol = json.protocol;
         this.ipBlock = json.ipBlock;
         this.portRange = json.portRange;
-        this.accessControlGroupNo = `ncloud_access_control_group.${json.acgName}.id`;
+        this.accessControlGroupNo = `ncloud_access_control_group.${json.acgName.toLowerCase()}.id`;
     }
 
     getProperties() {

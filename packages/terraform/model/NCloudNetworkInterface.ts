@@ -14,10 +14,10 @@ export class NCloudNetworkInterface implements NetworkInterface, NCloudModel {
         this.serviceType = 'ncloud_network_interface';
         this.priority = ResourcePriority.NETWORK_INTERFACE;
         this.id = json.id || `nic-${Date.now()}`;
-        this.name = json.name || 'nic';
-        this.subnetNo = `ncloud_subnet.${json.subnetName}.id`;
+        this.name = json.name.toLowerCase();
+        this.subnetNo = `ncloud_subnet.${json.subnetName.toLowerCase()}.id`;
         this.accessControlGroups = [
-            `ncloud_access_control_group.${json.acgName}.id`,
+            `ncloud_access_control_group.${json.acgName.toLowerCase()}.id`,
         ];
     }
 

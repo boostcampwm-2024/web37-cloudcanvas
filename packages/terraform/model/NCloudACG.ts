@@ -15,10 +15,10 @@ export class NCloudACG implements ACG, NCloudModel {
         this.priority = ResourcePriority.ACG;
         this.id = json.id || `ACG-${Date.now()}`;
         if (json.name) {
-            this.name = json.name;
+            this.name = json.name.toLowerCase();
         }
 
-        this.vpcNo = `ncloud_vpc.${json.vpcName}.id`;
+        this.vpcNo = `ncloud_vpc.${json.vpcName.toLowerCase()}.id`;
     }
 
     getProperties() {

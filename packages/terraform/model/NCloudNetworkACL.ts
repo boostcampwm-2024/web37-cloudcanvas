@@ -13,8 +13,8 @@ export class NCloudNetworkACL implements NetworkACL, NCloudModel {
         this.serviceType = 'ncloud_network_acl';
         this.priority = ResourcePriority.NETWORK_ACL;
         this.id = json.id;
-        this.name = json.name || 'nacl';
-        this.vpcNo = `ncloud_vpc.${json.vpcName}.id`;
+        this.name = json.name.toLowerCase();
+        this.vpcNo = `ncloud_vpc.${json.vpcName.toLowerCase()}.id`;
     }
 
     getProperties() {

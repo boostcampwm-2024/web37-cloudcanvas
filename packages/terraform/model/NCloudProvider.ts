@@ -16,7 +16,7 @@ export class NCloudProvider implements Provider {
         this.name = 'ncloud';
         this.accessKey = json.accessKey || 'var.access_key';
         this.secretKey = json.secretKey || 'var.secret_key';
-        this.region = json.region;
+        this.region = json.region.toUpperCase();
         this.site = json.site || 'public';
         this.requiredVersion = '>= 0.13';
         this.source = 'NaverCloudPlatform/ncloud';

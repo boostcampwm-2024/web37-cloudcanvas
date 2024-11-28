@@ -18,7 +18,7 @@ export class NCloudVPC implements VPC, NCloudModel {
         this.priority = ResourcePriority.VPC;
         this.id = json.id;
         if (json.name) {
-            this.name = json.name;
+            this.name = json.name.toLowerCase();
         }
         if (!json.ipv4CidrBlock) {
             throw new Error('ipv4CidrBlock is required for VPC');
