@@ -10,10 +10,10 @@ import { ApiKeyCredentials, Ncloud, PriceApi } from '@cloud-canvas/ncloud-sdk';
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
-    const ncloud = new Ncloud();
-    const priceApi = new PriceApi(ncloud.keys() as ApiKeyCredentials);
-    const result1 = await priceApi.getProductCategoryList({});
-    console.log(result1.productCategoryList);
+    // const ncloud = new Ncloud();
+    // const priceApi = new PriceApi(ncloud.keys() as ApiKeyCredentials);
+    // const result1 = await priceApi.getProductCategoryList({});
+    // console.log(result1.productCategoryList);
 
     // VPC
     // const result = await priceApi.getProductList({
@@ -37,35 +37,35 @@ async function bootstrap() {
     // })
 
     // SERVER PRICE
-    const result = await priceApi.getProductPriceList({
-        regionCode: 'KR',
-        payCurrencyCode: 'KRW',
-        productCategoryCode: 'COMPUTE',
-    });
-    const map: Map<string, Record<string, number | string>[]> = new Map();
-    result.productPriceList.forEach((product) => {
-        if (
-            product.productItemKind.code === 'SVR' &&
-            product.serverProductCode &&
-            product.serverProductCode.endsWith('50')
-        ) {
-            if (!map.has(product.productType.codeName))
-                map.set(product.productType.codeName, []);
-            const {
-                serverProductCode,
-                priceList: [{ price: monthPrice }, { price: hourPrice }],
-            }: {
-                serverProductCode: string;
-                priceList: { price: number }[];
-            } = product;
-            map.get(product.productType.codeName).push({
-                serverProductCode: serverProductCode.toLowerCase(),
-                monthPrice,
-                hourPrice,
-            });
-        }
-    });
-    console.log(map);
+    // const result = await priceApi.getProductPriceList({
+    //     regionCode: 'KR',
+    //     payCurrencyCode: 'KRW',
+    //     productCategoryCode: 'COMPUTE',
+    // });
+    // const map: Map<string, Record<string, number | string>[]> = new Map();
+    // result.productPriceList.forEach((product) => {
+    //     if (
+    //         product.productItemKind.code === 'SVR' &&
+    //         product.serverProductCode &&
+    //         product.serverProductCode.endsWith('50')
+    //     ) {
+    //         if (!map.has(product.productType.codeName))
+    //             map.set(product.productType.codeName, []);
+    //         const {
+    //             serverProductCode,
+    //             priceList: [{ price: monthPrice }, { price: hourPrice }],
+    //         }: {
+    //             serverProductCode: string;
+    //             priceList: { price: number }[];
+    //         } = product;
+    //         map.get(product.productType.codeName).push({
+    //             serverProductCode: serverProductCode.toLowerCase(),
+    //             monthPrice,
+    //             hourPrice,
+    //         });
+    //     }
+    // });
+    // console.log(map);
 
     swaggerConfig(app);
 
