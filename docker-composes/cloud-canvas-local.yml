@@ -79,16 +79,16 @@ services:
             - cloud-canvas-network
         restart: unless-stopped
 
-    # front:
-    #     build:
-    #         context: ../
-    #         dockerfile: apps/client/Dockerfile
-    #     container_name: front
-    #     ports:
-    #         - '5001:5000'
-    #     networks:
-    #         - cloud-canvas-network
-    #     restart: unless-stopped
+    front:
+        build:
+            context: ../
+            dockerfile: apps/client/Dockerfile
+        container_name: front
+        ports:
+            - '5001:5000'
+        networks:
+            - cloud-canvas-network
+        restart: unless-stopped
 
     fluentd:
         build: ./monitorin/logging/fluentd/
