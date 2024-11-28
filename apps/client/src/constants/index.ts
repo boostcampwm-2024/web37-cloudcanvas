@@ -32,6 +32,16 @@ export const NCLOUD_SERVICES = [
             },
         ],
     },
+    {
+        title: 'networks',
+        items: [
+            {
+                title: 'Load Balancer',
+                desc: 'load balancing',
+                type: 'load-balancer',
+            },
+        ],
+    },
 ];
 
 export const NETWORKS_CATEGORIES = [

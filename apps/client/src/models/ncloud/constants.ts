@@ -31,6 +31,24 @@ export const SERVER_IMAGE_SPEC_CODE: {
         { code: 'ci48-g3', info: 'vCPU 48EA, Memory 96GB' },
         { code: 'ci64-g3', info: 'vCPU 64EA, Memory 128GB' },
     ],
+    '23221307': [
+        { code: 'ci2-g3', info: 'vCPU 2EA, Memory 4GB' },
+        { code: 'ci4-g3', info: 'vCPU 4EA, Memory 8GB' },
+        { code: 'ci8-g3', info: 'vCPU 8EA, Memory 16GB' },
+        { code: 'ci16-g3', info: 'vCPU 16EA, Memory 32GB' },
+        { code: 'ci32-g3', info: 'vCPU 32EA, Memory 64GB' },
+        { code: 'ci48-g3', info: 'vCPU 48EA, Memory 96GB' },
+        { code: 'ci64-g3', info: 'vCPU 64EA, Memory 128GB' },
+    ],
+    '23214590': [
+        { code: 'ci2-g3', info: 'vCPU 2EA, Memory 4GB' },
+        { code: 'ci4-g3', info: 'vCPU 4EA, Memory 8GB' },
+        { code: 'ci8-g3', info: 'vCPU 8EA, Memory 16GB' },
+        { code: 'ci16-g3', info: 'vCPU 16EA, Memory 32GB' },
+        { code: 'ci32-g3', info: 'vCPU 32EA, Memory 64GB' },
+        { code: 'ci48-g3', info: 'vCPU 48EA, Memory 96GB' },
+        { code: 'ci64-g3', info: 'vCPU 64EA, Memory 128GB' },
+    ],
 };
 
 const krRegionId = `kr-${nanoid()}`;

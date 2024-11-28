@@ -21,7 +21,6 @@ type Props = {
 export default ({ code, open, onClose }: Props) => {
     const theme = useTheme();
     const [copied, setCopied] = useState(false);
-    const [isFinished, setIsFinished] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
     const [isLoaded, setIsLoaded] = useState(false);
 

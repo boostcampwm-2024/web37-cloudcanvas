@@ -1,4 +1,5 @@
 import { CloudFunctionNode } from './CloudFunction';
+import { LoadBalancer } from './LoadBalancer';
 import { MySQLDBNode } from './MySQLDB';
 import { RegionGroup, SubnetGroup, VpcGroup } from './Networks';
 import { ServerNode } from './Server';
@@ -11,6 +12,8 @@ export const NcloudNodeFactory = (type: string) => {
             return CloudFunctionNode;
         case 'db-mysql':
             return MySQLDBNode;
+        case 'load-balancer':
+            return LoadBalancer;
         default: {
             throw new Error(`Unknown type: ${type}`);
         }
