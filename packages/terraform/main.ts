@@ -1,9 +1,9 @@
-import { TerraformConvertor } from './convertor/TerraformConvertor';
+import { TerraformConverter } from './converter/TerraformConverter';
 import { saveTerraformFiles } from './util/file';
 
 async function main() {
     try {
-        const converter = new TerraformConvertor();
+        const converter = new TerraformConverter();
         converter.addResourceFromJson({
             id: 'server1',
             type: 'Server',

@@ -1,12 +1,11 @@
 import { ResourceManager } from '../type/ResourceManager';
 import { CodeGenerator } from '../type/TerraformGenerator';
 import { NCloudProvider } from '../model/NCloudProvider';
-import { CloudCanvasNode } from '../interface/CloudCanvasNode';
 import { parseToNCloudModel } from '../util/resourceParser';
 import { processNodes } from '../util/resource';
 import { collectRegions, createProvider } from '../util/provider';
 
-export class TerraformConvertor {
+export class TerraformConverter {
     private readonly resourceManager: ResourceManager;
     private readonly codeGenerator: CodeGenerator;
     private providers: Map<string, NCloudProvider>;
@@ -17,7 +16,10 @@ export class TerraformConvertor {
         this.providers = new Map();
     }
 
-    addResourceFromJson(node: any): void {
+    addResourceFromJson(node: { [key: string]: any }): void {
+        if (!node) {
+            throw new Error('Invalid node');
+        }
         const nodes = processNodes([node]);
         const regions = collectRegions(nodes);
 
