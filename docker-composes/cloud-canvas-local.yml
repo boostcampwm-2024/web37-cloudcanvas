@@ -65,6 +65,8 @@ services:
         container_name: back
         environment:
             DATABASE_URL: mysql://cloud_canvas_user:password@mysql:3306/cloud_canvas
+            NCLOUD_ACCESS_KEY: ${NCLOUD_ACCESS_KEY}
+            NCLOUD_SECRET_KEY: ${NCLOUD_SECRET_KEY}
         ports:
             - '3000:3000'
         depends_on:
@@ -72,27 +74,27 @@ services:
                 condition: service_healthy
             redis:
                 condition: service_healthy
-        entrypoint: sh -c "npx prisma migrate deploy && npx prisma db seed && node ./dist/src/main.js"
+        entrypoint: sh -c "cd apps/server && npx prisma migrate dev && npx prisma db seed && node ./dist/src/main.js"
         networks:
             - cloud-canvas-network
         restart: unless-stopped
 
-    front:
-        build:
-            context: ../
-            dockerfile: apps/client/Dockerfile
-        container_name: front
-        ports:
-            - '5001:5000'
-        networks:
-            - cloud-canvas-network
-        restart: unless-stopped
+    # front:
+    #     build:
+    #         context: ../
+    #         dockerfile: apps/client/Dockerfile
+    #     container_name: front
+    #     ports:
+    #         - '5001:5000'
+    #     networks:
+    #         - cloud-canvas-network
+    #     restart: unless-stopped
 
     fluentd:
-        build: ./logging/fluentd/
+        build: ./monitorin/logging/fluentd/
         container_name: fluentd
         volumes:
-            - ./logging/fluentd/conf/fluent.conf:/fluentd/etc/fluent.conf
+            - ./monitoring/logging/fluentd/conf/fluent.conf:/fluentd/etc/fluent.conf
         ports:
             - '24224:24224'
             - '24224:24224/udp'

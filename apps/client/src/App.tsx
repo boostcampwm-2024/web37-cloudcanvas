@@ -1,5 +1,5 @@
 import CloudGraph from '@/src/CloudGraph';
-import ErrorBoundary from '@components/ErrorBoundary';
+// import ErrorBoundary from '@components/ErrorBoundary';
 import Header from '@components/Layout/Header';
 import Sidebar from '@components/Layout/Sidebar';
 import NetworksBar from '@components/NCloud/NetworksBar/index';
