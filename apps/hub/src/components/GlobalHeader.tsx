@@ -2,19 +2,40 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { LinkButton } from '../ui/LinkButton';
 
 export const GlobalHeader = () => {
     const router = useRouter();
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-    const handleLogin = () => {
-        setIsLoggedIn(true);
+    useEffect(() => {
+        if (localStorage.getItem('isLoggedIn') === 'true') {
+            setIsLoggedIn(true);
+        }
+    }, []);
+
+    const handleLogin = async () => {
+        const res = await fetch('http://localhost:3000/auth/login', {
+            method: 'POST',
+            credentials: 'include',
+        });
+        if (res.ok) {
+            setIsLoggedIn(true);
+            localStorage.setItem('isLoggedIn', 'true');
+            router.refresh();
+            router.push('/');
+        }
     };
 
     const handleLogout = () => {
+        fetch('http://localhost:3000/auth/logout', {
+            method: 'POST',
+            credentials: 'include',
+        });
         setIsLoggedIn(false);
+        localStorage.removeItem('isLoggedIn');
+        router.refresh();
         router.push('/');
     };
 
