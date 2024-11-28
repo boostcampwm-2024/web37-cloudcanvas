@@ -16,7 +16,7 @@ import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import { styled, useColorScheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
-import { TerraformConvertor } from 'node_modules/terraform/convertor/TerraformConvertor';
+import { TerraformConverter } from 'node_modules/terraform/converter/TerraformConverter';
 import { useState } from 'react';
 
 const StyledBox = styled(Box)(({ theme }) => ({
@@ -65,8 +65,9 @@ export default () => {
             return;
         }
 
-        const Converter = new TerraformConvertor();
-        Converter.addResourceFromJson(nodeProperties);
+        const Converter = new TerraformConverter();
+        console.log(nodeProperties);
+        Converter.addResourceFromJson([nodeProperties]);
         setTerraformCode(Converter.generate());
         setOpenDrawer(true);
     };
