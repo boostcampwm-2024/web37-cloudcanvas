@@ -15,63 +15,98 @@ import { CreatePublicArchitectureDto } from './dto/create-public-architecture.dt
 import { UpdatePublicArchitectureDto } from './dto/update-public-architecture.dto';
 import { QueryParamsDto } from 'src/types/query-params.dto';
 import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
+import { User } from 'src/decorators/user.decorator';
+import { OptionalAuthGuard } from 'src/guards/optional-auth.guard';
 
 @Controller('public-architectures')
 export class PublicArchitectureController {
     constructor(private readonly service: PublicArchitectureService) {}
 
     @Get()
-    getMany(@Query() query: QueryParamsDto) {
-        return this.service.getMany(query);
+    getPublicArchitectures(@Query() queryParams: QueryParamsDto) {
+        return this.service.findArchitectures(queryParams);
     }
 
     @Post()
     @UseGuards(JwtAuthGuard)
-    create(@Body() createPublicDto: CreatePublicArchitectureDto) {
-        const userId = 1;
-        return this.service.create(userId, createPublicDto);
+    createPublicArchitecture(
+        @User('id') userId: number,
+        @Body() createPublicArchitectureDto: CreatePublicArchitectureDto,
+    ) {
+        return this.service.saveArchitecture({
+            userId,
+            ...createPublicArchitectureDto,
+        });
     }
 
     @Get(':id')
-    getOne(@Param('id', ParseIntPipe) id: number) {
-        return this.service.getOne(id);
+    @UseGuards(OptionalAuthGuard)
+    getPublicArchitecture(
+        @User('id') userId: number,
+        @Param('id', ParseIntPipe) id: number,
+    ) {
+        return this.service.findArchitecture({ id, userId });
     }
 
     @Patch(':id')
     @UseGuards(JwtAuthGuard)
-    update(
+    updatePublicArchitecture(
+        @User('id') userId: number,
         @Param('id', ParseIntPipe) id: number,
-        @Body() updatePublicDto: UpdatePublicArchitectureDto,
+        @Body() updatePublicArchitectureDto: UpdatePublicArchitectureDto,
     ) {
-        const userId = 1;
-        return this.service.update(id, userId, updatePublicDto);
+        return this.service.modifyArchitecture({
+            id,
+            userId,
+            ...updatePublicArchitectureDto,
+        });
     }
 
     @Delete(':id')
     @UseGuards(JwtAuthGuard)
-    delete(@Param('id', ParseIntPipe) id: number) {
-        const userId = 1;
-        return this.service.delete(id, userId);
+    deletePublicArchitecture(
+        @User('id') userId: number,
+        @Param('id', ParseIntPipe) id: number,
+    ) {
+        return this.service.removeArchitecture({ id, userId });
     }
+
+    // @Get(':id/stars')
+    // @UseGuards(OptionalAuthGuard)
+    // async getStars(
+    //     @User('id') userId: number,
+    //     @Param('id', ParseIntPipe) id: number,
+    // ) {
+    //     if (!userId) return { isStarred: false };
+    //     const star = await this.service.findStar({ id, userId });
+    //     if (!star) return { isStarred: false };
+    //     return { isStarred: true };
+    // }
 
     @Post(':id/stars')
     @UseGuards(JwtAuthGuard)
-    star(@Param('id', ParseIntPipe) id: number) {
-        const userId = 1;
-        return this.service.star(id, userId);
+    starPublicArchitecture(
+        @User('id') userId: number,
+        @Param('id', ParseIntPipe) id: number,
+    ) {
+        return this.service.star({ id, userId });
     }
 
     @Delete(':id/stars')
     @UseGuards(JwtAuthGuard)
-    unstar(@Param('id', ParseIntPipe) id: number) {
-        const userId = 1;
-        return this.service.unstar(id, userId);
+    unstarPublicArchitecture(
+        @User('id') userId: number,
+        @Param('id', ParseIntPipe) id: number,
+    ) {
+        return this.service.unstar({ id, userId });
     }
 
     @Post(':id/imports')
     @UseGuards(JwtAuthGuard)
-    import(@Param('id', ParseIntPipe) id: number) {
-        const userId = 1;
-        return this.service.import(id, userId);
+    importPublicArchitecture(
+        @User('id') userId: number,
+        @Param('id', ParseIntPipe) id: number,
+    ) {
+        return this.service.import({ id, userId });
     }
 }
