@@ -10,7 +10,7 @@ export class AuthService {
     ) {}
 
     async login() {
-        const user = this.userService.getTestUser();
+        const user = await this.userService.getTestUser();
         if (!user) {
             throw new UnauthorizedException();
         }

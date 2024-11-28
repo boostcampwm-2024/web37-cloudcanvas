@@ -17,8 +17,8 @@ export class AuthController {
     constructor(private readonly authService: AuthService) {}
 
     @Post('login')
-    login(@Res({ passthrough: true }) res: Response) {
-        const token = this.authService.login();
+    async login(@Res({ passthrough: true }) res: Response) {
+        const token = await this.authService.login();
         res.cookie('Authentication', token, {
             httpOnly: true,
             secure: true,
