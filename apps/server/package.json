@@ -39,7 +39,8 @@
         "prisma": "^5.22.0",
         "reflect-metadata": "^0.2.0",
         "rxjs": "^7.8.1",
-        "@faker-js/faker": "^9.2.0"
+        "@faker-js/faker": "^9.2.0",
+        "@cloud-canvas/ncloud-sdk": "workspace:*"
     },
     "devDependencies": {
         "@nestjs/cli": "^10.0.0",
