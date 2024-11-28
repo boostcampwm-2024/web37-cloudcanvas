@@ -6,10 +6,10 @@ import {
     Res,
     UseGuards,
 } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
-import { User } from 'src/decorators/user.decorator';
-import { AuthenticatedUser } from 'src/types/authenticated-user.interface';
+import { AuthService } from './auth.service.js';
+import { JwtAuthGuard } from '../guards/jwt-auth.guard.js';
+import { User } from '../decorators/user.decorator.js';
+import { AuthenticatedUser } from 'src/types/authenticated-user.interface.js';
 import { Response } from 'express';
 
 @Controller('auth')

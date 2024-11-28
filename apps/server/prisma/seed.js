@@ -1,7 +1,7 @@
-const PrismaClient = require('@prisma/client');
-const { faker } = require('@faker-js/faker');
+import { PrismaClient } from '@prisma/client';
+import { faker } from '@faker-js/faker';
 
-const prisma = new PrismaClient.PrismaClient();
+const prisma = new PrismaClient();
 async function main() {
     const userAmount = 10;
     const users = [];

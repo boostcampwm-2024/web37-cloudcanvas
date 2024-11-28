@@ -1,0 +1,60 @@
+services:
+    redis:
+        image: redis:alpine
+        container_name: redis
+        ports:
+            - '${REDIS_PORT}:6379'
+        healthcheck:
+            test: ['CMD', 'redis-cli', 'ping']
+            interval: 30s
+            retries: 3
+            start_period: 20s
+            timeout: 5s
+        logging:
+            driver: 'fluentd'
+            options:
+                fluentd-address: '${FLUENTD_HOST}:24224'
+                fluentd-async-connect: 'true'
+                tag: 'redis'
+        networks:
+            - cloud-canvas-network
+
+    mysql:
+        image: mysql:8.0
+        container_name: mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+            MYSQL_DATABASE: ${MYSQL_DATABASE}
+            MYSQL_USER: ${MYSQL_USER}
+            MYSQL_PASSWORD: ${MYSQL_USER_PASSWORD}
+        ports:
+            - '${MYSQL_PORT}:3306'
+        volumes:
+            - ../../config/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+            - ../../config/mysql/log.cnf:/etc/mysql/conf.d/log.cnf:ro
+        healthcheck:
+            test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost']
+            interval: 10s
+            timeout: 5s
+            retries: 5
+            start_period: 20s
+        command:
+            - sh
+            - -c
+            - |
+                mkdir -p /var/log/mysql && \
+                touch /var/log/mysql/general.log && \
+                tail -f /var/log/mysql/general.log & \
+                exec docker-entrypoint.sh mysqld
+        logging:
+            driver: 'fluentd'
+            options:
+                fluentd-address: '${FLUENTD_HOST}:24224'
+                fluentd-async-connect: 'true'
+                tag: 'mysql'
+        networks:
+            - cloud-canvas-network
+        restart: unless-stopped
+networks:
+    cloud-canvas-network:
+        driver: bridge

@@ -1,0 +1,39 @@
+services:
+    elasticsearch:
+        image: docker.elastic.co/elasticsearch/elasticsearch:7.17.0
+        container_name: elasticsearch
+        environment:
+            - 'discovery.type=single-node'
+        ports:
+            - '9200:9200'
+        networks:
+            - cloud-canvas-network
+
+    fluentd:
+        build: ./fluentd/
+        container_name: fluentd
+        volumes:
+            - ./fluentd/conf/fluent.conf:/fluentd/etc/fluent.conf
+        ports:
+            - '24224:24224'
+            - '24224:24224/udp'
+        healthcheck:
+            test: ['CMD', 'curl', '-f', 'http://localhost:24224/api/health']
+            interval: 30s
+            retries: 3
+            start_period: 10s
+            timeout: 10s
+        networks:
+            - cloud-canvas-network
+
+    kibana:
+        image: docker.elastic.co/kibana/kibana:7.13.1
+        container_name: kibana
+        ports:
+            - '5601:5601'
+        networks:
+            - cloud-canvas-network
+
+networks:
+    cloud-canvas-network:
+        driver: bridge

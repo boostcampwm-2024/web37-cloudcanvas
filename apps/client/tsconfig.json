@@ -7,15 +7,16 @@
         "allowImportingTsExtensions": true, // ts 파일을 import 할 수 있도록 설정
         "noEmit": true, // 컴파일러가 javascript 출력 파일을 생성하지 않음
         "allowSyntheticDefaultImports": true, // default import 허용
+        "moduleResolution": "node",
         "baseUrl": ".",
         "paths": {
+            "@helpers/*": ["src/helpers/*"],
             "@cloud-graph/*": ["src/cloud-graph/*"],
             "@cloud-graph": ["src/cloud-graph/index.ts"],
             "@cloudflow": ["src/cloudflow/index.tsx"],
-            "@cloudflow/*": ["src/cloudflow/*"],
             "@components/*": ["src/components/*"],
             "@hooks/*": ["src/hooks/*"],
-            "@utils/*": ["src/utils/*"],
+            "@utils": ["src/utils/index.ts"],
             "@contexts/*": ["src/contexts/*"],
             "@types": ["src/types/index.ts"],
             "@theme": ["src/theme/index.ts"],

@@ -23,5 +23,6 @@ COPY ./apps/server/prisma/ /app/prisma/
 
 ENV DATABASE_URL=mysql://johndoe:randompassword@localhost:3306/mydb
 ENV PORT=3000
+ENV NODE_ENV=development
 EXPOSE 3000
 ENTRYPOINT ["sh", "-c", "npx prisma generate && node ./dist/src/main.js"]

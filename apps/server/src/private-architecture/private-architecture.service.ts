@@ -1,13 +1,13 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { FindArchitectureDto } from './dto/find-architecture.dto';
-import { FindVersionDto } from './dto/find-version.dto';
-import { FindVersionsDto } from './dto/find-versions.dto';
-import { ModifyArchitectureDto } from './dto/modify-architecture.dto';
-import { RemoveArchitectureDto } from './dto/remove-architecture.dto';
-import { RemoveVersionDto } from './dto/remove-version.dto';
-import { SaveArchitectureDto } from './dto/save-architecture.dto';
-import { SaveVersionDto } from './dto/save-version.dto';
+import { PrismaService } from 'src/prisma/prisma.service.js';
+import { FindArchitectureDto } from './dto/find-architecture.dto.js';
+import { FindVersionDto } from './dto/find-version.dto.js';
+import { FindVersionsDto } from './dto/find-versions.dto.js';
+import { ModifyArchitectureDto } from './dto/modify-architecture.dto.js';
+import { RemoveArchitectureDto } from './dto/remove-architecture.dto.js';
+import { RemoveVersionDto } from './dto/remove-version.dto.js';
+import { SaveArchitectureDto } from './dto/save-architecture.dto.js';
+import { SaveVersionDto } from './dto/save-version.dto.js';
 
 @Injectable()
 export class PrivateArchitectureService {

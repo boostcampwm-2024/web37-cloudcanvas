@@ -1,0 +1,66 @@
+export type Dimension = '2d' | '3d';
+
+export type Point = { x: number; y: number };
+
+export type GridPoint = { col: number; row: number };
+
+export type Size = { width: number; height: number; offset?: number };
+
+export type ViewBox = Point & Size;
+
+export type Bounds = Point & Size;
+
+export type Node = {
+    id: string;
+    type: string;
+    name: string;
+    point: Point;
+    size: {
+        '2d': Size;
+        '3d': Size;
+    };
+    properties: { [key: string]: any };
+    connectors: { [key: string]: Point };
+};
+
+export type Edge = {
+    id: string;
+    type: 'arrow' | 'line';
+    source: {
+        id: string;
+        connectorType: string;
+    };
+    target: {
+        id: string;
+        connectorType: string;
+    };
+    bendingPoints: Point[];
+};
+
+export type Group = {
+    id: string;
+    type: string;
+    name: string;
+    nodeIds: string[];
+    properties: { [key: string]: any };
+    childGroupIds: string[];
+    parentGroupId: string;
+};
+
+export type Connection = {
+    id: string;
+    point: Point;
+    connectorType: string;
+};
+
+export type ConnectorType = 'top' | 'right' | 'bottom' | 'left' | 'center';
+export type ConnectorMap = Record<string, Point>;
+export interface Connector {
+    type: 'node' | 'bend' | string;
+    point: Point;
+    connectorType?: string;
+}
+
+// NCloud
+
+export type Region = 'kr' | 'jp' | 'sg';
