@@ -3,7 +3,7 @@ model NcloudServerResource {
     serverResourceTypeId Int       @map("server_resource_type_id")
     serverSpecCode       String    @map("server_spec_code") @db.Char(50)
     hourCost             Float     @map("hour_cost")
-    timeCost             Float     @map("month_cost")
+    monthCost             Float     @map("month_cost")
     createdAt            DateTime  @default(now()) @map("created_at") @db.Timestamp(0)
     updatedAt            DateTime? @updatedAt @map("updated_at") @db.Timestamp(0)
 
