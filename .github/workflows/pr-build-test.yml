@@ -22,9 +22,10 @@ jobs:
               with:
                   version: 9.12.3
                   node-version: 20
+                  cache: true
 
             - name: Install dependencies with pnpm
-              run: pnpm install
+              run: pnpm install --no-frozen-lockfile
 
             - name: Build the project
               run: pnpm build
