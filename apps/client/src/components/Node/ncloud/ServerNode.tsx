@@ -121,9 +121,7 @@ const Node2D = ({ properties }: Props) => {
                     fill="#d86613"
                     style={{ userSelect: 'none' }}
                 >
-                    {properties?.server_spec_code?.value
-                        .split('-')[0]
-                        .slice(0, 4)}
+                    {properties?.server_spec_code?.split('-')[0].slice(0, 4)}
                 </text>
             </svg>
         </>

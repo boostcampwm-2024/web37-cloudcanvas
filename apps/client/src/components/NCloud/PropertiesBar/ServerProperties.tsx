@@ -17,17 +17,20 @@ type Props = {};
 export default ({}: Props) => {
     const { selectedResource, updateProperties } = useNCloud();
 
-    const [serverImageCode, setServerImageCode] = useState<string>('');
-    const [specCode, setSpecCode] = useState<string>('');
-
-    const [name, setName] = useState('');
+    const [serverImageCode, setServerImageCode] = useState<string>(
+        selectedResource?.properties.server_image_number ?? '',
+    );
+    const [specCode, setSpecCode] = useState<string>(
+        selectedResource?.properties.server_spec_code ?? '',
+    );
+    const [name, setName] = useState(selectedResource?.properties.name ?? '');
 
     useEffect(() => {
         if (!selectedResource) return;
         const { properties } = selectedResource;
-        setName(properties.name || '');
-        setServerImageCode(properties.server_image_number || '');
-        setSpecCode(properties.server_spec_code || '');
+        setName(properties.name ?? '');
+        setServerImageCode(properties.server_image_number ?? '');
+        setSpecCode(properties.server_spec_code ?? '');
     }, [selectedResource]);
 
     const handleChangeImage = (e: SelectChangeEvent) => {

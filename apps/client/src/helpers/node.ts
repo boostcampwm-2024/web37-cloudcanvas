@@ -7,6 +7,13 @@ import {
     convert3dTo2dPoint,
 } from '@utils';
 
+export const GraphNode = {
+    id: '',
+    type: '',
+    point: { x: 0, y: 0 },
+    connectors: {},
+};
+
 const getNodeOffsetForDimension = (nodeSize: Size, baseSize: Size) => {
     return {
         x: (baseSize.width - nodeSize.width) / 2,
