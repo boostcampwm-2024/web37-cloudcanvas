@@ -11,4 +11,5 @@ export enum ResourcePriority {
     LOAD_BALANCER = 10,
     LAUNCH_CONFIGURATION = 11,
     MYSQL = 12,
+    OBJECT_STORAGE_BUCKET = 13,
 }
