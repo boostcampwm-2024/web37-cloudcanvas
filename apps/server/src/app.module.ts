@@ -5,9 +5,8 @@ import { AppService } from './app.service';
 import { AuthModule } from 'src/auth/auth.module';
 import { UserModule } from 'src/user/user.module';
 import { PublicArchitectureModule } from 'src/public-architecture/public-architecture.module';
-// import { PrivateArchitectureModule } from 'src/private-architecture/private-architecture.module';
+import { PrivateArchitectureModule } from 'src/private-architecture/private-architecture.module';
 import { PrismaService } from 'src/prisma/prisma.service';
-// import { routes } from './routes';
 import { MyModule } from './my/my.module';
 
 @Module({
@@ -16,7 +15,7 @@ import { MyModule } from './my/my.module';
         AuthModule,
         UserModule,
         PublicArchitectureModule,
-        // PrivateArchitectureModule,
+        PrivateArchitectureModule,
         MyModule,
     ],
     controllers: [AppController],
