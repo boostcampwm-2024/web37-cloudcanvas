@@ -5,7 +5,9 @@ import { Suspense } from 'react';
 export default function MySharedPage() {
     return (
         <Suspense>
-            <ArchitectureBoard apiUrl="http://localhost:3000/my/public-architectures" />
+            <ArchitectureBoard
+                apiUrl={`${process.env.NEXT_PUBLIC_BACK_URL}/my/public-architectures`}
+            />
         </Suspense>
     );
 }

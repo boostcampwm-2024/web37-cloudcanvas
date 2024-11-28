@@ -6,7 +6,9 @@ import { Suspense } from 'react';
 export default function MyArchitecturesPage() {
     return (
         <Suspense>
-            <PrivateArchitectureBoard apiUrl="'http://localhost:3000/my/private-architectures'" />
+            <PrivateArchitectureBoard
+                apiUrl={`${process.env.NEXT_PUBLIC_BACK_URL}/my/private-architectures`}
+            />
         </Suspense>
     );
 }
