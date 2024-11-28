@@ -1,16 +1,44 @@
-import { QueryParamsDto } from 'src/types/query-params.dto.js';
+import { QueryParamsDto } from 'src/types/query-params.dto';
 
-export const buildQueryOptions = ({
-    page,
-    limit,
-    search,
-    sort,
-    order,
-    userId,
-}: QueryParamsDto & { userId?: number }) => {
+export const buildPaginationOptions = ({ page, limit }: QueryParamsDto) => {
     return {
         skip: (page - 1) * limit,
         take: limit,
+    } as any;
+};
+
+export const buildSortOptions = ({ sort, order }: QueryParamsDto) => {
+    if (sort === 'name') {
+        return {
+            orderBy: {
+                title: order,
+            },
+        };
+    } else if (sort === 'cost') {
+        return {
+            orderBy: {
+                cost: order,
+            },
+        };
+    } else if (sort === 'stars' || sort === 'imports') {
+        return {
+            orderBy: {
+                [sort]: {
+                    _count: order,
+                },
+            },
+        };
+    }
+};
+
+export const buildFilterOptions = ({
+    search,
+    userId,
+}: {
+    search?: string;
+    userId?: number;
+}) => {
+    return {
         where:
             search || userId
                 ? {
@@ -20,12 +48,5 @@ export const buildQueryOptions = ({
                       authorId: userId,
                   }
                 : undefined,
-        orderBy: sort
-            ? {
-                  [sort]: order,
-              }
-            : {
-                  createdAt: 'desc',
-              },
-    } as any;
+    };
 };

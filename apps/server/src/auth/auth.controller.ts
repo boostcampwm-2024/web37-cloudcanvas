@@ -6,10 +6,10 @@ import {
     Res,
     UseGuards,
 } from '@nestjs/common';
-import { AuthService } from './auth.service.js';
-import { JwtAuthGuard } from '../guards/jwt-auth.guard.js';
-import { User } from '../decorators/user.decorator.js';
-import { AuthenticatedUser } from 'src/types/authenticated-user.interface.js';
+import { AuthService } from './auth.service';
+import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
+import { User } from 'src/decorators/user.decorator';
+import { AuthenticatedUser } from 'src/types/authenticated-user.interface';
 import { Response } from 'express';
 
 @Controller('auth')
@@ -17,8 +17,8 @@ export class AuthController {
     constructor(private readonly authService: AuthService) {}
 
     @Post('login')
-    login(@Res({ passthrough: true }) res: Response) {
-        const token = this.authService.login();
+    async login(@Res({ passthrough: true }) res: Response) {
+        const token = await this.authService.login();
         res.cookie('Authentication', token, {
             httpOnly: true,
             secure: true,

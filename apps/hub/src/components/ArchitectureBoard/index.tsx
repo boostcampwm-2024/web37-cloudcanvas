@@ -25,6 +25,8 @@ export const ArchitectureBoard = ({ apiUrl }: { apiUrl: string }) => {
 
     if (error) return <ErrorMessage message={(error as Error).message} />;
 
+    // return <div>{JSON.stringify(data)}</div>;
+
     return (
         <div className="max-w-5xl mx-auto px-4">
             <SearchBar onSearch={handleSearch} />

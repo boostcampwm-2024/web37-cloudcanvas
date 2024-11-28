@@ -3,6 +3,7 @@ services:
         image: t84ar7xr.kr.private-ncr.ntruss.com/back:dev
         container_name: back
         environment:
+            NODE_ENV: production
             DATABASE_URL: ${DATABASE_URL}
             REDIS_HOST: ${REDIS_HOST}
             REDIS_PORT: ${REDIS_PORT}

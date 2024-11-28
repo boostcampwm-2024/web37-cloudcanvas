@@ -5,7 +5,6 @@
     "author": "",
     "private": true,
     "license": "UNLICENSED",
-    "type": "module",
     "scripts": {
         "build": "nest build",
         "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
@@ -33,6 +32,7 @@
         "@nestjs/mapped-types": "*",
         "@nestjs/passport": "^10.0.3",
         "@nestjs/platform-express": "^10.0.0",
+        "@nestjs/schedule": "^4.1.1",
         "@nestjs/swagger": "^8.0.5",
         "@prisma/client": "^5.22.0",
         "class-transformer": "^0.5.1",

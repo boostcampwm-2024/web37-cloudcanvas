@@ -21,8 +21,6 @@ export const useQueryData = (
         return `${apiUrl}?${searchParams.toString()}`;
     };
 
-    console.log('buildUrl', buildUrl());
-
     const { data, error, isLoading, mutate } = useSWR(buildUrl, fetcher);
 
     return {

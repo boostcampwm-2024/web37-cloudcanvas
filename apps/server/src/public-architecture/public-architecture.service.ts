@@ -1,62 +1,113 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreatePublicArchitectureDto } from './dto/create-public-architecture.dto.js';
-import { UpdatePublicArchitectureDto } from './dto/update-public-architecture.dto.js';
-import { PrismaService } from '../prisma/prisma.service.js';
-import { QueryParamsDto } from '../types/query-params.dto.js';
+import { Injectable } from '@nestjs/common';
+import { PrismaService } from 'src/prisma/prisma.service';
+import {
+    buildFilterOptions,
+    buildPaginationOptions,
+    buildSortOptions,
+} from 'src/utils/build-query-options';
+import { FindArchitecturesDto } from './dto/find-architectures.dto';
+import { SaveArchitectureDto } from './dto/save-architecture.dto';
+import { FindArchitectureDto } from './dto/find-architecture.dto';
+import { ModifyArchitectureDto } from './dto/modify-architecture.dto';
+import { RemoveArchitectureDto } from './dto/remove-architecture.dto';
+import { UnstarDto } from './dto/unstar.dto';
+import { StarDto } from './dto/star.dto';
+import { ImportDto } from './dto/import.dto';
 
 @Injectable()
 export class PublicArchitectureService {
     constructor(private readonly prisma: PrismaService) {}
 
-    async getMany(query: QueryParamsDto) {
-        const { page, limit, search, sort, order } = query;
-
-        return this.prisma.publicArchitecture.findMany({
-            include: {
-                author: true,
-                _count: {
-                    select: {
-                        stars: true,
-                        imports: true,
+    async findArchitectures(queryParams: FindArchitecturesDto) {
+        const [data, total] = await this.prisma.$transaction([
+            this.prisma.publicArchitecture.findMany({
+                include: {
+                    author: {
+                        select: {
+                            id: true,
+                            name: true,
+                        },
+                    },
+                    tags: {
+                        select: {
+                            tag: {
+                                select: {
+                                    name: true,
+                                },
+                            },
+                        },
+                    },
+                    _count: {
+                        select: {
+                            stars: true,
+                            imports: true,
+                        },
                     },
                 },
-            },
-            skip: (page - 1) * limit,
-            take: limit,
-            where: search
-                ? {
-                      title: {
-                          contains: search,
-                      },
-                  }
-                : undefined,
-            orderBy: sort
-                ? {
-                      [sort]: order,
-                  }
-                : {
-                      createdAt: 'desc',
-                  },
-        });
+                ...buildPaginationOptions(queryParams),
+                ...buildSortOptions(queryParams),
+                ...buildFilterOptions(queryParams),
+            }),
+            this.prisma.publicArchitecture.count({
+                ...buildFilterOptions(queryParams),
+            }),
+        ]);
+        return { data, total };
     }
 
-    async create(userId: number, dto: CreatePublicArchitectureDto) {
-        return await this.prisma.publicArchitecture.create({
+    saveArchitecture({
+        title,
+        architecture,
+        cost,
+        tags,
+        userId: authorId,
+    }: SaveArchitectureDto) {
+        return this.prisma.publicArchitecture.create({
             data: {
-                ...dto,
-                authorId: userId,
-            },
-            include: {
-                author: true,
+                title,
+                architecture,
+                cost,
+                authorId,
+                tags: {
+                    create: tags.map((name) => ({
+                        tag: {
+                            connectOrCreate: {
+                                where: { name },
+                                create: { name },
+                            },
+                        },
+                    })),
+                },
             },
         });
     }
 
-    async getOne(id: number) {
-        const item = await this.prisma.publicArchitecture.findUnique({
+    findArchitecture({ id, userId }: FindArchitectureDto) {
+        return this.prisma.publicArchitecture.findUniqueOrThrow({
             where: { id },
             include: {
-                author: true,
+                author: {
+                    select: {
+                        id: true,
+                        name: true,
+                    },
+                },
+                tags: {
+                    select: {
+                        tag: {
+                            select: {
+                                name: true,
+                            },
+                        },
+                    },
+                },
+                stars: userId
+                    ? {
+                          where: {
+                              userId,
+                          },
+                      }
+                    : undefined,
                 _count: {
                     select: {
                         stars: true,
@@ -65,81 +116,89 @@ export class PublicArchitectureService {
                 },
             },
         });
-
-        if (!item) {
-            throw new NotFoundException('Architecture not found');
-        }
-
-        return item;
     }
 
-    async update(id: number, userId: number, dto: UpdatePublicArchitectureDto) {
-        // #TODO check if user is the author
+    modifyArchitecture({ id, userId: authorId, title }: ModifyArchitectureDto) {
         return this.prisma.publicArchitecture.update({
-            where: { id },
-            data: dto,
-            include: {
-                author: true,
+            where: { id, authorId },
+            data: { title },
+        });
+    }
+
+    async removeArchitecture({ id, userId: authorId }: RemoveArchitectureDto) {
+        return this.prisma.$transaction(async (tx) => {
+            await tx.publicArchitecture.findUniqueOrThrow({
+                select: { id: true },
+                where: { id, authorId },
+            });
+            await tx.publicArchitectureTag.deleteMany({
+                where: { publicArchitectureId: id },
+            });
+            await tx.star.deleteMany({ where: { publicArchitectureId: id } });
+            await tx.import.deleteMany({ where: { publicArchitectureId: id } });
+            return await tx.publicArchitecture.delete({ where: { id } });
+        });
+    }
+
+    findStar({ id, userId }: StarDto) {
+        return this.prisma.star.findUnique({
+            where: {
+                unique_star: {
+                    publicArchitectureId: id,
+                    userId,
+                },
             },
         });
     }
 
-    async delete(id: number, userId: number) {
-        // #TODO check if user is the author
-        // #TODO delete all stars and imports
-        return this.prisma.publicArchitecture.delete({ where: { id } });
-    }
-
-    async star(id: number, userId: number) {
-        const exists = await this.architectureExists(id);
-
-        if (!exists) {
-            throw new NotFoundException('Architecture not found');
-        }
-
+    star({ id, userId }: StarDto) {
         return this.prisma.star.create({
             data: {
-                userId,
                 publicArchitectureId: id,
+                userId,
             },
         });
     }
 
-    async unstar(id: number, userId: number) {
-        const exists = await this.architectureExists(id);
-
-        if (!exists) {
-            throw new NotFoundException('Architecture not found');
-        }
-
+    unstar({ id, userId }: UnstarDto) {
         return this.prisma.star.delete({
             where: {
                 unique_star: {
-                    userId,
                     publicArchitectureId: id,
+                    userId,
                 },
             },
         });
     }
 
-    async import(id: number, userId: number) {
-        const exists = await this.architectureExists(id);
+    async import({ id, userId }: ImportDto) {
+        const { title, architecture, cost } =
+            await this.prisma.publicArchitecture.findUniqueOrThrow({
+                select: {
+                    title: true,
+                    architecture: true,
+                    cost: true,
+                },
+                where: { id },
+            });
 
-        if (!exists) {
-            throw new NotFoundException('Architecture not found');
-        }
+        const [privateArchitecture] = await this.prisma.$transaction([
+            this.prisma.privateArchitecture.create({
+                data: {
+                    title,
+                    architecture,
+                    cost,
+                    authorId: userId,
+                },
+            }),
+            this.prisma.import.create({
+                data: {
+                    publicArchitectureId: id,
+                    userId,
+                },
+            }),
+        ]);
 
-        return this.prisma.import.create({
-            data: {
-                userId,
-                publicArchitectureId: id,
-            },
-        });
-    }
-
-    architectureExists(id: number) {
-        return this.prisma.publicArchitecture.findUnique({
-            where: { id },
-        });
+        return privateArchitecture;
     }
 }

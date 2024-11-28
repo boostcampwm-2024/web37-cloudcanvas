@@ -19,7 +19,6 @@ export function generateSignature({
         ? `${url}?${new URLSearchParams(params).toString()}`
         : url;
 
-    console.log(fullUrl);
     const message = [
         method,
         space,

@@ -55,7 +55,7 @@ describe('PublicService', () => {
         it('should return all architectures', async () => {
             repository.findAll.mockReturnValue([mockArchitecture]);
 
-            const result = await service.getMany();
+            const result = await service.findArchitectures();
 
             expect(result).toEqual([mockArchitecture]);
             expect(repository.findAll).toHaveBeenCalled();
@@ -66,7 +66,7 @@ describe('PublicService', () => {
         it('should return an architecture by id', async () => {
             repository.findById.mockReturnValue(mockArchitecture);
 
-            const result = await service.getOne(1);
+            const result = await service.findArchitecture(1);
 
             expect(result).toEqual(mockArchitecture);
             expect(repository.findById).toHaveBeenCalledWith(1);
@@ -75,7 +75,9 @@ describe('PublicService', () => {
         it('should throw NotFoundException when not found', async () => {
             repository.findById.mockReturnValue(null);
 
-            await expect(service.getOne(1)).rejects.toThrow(NotFoundException);
+            await expect(service.findArchitecture(1)).rejects.toThrow(
+                NotFoundException,
+            );
         });
     });
 
@@ -90,7 +92,7 @@ describe('PublicService', () => {
         it('should create an architecture', async () => {
             repository.create.mockReturnValue(mockArchitecture);
 
-            const result = await service.create(1, createDto);
+            const result = await service.saveArchitecture(1, createDto);
 
             expect(result).toEqual(mockArchitecture);
             expect(repository.create).toHaveBeenCalledWith(1, createDto);
@@ -107,7 +109,7 @@ describe('PublicService', () => {
                 ...updateDto,
             });
 
-            const result = await service.update(1, updateDto);
+            const result = await service.modifyArchitecture(1, updateDto);
 
             expect(result.title).toBe('Updated');
             expect(repository.update).toHaveBeenCalledWith(1, updateDto);
@@ -116,9 +118,9 @@ describe('PublicService', () => {
         it('should throw NotFoundException when not found', async () => {
             repository.findById.mockReturnValue(null);
 
-            await expect(service.update(1, updateDto)).rejects.toThrow(
-                NotFoundException,
-            );
+            await expect(
+                service.modifyArchitecture(1, updateDto),
+            ).rejects.toThrow(NotFoundException);
         });
     });
 
@@ -127,7 +129,7 @@ describe('PublicService', () => {
             repository.findById.mockReturnValue(mockArchitecture);
             repository.delete.mockReturnValue(mockArchitecture);
 
-            const result = await service.delete(1);
+            const result = await service.removeArchitecture(1);
 
             expect(result).toEqual(mockArchitecture);
             expect(repository.delete).toHaveBeenCalledWith(1);

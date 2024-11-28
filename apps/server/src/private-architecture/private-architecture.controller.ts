@@ -9,12 +9,12 @@ import {
     ParseIntPipe,
     UseGuards,
 } from '@nestjs/common';
-import { PrivateArchitectureService } from './private-architecture.service.js';
-import { CreatePrivateArchiectureDto } from './dto/create-private-architecture.dto.js';
-import { UpdatePrivateArchiectureDto } from './dto/update-private-architecture.dto.js';
-import { CreateVersionDto } from './dto/create-version.dto.js';
-import { JwtAuthGuard } from 'src/guards/jwt-auth.guard.js';
-import { User } from 'src/decorators/user.decorator.js';
+import { PrivateArchitectureService } from './private-architecture.service';
+import { CreatePrivateArchiectureDto } from './dto/create-private-architecture.dto';
+import { UpdatePrivateArchiectureDto } from './dto/update-private-architecture.dto';
+import { CreateVersionDto } from './dto/create-version.dto';
+import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
+import { User } from 'src/decorators/user.decorator';
 
 @Controller('private-architectures')
 export class PrivateArchitectureController {

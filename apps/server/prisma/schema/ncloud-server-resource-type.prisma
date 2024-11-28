@@ -1,0 +1,8 @@
+model NcloudServerResourceType {
+    id   Int    @id @default(autoincrement())
+    type String @db.Char(50)
+
+    NcloudServerResources NcloudServerResource[]
+
+    @@map("ncloud_server_resource_type")
+}

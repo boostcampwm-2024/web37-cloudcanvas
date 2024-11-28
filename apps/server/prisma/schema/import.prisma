@@ -7,6 +7,5 @@ model Import {
     publicArchitecture PublicArchitecture @relation(fields: [publicArchitectureId], references: [id])
     user               User               @relation(fields: [userId], references: [id])
 
-    @@unique([publicArchitectureId, userId], name: "unique_import")
     @@map("import")
 }
