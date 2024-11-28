@@ -36,7 +36,7 @@ export class NCloudSubnet implements Subnet, NCloudModel {
         this.subnetType = json.subnetType;
 
         if (json.name) {
-            this.name = json.name;
+            this.name = json.name.toLowerCase();
         }
 
         if (
@@ -48,8 +48,8 @@ export class NCloudSubnet implements Subnet, NCloudModel {
             this.usageType = 'GEN';
         }
 
-        this.vpcNo = `ncloud_vpc.${json.vpcName}.id`;
-        this.networkAclNo = `ncloud_vpc.${json.vpcName}.default_network_acl_no`;
+        this.vpcNo = `ncloud_vpc.${json.vpcName.toLowerCase()}.id`;
+        this.networkAclNo = `ncloud_vpc.${json.vpcName.toLowerCase()}.default_network_acl_no`;
     }
 
     getProperties() {

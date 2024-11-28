@@ -18,10 +18,12 @@ export class NCloudLoadBalancer implements LoadBalancer, NCloudModel {
         this.serviceType = 'ncloud_lb';
         this.priority = ResourcePriority.LOAD_BALANCER;
         this.id = json.id || `LoadBalancer-${Date.now()}`;
-        this.name = json.name || 'lb';
+        this.name = json.name.toLowerCase();
         this.networkType = json.networkType || 'PUBLIC';
         this.type = json.type || 'APPLICATION';
-        this.subnetNoList = [`ncloud_subnet.${json.subnetName}.id`];
+        this.subnetNoList = [
+            `ncloud_subnet.${json.subnetName.toLowerCase()}.id`,
+        ];
     }
 
     getProperties() {

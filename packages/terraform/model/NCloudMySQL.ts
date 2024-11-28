@@ -60,7 +60,7 @@ export class NCloudMySQL implements MySQL, NCloudModel {
             throw new Error('MySQL requires database_name (1-30 characters)');
         }
 
-        this.serviceName = json.serviceName;
+        this.serviceName = json.serviceName.toLowerCase();
         this.serverNamePrefix = json.serverNamePrefix;
         this.userName = json.userName;
         this.userPassword = json.userPassword;

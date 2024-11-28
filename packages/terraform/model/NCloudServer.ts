@@ -18,18 +18,18 @@ export class NCloudServer implements Server, NCloudModel {
         this.serviceType = 'ncloud_server';
         this.priority = ResourcePriority.SERVER;
         this.id = json.id;
-        this.name = json.name;
-        this.subnetNo = `ncloud_subnet.${json.subnetName}.id`;
+        this.name = json.name.toLowerCase();
+        this.subnetNo = `ncloud_subnet.${json.subnetName.toLowerCase()}.id`;
         this.serverImageNumber = json.serverImageNumber;
         this.serverSpecCode = json.serverSpecCode;
         if (json.loginKeyName) {
-            this.loginKeyName = `ncloud_login_key.${json.loginKeyName}.key_name`;
+            this.loginKeyName = `ncloud_login_key.${json.loginKeyName.toLowerCase()}.key_name`;
         }
         if (json.nicName) {
-            this.networkInterfaceNo = `ncloud_network_interface.${json.nicName}.id`;
+            this.networkInterfaceNo = `ncloud_network_interface.${json.nicName.toLowerCase()}.id`;
         }
         if (json.acgName) {
-            this.acgName = `ncloud_acg.${json.acgName}.id`;
+            this.acgName = `ncloud_acg.${json.acgName.toLowerCase()}.id`;
         }
     }
 

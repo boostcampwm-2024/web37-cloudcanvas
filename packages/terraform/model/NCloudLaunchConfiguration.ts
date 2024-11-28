@@ -20,7 +20,7 @@ export class NCloudLaunchConfiguration
         this.serviceType = 'ncloud_launch_configuration';
         this.priority = ResourcePriority.LAUNCH_CONFIGURATION;
         this.id = json.id || `LaunchConfiguration-${Date.now()}`;
-        this.name = json.name || 'launch-config';
+        this.name = json.name.toLowerCase();
         this.serverImageProductCode =
             json.serverImageProductCode || 'SW.VSVR.OS.LNX64.CNTOS.0703.B050';
         this.serverProductCode =
