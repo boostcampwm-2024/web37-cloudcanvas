@@ -13,7 +13,7 @@ FROM node:20-alpine AS production
 WORKDIR /app
 RUN mkdir -p /app/server
 COPY --from=build /build/.next/standalone/ ./standalone/
-COPY --from=build /build/.next/static/ ./standalone/.next/
+COPY --from=build /build/.next/static/ ./standalone/.next/static
 
 ENV NEXT_PUBLIC_BACK_URL=http://localhost:3000
 ENTRYPOINT ["sh", "-c", "node standalone/server.js"]

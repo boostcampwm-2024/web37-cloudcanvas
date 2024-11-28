@@ -1,0 +1,13 @@
+services:
+    front-hub:
+        image: cloud-canvas.kr.ncr.ntruss.com/front-hub:dev
+        container_name: front-hub
+        ports:
+            - '3000:3000'
+        networks:
+            - cloud-canvas-network
+        restart: unless-stopped
+        pull_policy: always
+networks:
+    cloud-canvas-network:
+        driver: bridge

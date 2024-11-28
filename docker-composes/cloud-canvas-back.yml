@@ -5,6 +5,8 @@ services:
         environment:
             NODE_ENV: production
             DATABASE_URL: ${DATABASE_URL}
+            NCLOUD_ACCESS_KEY: ${NCLOUD_ACCESS_KEY}
+            NCLOUD_SECRET_KEY: ${NCLOUD_SECRET_KEY}
             REDIS_HOST: ${REDIS_HOST}
             REDIS_PORT: ${REDIS_PORT}
         ports:
