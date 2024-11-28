@@ -1,71 +1,121 @@
 'use client';
-import { Button } from '@/ui/Button';
+import { ErrorMessage } from '@/ui/ErrorMessage';
+import { ImportIcon } from '@/ui/ImportIcon';
+import { LoadingSpinner } from '@/ui/LoadingSpinner';
+import { StarIcon } from '@/ui/StarIcon';
+import { Tag } from '@/ui/Tag';
+import { fetcher } from '@/utils/fetcher';
 import { useParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import useSWR from 'swr';
 
 interface PublicArchitecture {
-    id: string;
+    id: number;
     title: string;
-    author: string;
-    createdAt: Date;
-    architecture: string;
-    stars: number;
-    imports: number;
+    author: { id: number; name: string };
+    createdAt: string;
+    architecture: Record<string, unknown>;
+    cost: number;
+    tags: { tag: { name: string } }[];
+    stars: any[];
+    _count: {
+        stars: number;
+        imports: number;
+    };
 }
 
 export default function ArchitectureDetailPage() {
     const params = useParams<{ id: string }>();
-    const [architecture, setArchitecture] = useState<PublicArchitecture>(
-        {} as any,
+    const { data, error, isLoading, mutate } = useSWR<PublicArchitecture>(
+        `http://localhost:3000/public-architectures/${params.id}`,
+        fetcher,
     );
 
-    useEffect(() => {
-        const fetchedArchitecture = {
-            id: params.id,
-            title: 'Architecture for Cloud Canvas',
-            author: 'Web37-team',
-            createdAt: new Date(),
-            architecture: 'Architecture Content',
-            stars: 4,
-            imports: 2,
-        };
-        setArchitecture(fetchedArchitecture);
-    }, []);
+    if (isLoading) return <LoadingSpinner />;
+    if (error) return <ErrorMessage message={(error as Error).message} />;
 
-    const handleImport = () => {
-        console.log('Imported!');
+    const {
+        title,
+        author: { name: author },
+        createdAt,
+        cost,
+        tags,
+        stars: starData,
+        _count: { stars, imports },
+    } = data!;
+
+    const isStarred = starData?.length > 0;
+    const isLoggedIn = localStorage.getItem('isLoggedIn') !== null;
+
+    const toggleStar = async () => {
+        await fetch(
+            `http://localhost:3000/public-architectures/${params.id}/stars`,
+            {
+                method: data!.stars.length > 0 ? 'DELETE' : 'POST',
+                credentials: 'include',
+            },
+        );
+        mutate({ ...data!, stars: data!.stars.length > 0 ? [] : [{}] });
+    };
+
+    const handleImport = async () => {
+        await fetch(
+            `http://localhost:3000/public-architectures/${params.id}/imports`,
+            {
+                method: 'POST',
+                credentials: 'include',
+            },
+        );
+        mutate({
+            ...data!,
+            _count: { ...data!._count, imports: data!._count.imports + 1 },
+        });
+        alert('Imported!');
     };
 
     return (
         <div className="mx-auto max-w-3xl flex flex-col gap-10">
             <header className="flex flex-col gap-4">
-                <h2 className="text-4xl font-extrabold">
-                    {architecture.title}
-                </h2>
+                <div>
+                    <div className="flex mb-2 gap-2">
+                        {tags.map(({ tag: { name } }) => (
+                            <Tag key={name} tag={name} />
+                        ))}
+                    </div>
+                    <h2 className="text-4xl font-extrabold">{title}</h2>
+                </div>
                 <div className="flex gap-6 text-gray-500 text-sm">
                     <div className="flex gap-1">
                         <span>by</span>
-                        <span className="text-black">
-                            {architecture.author}
-                        </span>
+                        <span className="text-black">{author}</span>
                     </div>
-                    <div>{architecture.createdAt?.toLocaleString()}</div>
+                    <div>{new Date(createdAt).toLocaleString()}</div>
                     <div className="flex gap-1">
-                        <span className="text-black">
-                            {architecture.imports}
-                        </span>
+                        <span className="text-black">{imports}</span>
                         <span>imported</span>
                     </div>
                 </div>
-                <div className="flex gap-4 justify-end">
-                    <Button onClick={handleImport}>
-                        <span className="font-bold">☆ </span>
-                        {architecture.stars}
-                    </Button>
-                    <Button onClick={handleImport}>Import</Button>
+                <div className="flex gap-4 justify-end items-center">
+                    <div className="mr-2">
+                        <span className="font-black text-xl text-emerald-600">
+                            ${cost}
+                        </span>
+                        <span className="text-xs"> / month</span>
+                    </div>
+                    <button
+                        className={`flex items-center gap-1 ${isLoggedIn && isStarred ? 'text-yellow-400' : 'text-gray-300'}`}
+                        onClick={toggleStar}
+                        disabled={!isLoggedIn}
+                    >
+                        <StarIcon />
+                        <span className="font-bold text-base">{stars}</span>
+                    </button>
+                    <button onClick={handleImport} disabled={!isLoggedIn}>
+                        <ImportIcon />
+                    </button>
                 </div>
                 <hr />
             </header>
+            <pre>{JSON.stringify(data, null, 2)}</pre>
             <ArchitectureImageExample />
         </div>
     );
@@ -78,12 +128,12 @@ const ArchitectureImageExample = () => (
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
     >
-        <rect width="224" height="148" rx="8" fill="#4B5563" />
+        <rect width="224" height="148" rx="8" fill="#eeeeee" />
         <path
             fillRule="evenodd"
             clipRule="evenodd"
             d="M122.87 66.1598C124.894 66.1598 126.535 64.4415 126.535 62.3218C126.535 60.2022 124.894 58.4839 122.87 58.4839C120.846 58.4839 119.205 60.2022 119.205 62.3218C119.205 64.4415 120.846 66.1598 122.87 66.1598ZM112.726 89.4003H90.5708C89.7935 89.4003 89.3134 88.5524 89.7132 87.8859L104.829 62.6872C105.211 62.0497 106.128 62.0329 106.526 62.6603C108.484 65.7407 113.409 73.5017 117.599 80.1967L122.143 72.5763C122.511 71.9598 123.374 71.9396 123.784 72.5379L134.246 87.8172C134.705 88.4872 134.259 89.4045 133.469 89.4125L123.317 89.5162L112.726 89.4003Z"
-            fill="#6B7280"
+            fill="#cccccc"
         />
     </svg>
 );
