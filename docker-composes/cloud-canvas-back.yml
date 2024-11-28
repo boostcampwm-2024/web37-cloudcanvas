@@ -11,7 +11,7 @@ services:
             REDIS_PORT: ${REDIS_PORT}
         ports:
             - '3000:3000'
-        entrypoint: sh -c "npx prisma generate && npx prisma migrate reset --force && node ./dist/src/main.js"
+        entrypoint: sh -c "cd apps/server && npx prisma migrate reset --force && node ./dist/src/main.js"
         networks:
             - cloud-canvas-network
         restart: unless-stopped
