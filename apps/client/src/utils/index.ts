@@ -81,7 +81,11 @@ export const convert3dTo2dPoint = (point: Point) => {
 };
 
 export const convert2dTo3dPoint = (point: Point) => {
-    return gridToScreen3d(screenToGrid2d(point));
+    const grid = screenToGrid2d(point);
+    return gridToScreen3d({
+        col: grid.col + 1,
+        row: grid.row,
+    });
 };
 
 export const generateRandomRGB = () => {
@@ -150,4 +154,22 @@ export const getDistanceToSegment = (
     const dx = p.x - xx;
     const dy = p.y - yy;
     return Math.sqrt(dx * dx + dy * dy);
+};
+
+const debounce = (func: (...args: any[]) => void, delay: number) => {
+    let timeout: ReturnType<typeof setTimeout> | null = null;
+
+    return (...args: any[]) => {
+        if (timeout) clearTimeout(timeout); // 이전 타이머 제거
+        timeout = setTimeout(() => {
+            func(...args); // 지정된 시간 후 함수 실행
+        }, delay);
+    };
+};
+
+export const findKeyByValue = (
+    value: string,
+    list: { [id: string]: string },
+) => {
+    return Object.keys(list).find((key) => list[key] === value);
 };

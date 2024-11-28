@@ -1,9 +1,14 @@
+import { ServerRequiredFields } from '@/src/models/ncloud/Server';
+import { transformObject, validateObject } from '@/src/models/ncloud/utils';
+import CodeDrawer from '@components/CodeDrawer';
 import { useDimensionContext } from '@contexts/DimensionContext';
+import { useNodeContext } from '@contexts/NodeContext';
+import useNCloud from '@hooks/useNCloud';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import ManageHistoryIcon from '@mui/icons-material/ManageHistory';
-import { ToggleButton, ToggleButtonGroup } from '@mui/material';
+import { Button, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import Box from '@mui/material/Box';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import Divider from '@mui/material/Divider';
@@ -11,6 +16,8 @@ import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import { styled, useColorScheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
+import { TerraformConvertor } from 'node_modules/terraform/convertor/TerraformConvertor';
+import { useState } from 'react';
 
 const StyledBox = styled(Box)(({ theme }) => ({
     display: 'flex',
@@ -38,6 +45,31 @@ const StyledIconButton = styled(IconButton)(({ theme }) => ({
 export default () => {
     const { mode: themeMode, setMode: setThemeMode } = useColorScheme();
     const { dimension, toggleDimension } = useDimensionContext();
+    const [openDrawer, setOpenDrawer] = useState(false);
+    const [terraformCode, setTerraformCode] = useState('');
+    const { selectedResource } = useNCloud();
+    const {
+        state: { nodes },
+    } = useNodeContext();
+
+    const handleConvert = () => {
+        if (!selectedResource) return;
+        const nodeProperties = {
+            type: selectedResource.type,
+            name: selectedResource.properties.name,
+            properties: transformObject(selectedResource.properties),
+        };
+
+        if (!validateObject(nodeProperties.properties, ServerRequiredFields)) {
+            alert('Is not valid');
+            return;
+        }
+
+        const Converter = new TerraformConvertor();
+        Converter.addResourceFromJson(nodeProperties);
+        setTerraformCode(Converter.generate());
+        setOpenDrawer(true);
+    };
 
     const handleToggleTheme = () =>
         setThemeMode(themeMode === 'dark' ? 'light' : 'dark');
@@ -45,42 +77,67 @@ export default () => {
     const openWindow = (url: string) => window.open(url, '_blank')?.focus();
 
     return (
-        <StyledBox>
-            <Stack>
-                <Typography variant="h6" textTransform="uppercase">
-                    Cloud Canvas
-                </Typography>
-            </Stack>
-            <Stack direction="row" spacing={1} alignItems="center">
-                <ToggleButtonGroup
-                    value={dimension}
-                    exclusive
-                    onChange={toggleDimension}
-                    sx={{
-                        height: '38px',
-                    }}
-                >
-                    <ToggleButton value="2d">2D</ToggleButton>
-                    <ToggleButton value="3d">3D</ToggleButton>
-                </ToggleButtonGroup>
-                <ButtonGroup>
-                    <StyledIconButton onClick={() => openWindow(GITHUB_URL)}>
-                        <GitHubIcon />
-                    </StyledIconButton>
-                    <Divider orientation="vertical" variant="middle" flexItem />
-                    <StyledIconButton onClick={() => openWindow(NOTION_URL)}>
-                        <ManageHistoryIcon />
-                    </StyledIconButton>
-                    <Divider orientation="vertical" variant="middle" flexItem />
-                    <StyledIconButton onClick={handleToggleTheme}>
-                        {themeMode === 'dark' ? (
-                            <DarkModeIcon />
-                        ) : (
-                            <LightModeIcon />
-                        )}
-                    </StyledIconButton>
-                </ButtonGroup>
-            </Stack>
-        </StyledBox>
+        <>
+            <StyledBox>
+                <Stack>
+                    <Typography variant="h6" textTransform="uppercase">
+                        Cloud Canvas
+                    </Typography>
+                </Stack>
+                <Stack direction="row" spacing={1} alignItems="center">
+                    <Button
+                        className="graph-ignore-select"
+                        onClick={handleConvert}
+                    >
+                        Converter
+                    </Button>
+                    <ToggleButtonGroup
+                        value={dimension}
+                        exclusive
+                        onChange={toggleDimension}
+                        sx={{
+                            height: '38px',
+                        }}
+                    >
+                        <ToggleButton value="2d">2D</ToggleButton>
+                        <ToggleButton value="3d">3D</ToggleButton>
+                    </ToggleButtonGroup>
+                    <ButtonGroup>
+                        <StyledIconButton
+                            onClick={() => openWindow(GITHUB_URL)}
+                        >
+                            <GitHubIcon />
+                        </StyledIconButton>
+                        <Divider
+                            orientation="vertical"
+                            variant="middle"
+                            flexItem
+                        />
+                        <StyledIconButton
+                            onClick={() => openWindow(NOTION_URL)}
+                        >
+                            <ManageHistoryIcon />
+                        </StyledIconButton>
+                        <Divider
+                            orientation="vertical"
+                            variant="middle"
+                            flexItem
+                        />
+                        <StyledIconButton onClick={handleToggleTheme}>
+                            {themeMode === 'dark' ? (
+                                <DarkModeIcon />
+                            ) : (
+                                <LightModeIcon />
+                            )}
+                        </StyledIconButton>
+                    </ButtonGroup>
+                </Stack>
+            </StyledBox>
+            <CodeDrawer
+                code={terraformCode}
+                open={openDrawer}
+                onClose={() => setOpenDrawer(false)}
+            />
+        </>
     );
 };

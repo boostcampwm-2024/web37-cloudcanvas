@@ -18,11 +18,15 @@
         "@mui/material": "^6.1.5",
         "nanoid": "^5.0.8",
         "react": "^18.3.1",
-        "react-dom": "^18.3.1"
+        "react-dom": "^18.3.1",
+        "react-syntax-highlighter": "^15.6.1",
+        "react-type-animation": "^3.2.0",
+        "terraform": "file:../../packages/terraform"
     },
     "devDependencies": {
         "@types/react": "^18.3.11",
         "@types/react-dom": "^18.3.1",
+        "@types/react-syntax-highlighter": "^15.5.13",
         "@vitejs/plugin-react": "^4.3.3",
         "serve": "^14.2.4",
         "vite": "^5.4.9",

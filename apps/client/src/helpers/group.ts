@@ -2,6 +2,15 @@ import { GRID_2D_SIZE } from '@constants';
 import { Bounds, Dimension, Group } from '@types';
 import { convert2dTo3dPoint, convert3dTo2dPoint } from '@utils';
 
+export const GraphGroup = {
+    id: '',
+    type: '',
+    nodeIds: [],
+    properties: {},
+    childGroupIds: [],
+    parentGroupId: '',
+};
+
 export const computeBounds = (_bounds: Bounds[], dimension: Dimension) => {
     const padding = GRID_2D_SIZE * 2;
     let bounds = _bounds;

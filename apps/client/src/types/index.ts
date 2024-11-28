@@ -4,7 +4,12 @@ export type Point = { x: number; y: number };
 
 export type GridPoint = { col: number; row: number };
 
-export type Size = { width: number; height: number; offset?: number };
+export type Size = {
+    width: number;
+    height: number;
+    offset?: number;
+    depth?: number;
+};
 
 export type ViewBox = Point & Size;
 
@@ -13,13 +18,12 @@ export type Bounds = Point & Size;
 export type Node = {
     id: string;
     type: string;
-    name: string;
     point: Point;
     size: {
         '2d': Size;
         '3d': Size;
     };
-    properties: { [key: string]: any };
+    properties: { [id: string]: any };
     connectors: { [key: string]: Point };
 };
 
@@ -40,9 +44,8 @@ export type Edge = {
 export type Group = {
     id: string;
     type: string;
-    name: string;
     nodeIds: string[];
-    properties: { [key: string]: any };
+    properties: { [id: string]: any };
     childGroupIds: string[];
     parentGroupId: string;
 };
