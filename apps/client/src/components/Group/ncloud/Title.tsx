@@ -24,7 +24,7 @@ export default ({ bounds, color, text }: Props) => {
     const rectWidth = fontSize * textLength;
     const rectHeight = 50;
     const rectY = 10;
-    const rectX = dimension === '2d' ? 10 : 90;
+    const rectX = 10;
 
     const matrix = convertToIsoMatrix(bounds.x, bounds.y).toString();
     const centerX = rectWidth / 2 + rectX;

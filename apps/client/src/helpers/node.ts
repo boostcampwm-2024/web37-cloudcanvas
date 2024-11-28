@@ -7,6 +7,14 @@ import {
     convert3dTo2dPoint,
 } from '@utils';
 
+export const GraphNode = {
+    id: '',
+    type: '',
+    point: { x: 0, y: 0 },
+    connectors: {},
+};
+
+//TODO: 사이즈가 큰 노드를 다룰 떄 이상해짐
 const getNodeOffsetForDimension = (nodeSize: Size, baseSize: Size) => {
     return {
         x: (baseSize.width - nodeSize.width) / 2,
@@ -23,6 +31,7 @@ export const adjustNodePointForDimension = (
     const { point, size } = node;
 
     const offset = getNodeOffsetForDimension(size['3d'], NODE_BASE_SIZE['3d']);
+    console.log('offset', node.type, offset);
     let result;
     if (dimension === '2d') {
         result = convert3dTo2dPoint({

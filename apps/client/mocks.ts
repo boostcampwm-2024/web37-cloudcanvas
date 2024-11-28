@@ -4,7 +4,6 @@ import { nanoid } from 'nanoid';
 const CloudFunctionNode: Node = {
     id: `node-${nanoid()}`,
     type: 'cloud-function',
-    name: 'CloudFunction1',
     point: { x: 270, y: 270 },
     size: {
         '2d': { width: 90, height: 90 },
@@ -20,7 +19,6 @@ const CloudFunctionNode: Node = {
 const ObjectStorageNode: Node = {
     id: `node-${nanoid()}`,
     type: 'object-storage',
-    name: 'ObjectStorage1',
     point: { x: 100, y: 0 },
     size: {
         '2d': { width: 90, height: 90 },
@@ -36,7 +34,6 @@ const ObjectStorageNode: Node = {
 const MySQLDBNode: Node = {
     id: `node-${nanoid()}`,
     type: 'db-mysql',
-    name: 'MySQLDB1',
     point: { x: 0, y: 0 },
     size: {
         '2d': { width: 90, height: 90 },
@@ -52,7 +49,6 @@ const MySQLDBNode: Node = {
 const ServerNode: Node = {
     id: `node-${nanoid()}`,
     type: 'server',
-    name: 'WebServer1',
     point: { x: 90, y: 90 },
     size: {
         '2d': { width: 90, height: 90 },
@@ -69,7 +65,6 @@ const ServerNode: Node = {
 const ServerNode2: Node = {
     id: `node-${nanoid()}`,
     type: 'server',
-    name: 'WebServer2',
     point: { x: 90, y: 90 },
     size: {
         '2d': { width: 90, height: 90 },
@@ -86,34 +81,35 @@ const ServerNode2: Node = {
 const SubnetGroup: Group = {
     id: 'subnet1',
     type: 'subnet',
-    name: 'Subnet-1',
     nodeIds: [ServerNode.id, MySQLDBNode.id, ObjectStorageNode.id],
     properties: {
         cidr: '',
     },
+
     childGroupIds: [],
+    parentGroupId: '',
 };
 
 const VpcGroup: Group = {
     id: 'vpc1',
     type: 'vpc',
-    name: 'VPC-1',
     nodeIds: [CloudFunctionNode.id],
     properties: {
         cidr: '',
     },
     childGroupIds: [SubnetGroup.id],
+    parentGroupId: '',
 };
 
 const RegionGroup: Group = {
     id: 'seoul',
     type: 'region',
-    name: 'region',
     nodeIds: [],
     properties: {
         regionCode: 'KR-1',
     },
     childGroupIds: [VpcGroup.id],
+    parentGroupId: '',
 };
 
 const mockNodes = [

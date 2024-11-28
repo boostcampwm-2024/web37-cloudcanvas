@@ -12,7 +12,7 @@ import { useNodeContext } from '@contexts/NodeContext';
 import useConnection from '@hooks/useConnection';
 import useGraph from '@hooks/useGraph';
 import useSelection from '@hooks/useSelection';
-import { useEffect } from 'react';
+import { useEffect, useLayoutEffect } from 'react';
 
 export default () => {
     const {
@@ -75,7 +75,7 @@ export default () => {
         };
     }, []);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         if (dimension === prevDimension) return;
 
         updatedPointForDimension();

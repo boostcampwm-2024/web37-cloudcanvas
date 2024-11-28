@@ -12,13 +12,14 @@ import Popover from '@mui/material/Popover';
 import Typography from '@mui/material/Typography';
 import { useTheme } from '@mui/material/styles';
 import { useState } from 'react';
+import { nanoid } from 'nanoid';
+import { Tooltip } from '@mui/material';
 
 type Props = {
-    subnet: string;
+    subnet: { [id: string]: string } | undefined;
     subnetList: { [id: string]: string };
     disabled?: boolean;
-    disabledRemove?: boolean;
-    onUpdateSubnet: (subnet: string) => void;
+    onChangeSubnet: (id: string, newSubnet: string) => void;
     onRemoveSubnet: (subnet: string) => void;
 };
 
@@ -26,8 +27,7 @@ export default ({
     subnet,
     subnetList,
     disabled = false,
-    disabledRemove = false,
-    onUpdateSubnet,
+    onChangeSubnet,
     onRemoveSubnet,
 }: Props) => {
     const theme = useTheme();
@@ -41,22 +41,24 @@ export default ({
         setAnchorEl(null);
     };
 
-    const handleListItemClick = (value: string) => {
-        onUpdateSubnet(value);
+    const handleListItemClick = (id: string, value: string) => {
+        if (subnet?.id !== id) {
+            onChangeSubnet(id, value);
+        }
         setAnchorEl(null);
     };
 
-    const handleAddVPC = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleAddSubnet = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const vpc = e.currentTarget.vpc.value;
-        if (vpc) {
-            onUpdateSubnet(vpc);
+        const newSubnet = e.currentTarget.subnet.value;
+        if (newSubnet) {
+            onChangeSubnet(`subnet-${nanoid()}`, newSubnet);
         }
         setAnchorEl(null);
     };
 
     const open = Boolean(anchorEl);
-    const id = open ? 'vpc' : undefined;
+    const id = open ? 'subnet' : undefined;
 
     return (
         <Box>
@@ -70,15 +72,22 @@ export default ({
                 >
                     Subnet
                 </Typography>
-                <Button
-                    onClick={handlePopoverOpen}
-                    variant="text"
-                    type="submit"
-                    disabled={disabled}
-                    disableRipple
+                <Tooltip
+                    title="Subnet을 변경하려면 VPC를 선택해야 합니다."
+                    disableHoverListener={!disabled}
+                    disableFocusListener={!disabled}
                 >
-                    {subnet || <AddCircleOutlineIcon />}
-                </Button>
+                    <span>
+                        <Button
+                            onClick={handlePopoverOpen}
+                            variant="text"
+                            disabled={disabled}
+                            disableRipple
+                        >
+                            {subnet ? subnet.value : <AddCircleOutlineIcon />}
+                        </Button>
+                    </span>
+                </Tooltip>
             </Box>
 
             <Popover
@@ -97,9 +106,9 @@ export default ({
                     },
                 }}
             >
-                <form onSubmit={handleAddVPC}>
+                <form onSubmit={handleAddSubnet}>
                     <Input
-                        name="vpc"
+                        name="subnet"
                         fullWidth
                         placeholder="Search services"
                         onKeyDown={(e) => e.stopPropagation()}
@@ -114,12 +123,14 @@ export default ({
                     {Object.entries(subnetList).map(([id, value]) => (
                         <ListItem
                             key={id}
-                            onClick={() => handleListItemClick(value as string)}
+                            onClick={() =>
+                                handleListItemClick(id, value as string)
+                            }
                             secondaryAction={
                                 <IconButton
                                     edge="end"
+                                    color="error"
                                     aria-label="delete"
-                                    disabled={disabledRemove}
                                     onClick={() => onRemoveSubnet(id)}
                                 >
                                     <DeleteIcon />
@@ -127,7 +138,7 @@ export default ({
                             }
                             style={{
                                 backgroundColor:
-                                    subnet === value
+                                    subnet?.id === id
                                         ? theme.palette.action.selected
                                         : undefined,
                             }}

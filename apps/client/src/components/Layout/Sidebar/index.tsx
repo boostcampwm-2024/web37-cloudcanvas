@@ -17,11 +17,6 @@ const CLOUD_PLATFORMS = [
         title: 'Naver Cloud Platform',
         imgUrl: 'https://pbs.twimg.com/profile_images/1513858761076604929/O7RUa3BX_400x400.jpg',
     },
-    {
-        value: 'kakao',
-        title: 'Kakao Cloud Platform',
-        imgUrl: 'https://i.pinimg.com/474x/63/43/0d/63430dc35b9b01336ecf35584bd4b7e5.jpg',
-    },
 ];
 
 const SidebarPaper = styled(Paper)(({ theme }) => ({
@@ -43,15 +38,15 @@ export default () => {
             >
                 <SelectPlatform platforms={CLOUD_PLATFORMS} />
                 <Divider />
-                <Input
-                    fullWidth
-                    placeholder="Search services"
-                    endAdornment={
-                        <IconButton>
-                            <SearchIcon />
-                        </IconButton>
-                    }
-                />
+                {/* <Input */}
+                {/*     fullWidth */}
+                {/*     placeholder="Search services" */}
+                {/*     endAdornment={ */}
+                {/*         <IconButton> */}
+                {/*             <SearchIcon /> */}
+                {/*         </IconButton> */}
+                {/*     } */}
+                {/* /> */}
             </Stack>
             <List
                 sx={{

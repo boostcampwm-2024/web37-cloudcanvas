@@ -1,33 +1,26 @@
-import {
-    NcloudGroupFactory,
-    NcloudNodeFactory,
-    Regions,
-} from '@/src/models/ncloud';
-import { NETWORKS_CATEGORIES } from '@constants';
-import { useNCloudContext } from '@contexts/NCloudContext';
+import { NcloudGroupFactory, NcloudNodeFactory } from '@/src/models/ncloud';
+import { DEFAULT_REGION, REGIONS } from '@/src/models/ncloud/constants';
 import { getInitPoint } from '@helpers/cloud';
 import useGraph from '@hooks/useGraph';
 import useSelection from '@hooks/useSelection';
-import { Node, Region } from '@types';
+import { Region } from '@types';
+import { findKeyByValue } from '@utils';
 import { nanoid } from 'nanoid';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 export default () => {
     const { selectedNodeId, selectedGroupId } = useSelection();
-    const {
-        region,
-        vpc,
-        selectedResource,
-        vpcList,
-        subnet,
-        subnetList,
-        setRegion,
-        setVpc,
-        setSubnet,
-        setSubnetList,
-        setVpcList,
-        setSelectedResource,
-    } = useNCloudContext();
+    const [selectedResource, setSelectedResource] = useState<
+        | {
+              id: string;
+              type: string;
+              properties: { [key: string]: any };
+          }
+        | undefined
+    >(undefined);
+
+    const [vpcList, setVpcList] = useState<{ [id: string]: string }>({});
+    const [subnetList, setSubnetList] = useState<{ [id: string]: string }>({});
 
     const {
         nodes,
@@ -44,196 +37,192 @@ export default () => {
     } = useGraph();
 
     useEffect(() => {
-        if (selectedNodeId) {
-            const node = nodes[selectedNodeId];
-            if (!node) return;
-            setRegion(node.properties.region);
-            setVpc(node.properties.vpc);
-            setSubnet(node.properties.subnet);
-            setSelectedResource({
-                id: selectedNodeId,
-                type: node.type,
-                properties: node.properties,
-            });
-        } else {
+        if (!selectedNodeId || !nodes[selectedNodeId]) {
             setSelectedResource(undefined);
+            return;
         }
+
+        const node = nodes[selectedNodeId];
+
+        setSelectedResource({
+            id: selectedNodeId,
+            type: node.type,
+            properties: node.properties,
+        });
     }, [selectedNodeId, nodes]);
 
     useEffect(() => {
-        const regionGroup = groups[region];
+        if (!selectedNodeId) return;
+        const node = nodes[selectedNodeId];
+        const regionGroup = groups[node.properties.region?.id];
         if (!regionGroup) return;
         setVpcList({
             ...Object.fromEntries(
-                regionGroup.childGroupIds.map((id) => [id, groups[id].name]),
+                regionGroup.childGroupIds.map((id) => [
+                    id,
+                    groups[id].properties.name,
+                ]),
             ),
         });
 
-        const vpcGroup = groups[vpc];
+        const vpcGroup = groups[node.properties.vpc?.id];
         if (!vpcGroup) return;
         setSubnetList({
             ...Object.fromEntries(
-                vpcGroup.childGroupIds.map((id) => [id, groups[id].name]),
+                vpcGroup.childGroupIds.map((id) => [
+                    id,
+                    groups[id].properties.name,
+                ]),
             ),
         });
-    }, [region, groups]);
+    }, [selectedNodeId, nodes]);
 
-    const addResource = (type: string) => {
+    const createResource = (type: string) => {
         if (!svgRef.current) return;
 
         const node = NcloudNodeFactory(type);
         const id = `node-${nanoid()}`;
 
+        const region = REGIONS[DEFAULT_REGION];
         addNode({
             ...node,
             id,
             properties: {
                 ...node.properties,
-                region,
+                region: {
+                    id: region.id,
+                    value: region.value,
+                },
             },
             point: getInitPoint(svgRef.current!),
         });
 
-        if (!isExistGroup(region)) {
-            createRegion(region, id);
-        } else {
-            addNodeToGroup(region, id);
+        const regionId = REGIONS[DEFAULT_REGION].id;
+        if (!isExistGroup(regionId)) {
+            createRegion(regionId, region.value);
         }
+        addNodeToGroup(regionId, id);
     };
 
-    const createRegion = (region: string, nodeId?: string) => {
+    const createRegion = (id: string, region: string) => {
         addGroup({
             ...NcloudGroupFactory('region'),
-            id: region,
-            name: Regions[region].toUpperCase(),
-            nodeIds: nodeId ? [nodeId] : [],
+            id,
+            nodeIds: [],
+            properties: {
+                name: REGIONS[region].label,
+            },
         });
     };
 
-    const createVpc = (vpc: string, nodeId?: string) => {
+    const changeRegion = (id: string, newRegion: Region) => {
+        if (!selectedNodeId) return;
+        if (!isExistGroup(id)) {
+            createRegion(id, newRegion);
+        }
+
+        addNodeToGroup(id, selectedNodeId);
+        const node = nodes[selectedNodeId];
+        const { properties } = node;
+        if (properties.region) {
+            removeNodeFromGroup(properties.region.id, selectedNodeId);
+        }
+
+        updateProperties(selectedNodeId, {
+            region: {
+                id,
+                value: REGIONS[newRegion].value,
+            },
+        });
+    };
+
+    const createVpc = (id: string, newVpc: string) => {
         addGroup({
             ...NcloudGroupFactory('vpc'),
-            id: vpc,
-            name: vpc,
-            nodeIds: nodeId ? [nodeId] : [],
+            id,
+            nodeIds: [],
+            properties: {
+                name: newVpc,
+            },
         });
     };
 
-    const removeNodeRelatedGroup = (node: Node, groupCategories: string[]) => {
-        const properties = node.properties;
-        const relatedGroupIds = groupCategories
-            .map((type) => properties[type])
-            .filter(Boolean);
-
-        relatedGroupIds.forEach((groupId) =>
-            removeNodeFromGroup(groupId, node.id),
-        );
-    };
-
-    const updateRegion = (newRegion: Region) => {
-        if (selectedNodeId && region !== newRegion) {
-            if (isExistGroup(newRegion)) {
-                addNodeToGroup(newRegion, selectedNodeId);
-            } else {
-                createRegion(newRegion, selectedNodeId);
-            }
-
-            removeNodeRelatedGroup(nodes[selectedNodeId], NETWORKS_CATEGORIES);
-
-            const updatedProperties = NETWORKS_CATEGORIES.reduce((acc, cur) => {
-                return {
-                    ...acc,
-                    [cur]: '',
-                };
-            }, {});
-
-            updateProperties(selectedNodeId, {
-                ...updatedProperties,
-                region: newRegion,
-            });
+    const changeVpc = (id: string, newVpc: string) => {
+        if (!selectedNodeId) return;
+        const node = nodes[selectedNodeId];
+        const prevVpcId = findKeyByValue(newVpc, vpcList);
+        if (!prevVpcId) {
+            createVpc(id, newVpc);
         }
-    };
 
-    const updateVpc = (newVpc: string) => {
-        if (selectedNodeId && vpc !== newVpc) {
-            if (!isExistGroup(newVpc)) {
-                createVpc(newVpc);
-            }
+        const idToUpdate = prevVpcId ?? id;
+        const { properties } = node;
+        addNodeToGroup(idToUpdate, selectedNodeId);
+        addChildGroup(idToUpdate, properties.region.id, selectedNodeId);
 
-            addNodeToGroup(newVpc, selectedNodeId);
-            addChildGroup(newVpc, region, selectedNodeId);
-            const node = nodes[selectedNodeId];
-            removeNodeRelatedGroup(node, NETWORKS_CATEGORIES);
-
-            const updatedProperties = NETWORKS_CATEGORIES.reduce((acc, cur) => {
-                return {
-                    ...acc,
-                    [cur]: '',
-                };
-            }, {});
-
-            updateProperties(selectedNodeId, {
-                ...updatedProperties,
-                region,
-                vpc: newVpc,
-            });
+        if (properties.vpc) {
+            removeNodeFromGroup(properties.vpc.id, selectedNodeId);
         }
+
+        updateProperties(selectedNodeId, {
+            vpc: {
+                id: idToUpdate,
+                value: newVpc,
+            },
+        });
     };
 
-    const createSubnet = (subnet: string, nodeId?: string) => {
+    const createSubnet = (id: string, newSubnet: string) => {
         addGroup({
             ...NcloudGroupFactory('subnet'),
-            id: subnet,
-            name: subnet,
-            nodeIds: nodeId ? [nodeId] : [],
+            id,
+            nodeIds: [],
+            properties: {
+                name: newSubnet,
+            },
         });
     };
 
-    const updateSubnet = (newSubnet: string) => {
-        if (selectedNodeId && subnet !== newSubnet) {
-            if (!isExistGroup(newSubnet)) {
-                createSubnet(newSubnet);
-            }
-
-            addNodeToGroup(newSubnet, selectedNodeId);
-            if (vpc || region) {
-                addChildGroup(newSubnet, vpc || region, selectedNodeId);
-            }
-            const node = nodes[selectedNodeId];
-            removeNodeRelatedGroup(node, NETWORKS_CATEGORIES);
-
-            const updatedProperties = NETWORKS_CATEGORIES.reduce((acc, cur) => {
-                return {
-                    ...acc,
-                    [cur]: '',
-                };
-            }, {});
-
-            updateProperties(selectedNodeId, {
-                ...updatedProperties,
-                region,
-                vpc,
-                subnet: newSubnet,
-            });
+    const changeSubnet = (id: string, newSubnet: string) => {
+        if (!selectedNodeId) return;
+        const node = nodes[selectedNodeId];
+        const prevSubnetId = findKeyByValue(newSubnet, subnetList);
+        if (!prevSubnetId) {
+            createSubnet(id, newSubnet);
         }
+
+        const idToUpdate = prevSubnetId ?? id;
+        const { properties } = node;
+        addNodeToGroup(idToUpdate, selectedNodeId);
+        addChildGroup(idToUpdate, properties.vpc.id, selectedNodeId);
+
+        if (properties.subnet) {
+            removeNodeFromGroup(properties.subnet.id, selectedNodeId);
+        }
+
+        updateProperties(selectedNodeId, {
+            subnet: {
+                id: idToUpdate,
+                value: newSubnet,
+            },
+        });
     };
 
-    const removeVpc = (vpc: string) => {
-        if (selectedNodeId) {
-            excludeNodeFromGroup(vpc, selectedNodeId);
-            updateProperties(selectedNodeId, {
-                ...nodes[selectedNodeId].properties,
-                vpc: '',
-            });
-        }
+    const removeVpc = (vpcId: string) => {
+        if (!selectedNodeId) return;
+        excludeNodeFromGroup(vpcId, selectedNodeId);
+        updateProperties(selectedNodeId, {
+            ...nodes[selectedNodeId].properties,
+            vpc: undefined,
+        });
     };
 
-    const removeSubnet = (subnet: string) => {
+    const removeSubnet = (subnetId: string) => {
         if (selectedNodeId) {
-            excludeNodeFromGroup(subnet, selectedNodeId);
+            excludeNodeFromGroup(subnetId, selectedNodeId);
             updateProperties(selectedNodeId, {
                 ...nodes[selectedNodeId].properties,
-                subnet: '',
+                subnet: undefined,
             });
         }
     };
@@ -248,19 +237,17 @@ export default () => {
     };
 
     return {
-        region,
-        vpc,
-        vpcList,
-        subnet,
         subnetList,
+        vpcList,
         selectedResource,
-        updateVpc,
-        addResource,
+        createResource,
         createRegion,
+        createVpc,
+        changeVpc,
+        changeSubnet,
+        updateProperties,
         removeVpc,
         removeSubnet,
-        updateRegion,
-        createSubnet,
-        updateSubnet,
+        changeRegion,
     };
 };
