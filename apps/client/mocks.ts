@@ -1,5 +1,5 @@
-import { Group, Node } from '@types';
-import { nanoid } from 'nanoid';
+// import { Group, Node } from '@types';
+// import { nanoid } from 'nanoid';
 
 const CloudFunctionNode: Node = {
     id: `node-${nanoid()}`,
@@ -112,30 +112,30 @@ const RegionGroup: Group = {
     parentGroupId: '',
 };
 
-const mockNodes = [
-    ServerNode,
-    CloudFunctionNode,
-    MySQLDBNode,
-    ObjectStorageNode,
-];
+// const mockNodes = [
+//     ServerNode,
+//     CloudFunctionNode,
+//     MySQLDBNode,
+//     ObjectStorageNode,
+// ];
 
-const mockGroups = [RegionGroup, VpcGroup, SubnetGroup];
+// const mockGroups = [RegionGroup, VpcGroup, SubnetGroup];
 
-mockGroups.forEach((group) => {
-    // set properties for each group
-    group.nodeIds.forEach((nodeId: string) => {
-        const node = mockNodes.find((n) => n.id === nodeId);
-        if (node) {
-            node.properties[group.type] = group.id;
-        }
-    });
-});
+// mockGroups.forEach((group) => {
+//     // set properties for each group
+//     group.nodeIds.forEach((nodeId: string) => {
+//         const node = mockNodes.find((n) => n.id === nodeId);
+//         if (node) {
+//             node.properties[group.type] = group.id;
+//         }
+//     });
+// });
 
-export const mockInitialState = {
-    nodes: mockNodes.reduce((acc, node) => ({ ...acc, [node.id]: node }), {}),
-    groups: mockGroups.reduce(
-        (acc, group) => ({ ...acc, [group.id]: group }),
-        {},
-    ),
-    edges: {},
-};
+// export const mockInitialState = {
+//     nodes: mockNodes.reduce((acc, node) => ({ ...acc, [node.id]: node }), {}),
+//     groups: mockGroups.reduce(
+//         (acc, group) => ({ ...acc, [group.id]: group }),
+//         {},
+//     ),
+//     edges: {},
+// };

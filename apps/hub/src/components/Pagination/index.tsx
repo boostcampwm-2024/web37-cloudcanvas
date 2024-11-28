@@ -15,6 +15,10 @@ export const Pagination = ({
     if (totalPages <= 1) return null;
 
     const getVisiblePages = () => {
+        if (totalPages <= 5) {
+            return Array.from({ length: totalPages }, (_, i) => i + 1);
+        }
+
         const delta = 2;
         const range = [];
         const rangeWithDots = [];

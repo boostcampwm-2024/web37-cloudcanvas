@@ -118,7 +118,7 @@ async function main() {
     const tags = [];
     for (let i = 0; i < tagAmount; i++) {
         const tag = {
-            name: faker.word.verb({ length: { max: 15 } }),
+            name: faker.word.verb({ length: { max: 10 } }),
         };
         tags.push(tag);
     }

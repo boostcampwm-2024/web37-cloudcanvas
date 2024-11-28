@@ -6,4 +6,10 @@ apps/server/.gitignore
 apps/client/Dockerfile
 apps/client/node_modules
 apps/client/test
-apps/server/mocks
+apps/client/mocks
+
+apps/hub/Dockerfile
+apps/hub/node_modules
+apps/hub/.env
+
+node_modules

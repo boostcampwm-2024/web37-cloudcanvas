@@ -5,7 +5,9 @@ import { Suspense } from 'react';
 export default function Home() {
     return (
         <Suspense>
-            <ArchitectureBoard apiUrl="http://localhost:3000/public-architectures" />
+            <ArchitectureBoard
+                apiUrl={`${process.env.NEXT_PUBLIC_BACK_URL}/public-architectures`}
+            />
         </Suspense>
     );
 }

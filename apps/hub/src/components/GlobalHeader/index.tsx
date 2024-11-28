@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { LinkButton } from '../ui/LinkButton';
+import { LinkButton } from '@/ui/LinkButton';
 
 export const GlobalHeader = () => {
     const router = useRouter();
@@ -16,10 +16,13 @@ export const GlobalHeader = () => {
     }, []);
 
     const handleLogin = async () => {
-        const res = await fetch('http://localhost:3000/auth/login', {
-            method: 'POST',
-            credentials: 'include',
-        });
+        const res = await fetch(
+            `${process.env.NEXT_PUBLIC_BACK_URL}/auth/login`,
+            {
+                method: 'POST',
+                credentials: 'include',
+            },
+        );
         if (res.ok) {
             setIsLoggedIn(true);
             localStorage.setItem('isLoggedIn', 'true');
@@ -29,7 +32,7 @@ export const GlobalHeader = () => {
     };
 
     const handleLogout = () => {
-        fetch('http://localhost:3000/auth/logout', {
+        fetch(`${process.env.NEXT_PUBLIC_BACK_URL}/auth/logout`, {
             method: 'POST',
             credentials: 'include',
         });
