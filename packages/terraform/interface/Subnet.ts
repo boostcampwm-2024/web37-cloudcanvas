@@ -5,6 +5,5 @@ export interface Subnet {
     zone: string;
     networkAclNo: string;
     subnetType: 'PUBLIC' | 'PRIVATE';
-    name?: string;
     usageType?: 'GEN' | 'LOADB' | 'BM' | 'NATGW';
 }
