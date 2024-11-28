@@ -6,7 +6,6 @@ import useDrag from '@hooks/useDrag';
 import { Node, Point } from '@types';
 import { useEffect } from 'react';
 import LoadBalancer from './ncloud/LoadBalancer';
-import ContainerRegistry from './ncloud/ContainerRegistry';
 
 const nodeFactory = (node: Node) => {
     switch (node.type) {
@@ -20,6 +19,8 @@ const nodeFactory = (node: Node) => {
             return <DBMySQLNode {...node} />;
         case 'load-balancer':
             return <LoadBalancer {...node} />;
+        case 'object-storage':
+            return <ObjectStorageNode {...node} />;
         // case 'container-registry':
         //     return <ContainerRegistry {...node} />;
         default:

@@ -8,7 +8,7 @@ export interface LoadBalancerProp extends NetworksProp {
     subnetNoList?: [];
 }
 
-export const LoadBalancer: Node & {
+export const LoadBalancerNode: Node & {
     properties: LoadBalancerProp;
 } = {
     ...GraphNode,
