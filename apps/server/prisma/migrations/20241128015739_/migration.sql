@@ -10,6 +10,27 @@ CREATE TABLE `import` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
+CREATE TABLE `ncloud_server_resource` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `server_resource_type_id` INTEGER NOT NULL,
+    `server_spec_code` CHAR(50) NOT NULL,
+    `hour_cost` DOUBLE NOT NULL,
+    `month_cost` DOUBLE NOT NULL,
+    `created_at` TIMESTAMP(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0),
+    `updated_at` TIMESTAMP(0) NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `ncloud_server_resource_type` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `type` CHAR(50) NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
 CREATE TABLE `private_architecture` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `title` CHAR(50) NOT NULL,
@@ -90,6 +111,9 @@ ALTER TABLE `import` ADD CONSTRAINT `import_public_architecture_id_fkey` FOREIGN
 
 -- AddForeignKey
 ALTER TABLE `import` ADD CONSTRAINT `import_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `user`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `ncloud_server_resource` ADD CONSTRAINT `ncloud_server_resource_server_resource_type_id_fkey` FOREIGN KEY (`server_resource_type_id`) REFERENCES `ncloud_server_resource_type`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `private_architecture` ADD CONSTRAINT `private_architecture_author_id_fkey` FOREIGN KEY (`author_id`) REFERENCES `user`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

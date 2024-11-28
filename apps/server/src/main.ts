@@ -47,6 +47,7 @@ async function bootstrap() {
             product.serverProductCode &&
             product.serverProductCode.endsWith('50')
         ) {
+            console.log(product.productType.codeName);
             console.log(product.serverProductCode);
             console.log('월');
             console.log(product.priceList[0].price);

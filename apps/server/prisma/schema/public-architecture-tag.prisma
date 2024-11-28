@@ -1,11 +1,11 @@
 model PublicArchitectureTag {
-    id                   Int @id @default(autoincrement())
-    publicArchitectureId Int @map("public_architecture_id")
-    tagId                Int @map("tag_id")
+  id                   Int @id @default(autoincrement())
+  publicArchitectureId Int @map("public_architecture_id")
+  tagId                Int @map("tag_id")
 
-    publicArchitecture PublicArchitecture @relation(fields: [publicArchitectureId], references: [id])
-    tag                Tag                @relation(fields: [tagId], references: [id])
+  publicArchitecture PublicArchitecture @relation(fields: [publicArchitectureId], references: [id])
+  tag                Tag                @relation(fields: [tagId], references: [id])
 
-    @@unique([publicArchitectureId, tagId], name: "unique_tag")
-    @@map("public_architecture_tag")
+  @@unique([publicArchitectureId, tagId], name: "unique_tag")
+  @@map("public_architecture_tag")
 }

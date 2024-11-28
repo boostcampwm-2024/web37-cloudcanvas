@@ -1,12 +1,12 @@
 model Version {
-    id                    Int      @id @default(autoincrement())
-    privateArchitectureId Int      @map("private_architecture_id")
-    title                 String   @db.Char(50)
-    createdAt             DateTime @default(now()) @map("created_at") @db.Timestamp(0)
-    architecture          Json
-    cost                  Float    @default(0)
+  id                    Int      @id @default(autoincrement())
+  privateArchitectureId Int      @map("private_architecture_id")
+  title                 String   @db.Char(50)
+  createdAt             DateTime @default(now()) @map("created_at") @db.Timestamp(0)
+  architecture          Json
+  cost                  Float    @default(0)
 
-    privateArchitecture PrivateArchitecture @relation(fields: [privateArchitectureId], references: [id])
+  privateArchitecture PrivateArchitecture @relation(fields: [privateArchitectureId], references: [id])
 
-    @@map("version")
+  @@map("version")
 }

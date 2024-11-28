@@ -1,14 +1,14 @@
 model PrivateArchitecture {
-    id           Int       @id @default(autoincrement())
-    title        String    @db.Char(50)
-    authorId     Int       @map("author_id")
-    architecture Json
-    cost         Float     @default(0)
-    createdAt    DateTime  @default(now()) @map("created_at") @db.Timestamp(0)
-    updatedAt    DateTime? @updatedAt @map("updated_at") @db.Timestamp(0)
+  id           Int       @id @default(autoincrement())
+  title        String    @db.Char(50)
+  authorId     Int       @map("author_id")
+  architecture Json
+  cost         Float     @default(0)
+  createdAt    DateTime  @default(now()) @map("created_at") @db.Timestamp(0)
+  updatedAt    DateTime? @updatedAt @map("updated_at") @db.Timestamp(0)
 
-    author   User      @relation(fields: [authorId], references: [id])
-    versions Version[]
+  author   User      @relation(fields: [authorId], references: [id])
+  versions Version[]
 
-    @@map("private_architecture")
+  @@map("private_architecture")
 }

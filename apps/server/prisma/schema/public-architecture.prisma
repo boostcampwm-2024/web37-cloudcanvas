@@ -1,15 +1,15 @@
 model PublicArchitecture {
-    id           Int      @id @default(autoincrement())
-    title        String   @db.Char(50)
-    authorId     Int      @map("author_id")
-    architecture Json
-    createdAt    DateTime @default(now()) @map("created_at") @db.Timestamp(0)
-    cost         Float    @default(0)
+  id           Int      @id @default(autoincrement())
+  title        String   @db.Char(50)
+  authorId     Int      @map("author_id")
+  architecture Json
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamp(0)
+  cost         Float    @default(0)
 
-    author                User                    @relation(fields: [authorId], references: [id])
-    stars                 Star[]
-    imports               Import[]
-    PublicArchitectureTag PublicArchitectureTag[]
+  author                User                    @relation(fields: [authorId], references: [id])
+  stars                 Star[]
+  imports               Import[]
+  PublicArchitectureTag PublicArchitectureTag[]
 
-    @@map("public_architecture")
+  @@map("public_architecture")
 }

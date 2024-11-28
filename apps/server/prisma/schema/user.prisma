@@ -1,12 +1,12 @@
 model User {
-    id        Int      @id @default(autoincrement())
-    name      String   @db.VarChar(30)
-    createdAt DateTime @default(now()) @map("created_at") @db.Timestamp(0)
+  id        Int      @id @default(autoincrement())
+  name      String   @db.VarChar(30)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamp(0)
 
-    privateArchitectures PrivateArchitecture[]
-    publicArchitectures  PublicArchitecture[]
-    stars                Star[]
-    imports              Import[]
+  privateArchitectures PrivateArchitecture[]
+  publicArchitectures  PublicArchitecture[]
+  stars                Star[]
+  imports              Import[]
 
-    @@map("user")
+  @@map("user")
 }
