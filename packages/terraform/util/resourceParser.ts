@@ -11,6 +11,8 @@ import { NCloudPublicIP } from '../model/NCloudPublicIP';
 import { NCloudLoadBalancer } from '../model/NCloudLoadBalancer';
 import { NCloudLaunchConfiguration } from '../model/NCloudLaunchConfiguration';
 import { NCloudMySQL } from '../model/NCloudMySQL';
+import { NCloudObjectStorageBucket } from '../model/NCloudObjectStorageBucket';
+import { NCloudRedis } from '../model/NCloudRedis';
 
 export function parseToNCloudModel(resource: any): NCloudModel {
     const { type, name, properties } = resource;
@@ -29,7 +31,6 @@ export function parseToNCloudModel(resource: any): NCloudModel {
             });
 
         case 'subnet':
-            console.log('subnet properties', properties);
             return new NCloudSubnet({
                 name: name || 'subnet',
                 subnet: properties.subnet,
@@ -88,12 +89,11 @@ export function parseToNCloudModel(resource: any): NCloudModel {
 
         case 'loadbalancer':
             return new NCloudLoadBalancer({
-                name: name || 'lb',
+                name: name || 'load-balancer',
                 networkType: properties.networkType,
-                throughputType: properties.throughputType,
+                type: properties.type,
                 subnetName: properties.subnet,
-                vpcName: properties.vpcName,
-                acgName: properties.acgName,
+                vpcName: properties.vpc,
             });
 
         case 'launchconfiguration':
@@ -124,6 +124,21 @@ export function parseToNCloudModel(resource: any): NCloudModel {
                 databaseName: properties.databaseName,
                 subnet: properties.subnet,
                 vpc: properties.vpc,
+            });
+
+        case 'objectstoragebucket':
+            return new NCloudObjectStorageBucket({
+                bucketName: properties.bucketName,
+            });
+
+        case 'redis':
+            return new NCloudRedis({
+                serviceName: name || 'redis',
+                serverNamePrefix: properties.serverNamePrefix,
+                vpcNo: properties.vpc,
+                subnetNo: properties.subnet,
+                configGroupNo: properties.configGroup,
+                mode: properties.mode,
             });
         default:
             throw new Error(`Unsupported resource type: ${type}`);

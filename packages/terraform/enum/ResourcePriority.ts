@@ -12,4 +12,6 @@ export enum ResourcePriority {
     LAUNCH_CONFIGURATION = 11,
     MYSQL = 12,
     OBJECT_STORAGE_BUCKET = 13,
+    REDIS = 14,
+    REDIS_CONFIG_GROUP = 15,
 }
