@@ -26,7 +26,7 @@ interface PublicArchitecture {
 export default function ArchitectureDetailPage() {
     const params = useParams<{ id: string }>();
     const { data, error, isLoading, mutate } = useSWR<PublicArchitecture>(
-        `${process.env.NEXT_PUBLIC_BACK_URL}/public-architectures/${params.id}`,
+        `${process.env.BACK_URL}/public-architectures/${params.id}`,
         fetcher,
     );
 
@@ -48,7 +48,7 @@ export default function ArchitectureDetailPage() {
 
     const toggleStar = async () => {
         await fetch(
-            `${process.env.NEXT_PUBLIC_BACK_URL}/public-architectures/${params.id}/stars`,
+            `${process.env.BACK_URL}/public-architectures/${params.id}/stars`,
             {
                 method: data!.stars.length > 0 ? 'DELETE' : 'POST',
                 credentials: 'include',
@@ -59,7 +59,7 @@ export default function ArchitectureDetailPage() {
 
     const handleImport = async () => {
         await fetch(
-            `${process.env.NEXT_PUBLIC_BACK_URL}/public-architectures/${params.id}/imports`,
+            `${process.env.BACK_URL}/public-architectures/${params.id}/imports`,
             {
                 method: 'POST',
                 credentials: 'include',

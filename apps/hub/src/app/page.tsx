@@ -6,7 +6,7 @@ export default function Home() {
     return (
         <Suspense>
             <ArchitectureBoard
-                apiUrl={`${process.env.NEXT_PUBLIC_BACK_URL}/public-architectures`}
+                apiUrl={`${process.env.BACK_URL}/public-architectures`}
             />
         </Suspense>
     );

@@ -16,13 +16,10 @@ export const GlobalHeader = () => {
     }, []);
 
     const handleLogin = async () => {
-        const res = await fetch(
-            `${process.env.NEXT_PUBLIC_BACK_URL}/auth/login`,
-            {
-                method: 'POST',
-                credentials: 'include',
-            },
-        );
+        const res = await fetch(`${process.env.BACK_URL}/auth/login`, {
+            method: 'POST',
+            credentials: 'include',
+        });
         if (res.ok) {
             setIsLoggedIn(true);
             localStorage.setItem('isLoggedIn', 'true');
@@ -32,7 +29,7 @@ export const GlobalHeader = () => {
     };
 
     const handleLogout = () => {
-        fetch(`${process.env.NEXT_PUBLIC_BACK_URL}/auth/logout`, {
+        fetch(`${process.env.BACK_URL}/auth/logout`, {
             method: 'POST',
             credentials: 'include',
         });

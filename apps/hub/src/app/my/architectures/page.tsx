@@ -7,7 +7,7 @@ export default function MyArchitecturesPage() {
     return (
         <Suspense>
             <PrivateArchitectureBoard
-                apiUrl={`${process.env.NEXT_PUBLIC_BACK_URL}/my/private-architectures`}
+                apiUrl={`${process.env.BACK_URL}/my/private-architectures`}
             />
         </Suspense>
     );

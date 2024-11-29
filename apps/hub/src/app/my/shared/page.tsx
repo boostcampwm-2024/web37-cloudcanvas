@@ -6,7 +6,7 @@ export default function MySharedPage() {
     return (
         <Suspense>
             <ArchitectureBoard
-                apiUrl={`${process.env.NEXT_PUBLIC_BACK_URL}/my/public-architectures`}
+                apiUrl={`${process.env.BACK_URL}/my/public-architectures`}
             />
         </Suspense>
     );
