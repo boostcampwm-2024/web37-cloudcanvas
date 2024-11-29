@@ -3,7 +3,7 @@ services:
         image: cloud-canvas.kr.ncr.ntruss.com/front-hub:dev
         container_name: front-hub
         environment:
-            NEXT_PUBLIC_BACK_URL: ${NEXT_PUBLIC_BACK_URL}
+            BACK_URL: ${BACK_URL}
         ports:
             - '3000:3000'
         networks:
