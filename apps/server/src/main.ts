@@ -48,6 +48,22 @@ async function bootstrap() {
             credentials: true,
         });
     }
+    else {
+        app.enableCors({
+            origin: 'https://cloudcanvas.kro.kr',
+            methods: [
+                'GET',
+                'HEAD',
+                'PUT',
+                'PATCH',
+                'POST',
+                'DELETE',
+                'OPTIONS',
+            ],
+            allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
+            credentials: true,
+        });
+    }
     await app.listen(3000);
 }
 bootstrap();
