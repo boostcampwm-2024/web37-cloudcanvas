@@ -36,9 +36,9 @@ const Region3D = ({ bounds, properties, color }: Props) => {
     });
 
     const points = `
-        ${point1.x} ${point1.y}, 
-        ${point2.x} ${point2.y}, 
-        ${point3.x} ${point3.y}, 
+        ${point1.x} ${point1.y},
+        ${point2.x} ${point2.y},
+        ${point3.x} ${point3.y},
         ${point4.x} ${point4.y}
     `;
 

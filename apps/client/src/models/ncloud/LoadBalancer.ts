@@ -15,13 +15,17 @@ export const LoadBalancerNode: Node & {
     type: 'load-balancer',
     size: {
         '2d': { width: 90, height: 90 },
-        '3d': { width: 97, height: 94, offset: 10 },
+        '3d': { width: 97, height: 94, depth: 38, offset: 10 },
     },
     properties: {
         ...Networks,
         name: undefined,
         networkType: undefined,
         subnetNoList: undefined,
+    },
+    filterConnectorTypes: {
+        '2d': ['top', 'right', 'bottom', 'left'],
+        '3d': ['top', 'right', 'bottom', 'left'],
     },
 };
 

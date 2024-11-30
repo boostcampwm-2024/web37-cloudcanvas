@@ -1,10 +1,11 @@
 import { CloudFunctionNode } from './CloudFunction';
-import { LoadBalancerNode } from './LoadBalancerNode';
-import { MySQLDBNode } from './MySQLDB';
-import { RegionGroup, SubnetGroup, VpcGroup } from './Networks';
-import { ServerNode } from './Server';
 import { ContainerRegistryNode } from './ContainerRegistry';
+import { LoadBalancerNode } from './LoadBalancer';
+import { MySQLDBNode } from './MySQLDB';
+import { NatGatewayNode } from './NatGateway';
+import { RegionGroup, SubnetGroup, VpcGroup } from './Networks';
 import { ObjectStorageNode } from './ObjectStorage';
+import { ServerNode } from './Server';
 
 export const NcloudNodeFactory = (type: string) => {
     switch (type) {
@@ -20,6 +21,8 @@ export const NcloudNodeFactory = (type: string) => {
             return ContainerRegistryNode;
         case 'object-storage':
             return ObjectStorageNode;
+        case 'nat-gateway':
+            return NatGatewayNode;
         default: {
             throw new Error(`Unknown type: ${type}`);
         }

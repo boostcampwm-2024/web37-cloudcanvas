@@ -13,10 +13,14 @@ export const ContainerRegistryNode: Node & {
     type: 'container-registry',
     size: {
         '2d': { width: 360, height: 360 },
-        '3d': { width: 360, height: 360 },
+        '3d': { width: 512, height: 333, depth: 37, offset: 0 },
     },
     properties: {
         ...Networks,
+    },
+    filterConnectorTypes: {
+        '2d': ['top', 'right', 'bottom', 'left'],
+        '3d': ['top', 'right', 'bottom', 'left'],
     },
 };
 

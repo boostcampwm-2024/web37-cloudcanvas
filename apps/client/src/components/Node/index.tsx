@@ -1,11 +1,13 @@
 import CloudFunctionNode from '@components/Node/ncloud/CloudFunctionNode';
-import DBMySQLNode from '@components/Node/ncloud/DBMySQLNode';
+import ContainerRegistryNode from '@components/Node/ncloud/ContainerRegistry';
+import MySQLDBNode from '@components/Node/ncloud/MySQLDBNode';
 import ObjectStorageNode from '@components/Node/ncloud/ObjectStorageNode';
 import ServerNode from '@components/Node/ncloud/ServerNode';
 import useDrag from '@hooks/useDrag';
 import { Node, Point } from '@types';
 import { useEffect } from 'react';
-import LoadBalancer from './ncloud/LoadBalancer';
+import LoadBalancerNode from './ncloud/LoadBalancer';
+import NatGatewayNode from './ncloud/NatGateway';
 
 const nodeFactory = (node: Node) => {
     switch (node.type) {
@@ -16,13 +18,15 @@ const nodeFactory = (node: Node) => {
         case 'object-storage':
             return <ObjectStorageNode {...node} />;
         case 'db-mysql':
-            return <DBMySQLNode {...node} />;
+            return <MySQLDBNode {...node} />;
         case 'load-balancer':
-            return <LoadBalancer {...node} />;
+            return <LoadBalancerNode {...node} />;
         case 'object-storage':
             return <ObjectStorageNode {...node} />;
-        // case 'container-registry':
-        //     return <ContainerRegistry {...node} />;
+        case 'container-registry':
+            return <ContainerRegistryNode {...node} />;
+        case 'nat-gateway':
+            return <NatGatewayNode {...node} />;
         default:
             null;
     }

@@ -1,5 +1,5 @@
 import { NODE_BASE_SIZE } from '@constants';
-import { Dimension, Node, Point, Size } from '@types';
+import { Dimension, Node, Point, Size, Size3D } from '@types';
 import {
     alignPoint2d,
     alignPoint3d,
@@ -14,8 +14,16 @@ export const GraphNode = {
     connectors: {},
 };
 
-//TODO: 사이즈가 큰 노드를 다룰 떄 이상해짐
-const getNodeOffsetForDimension = (nodeSize: Size, baseSize: Size) => {
+export const getNodeOffsetForDimension = (
+    nodeSize: Size & Size3D,
+    baseSize: Size,
+) => {
+    if (nodeSize.width % 128 === 0 && nodeSize.height % 111 === 0) {
+        return {
+            x: 0,
+            y: 0,
+        };
+    }
     return {
         x: (baseSize.width - nodeSize.width) / 2,
         y: baseSize.height - nodeSize.height - (nodeSize.offset || 0),
@@ -25,13 +33,14 @@ const getNodeOffsetForDimension = (nodeSize: Size, baseSize: Size) => {
 //INFO: 처음이 2d로 시작하기 때문에 nodeSize : 3d , baseSize : 3d로 해야함. 다른 방법은 잘 모르곘음.
 //2d에서 3d로 변환할 때는 3d에서 2d로 변환할 때와 달리 baseSize와 nodeSize가 2d 사이즈 들어가야 할 것 같음
 export const adjustNodePointForDimension = (
-    node: Node,
+    point: Point,
+    size: Size3D,
     dimension: Dimension,
 ) => {
-    const { point, size } = node;
-
-    const offset = getNodeOffsetForDimension(size['3d'], NODE_BASE_SIZE['3d']);
-    console.log('offset', node.type, offset);
+    const offset = getNodeOffsetForDimension(
+        size,
+        NODE_BASE_SIZE['3d'] as Size3D,
+    );
     let result;
     if (dimension === '2d') {
         result = convert3dTo2dPoint({
@@ -73,13 +82,4 @@ export const alignNodePoint = (
     }
 
     return result;
-};
-
-export const getNodeBounds = (node: Node, dimension: Dimension) => {
-    return {
-        x: node.point.x,
-        y: node.point.y,
-        width: node.size[dimension].width,
-        height: node.size[dimension].height,
-    };
 };

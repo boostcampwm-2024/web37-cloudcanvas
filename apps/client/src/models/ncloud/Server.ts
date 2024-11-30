@@ -15,13 +15,17 @@ export const ServerNode: Node & {
     type: 'server',
     size: {
         '2d': { width: 90, height: 90 },
-        '3d': { width: 128, height: 111 },
+        '3d': { width: 128, height: 111, depth: 37, offset: 0 },
     },
     properties: {
         ...Networks,
         name: undefined,
         server_image_number: undefined,
         server_spec_code: undefined,
+    },
+    filterConnectorTypes: {
+        '2d': ['top', 'right', 'bottom', 'left'],
+        '3d': ['top', 'right', 'bottom', 'left'],
     },
 };
 

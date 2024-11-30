@@ -13,9 +13,13 @@ export const ObjectStorageNode: Node & {
     type: 'object-storage',
     size: {
         '2d': { width: 90, height: 90 },
-        '3d': { width: 100.626, height: 115.695, offset: 20 },
+        '3d': { width: 100.626, height: 115.695, depth: 58, offset: 20 },
     },
     properties: {
         ...Networks,
+    },
+    filterConnectorTypes: {
+        '2d': ['top', 'right', 'bottom', 'left'],
+        '3d': ['top', 'right', 'bottom', 'left'],
     },
 };

@@ -13,9 +13,13 @@ export const CloudFunctionNode: Node & {
     type: 'cloud-function',
     size: {
         '2d': { width: 90, height: 90 },
-        '3d': { width: 96, height: 113.438, offset: 10 },
+        '3d': { width: 96, height: 113.438, depth: 58, offset: 12.5 },
     },
     properties: {
         ...Networks,
+    },
+    filterConnectorTypes: {
+        '2d': ['top', 'right', 'bottom', 'left'],
+        '3d': ['top', 'right', 'bottom', 'left'],
     },
 };

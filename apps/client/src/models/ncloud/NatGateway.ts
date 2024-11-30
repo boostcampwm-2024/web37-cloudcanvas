@@ -2,24 +2,24 @@ import { GraphNode } from '@helpers/node';
 import { Node } from '@types';
 import { Networks, NetworksProp } from './Networks';
 
-export interface MYSQLDBProp extends NetworksProp {
+export interface NatGatewayProp extends NetworksProp {
     //TODO:
 }
 
-export const MySQLDBNode: Node = {
+export const NatGatewayNode: Node = {
     ...GraphNode,
-    type: 'db-mysql',
+    type: 'nat-gateway',
     size: {
         '2d': { width: 90, height: 90 },
-        '3d': { width: 128, height: 137.5, depth: 82, offset: 0 },
+        '3d': { width: 123, height: 108.05, depth: 74, offset: 0 },
     },
     properties: {
         ...Networks,
     },
     filterConnectorTypes: {
         '2d': ['top', 'right', 'bottom', 'left'],
-        '3d': ['top', 'right', 'bottom', 'left'],
+        '3d': ['center'],
     },
 };
 
-export const MySQLDBRequiredFields = {};
+export const NatGatewayRequiredFields = {};

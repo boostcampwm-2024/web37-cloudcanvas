@@ -9,11 +9,7 @@ import {
     updateNearestConnectorPair,
 } from '@helpers/edge';
 import { computeBounds } from '@helpers/group';
-import {
-    adjustNodePointForDimension,
-    alignNodePoint,
-    getNodeBounds,
-} from '@helpers/node';
+import { adjustNodePointForDimension, alignNodePoint } from '@helpers/node';
 import useSelection from '@hooks/useSelection';
 import { Connection, Edge, Group, Node, Point } from '@types';
 import {
@@ -120,7 +116,12 @@ export default () => {
 
     const updateNodePointForDimension = () => {
         const updatedNodes = Object.entries(nodes).reduce((acc, [id, node]) => {
-            const adjustedPoint = adjustNodePointForDimension(node, dimension);
+            const adjustedPoint = adjustNodePointForDimension(
+                node.point,
+                node.size['3d'],
+                dimension,
+            );
+
             const connectors = getConnectorPoints(
                 { ...node, point: adjustedPoint },
                 dimension,
@@ -374,23 +375,20 @@ export default () => {
 
         const recursiveGroupBounds = (group: Group): any => {
             if (group.childGroupIds.length === 0) {
-                const nodesBounds = group.nodeIds.map((nodeId) =>
-                    getNodeBounds(nodes[nodeId], dimension),
-                );
+                const innerNodes = group.nodeIds.map((nodeId) => nodes[nodeId]);
 
-                return computeBounds(nodesBounds, dimension);
+                return computeBounds(innerNodes, dimension, 2);
             }
-            const childGroupsBounds = group.childGroupIds.map((childGroupId) =>
+            const childNodes = group.childGroupIds.map((childGroupId) =>
                 recursiveGroupBounds(groups[childGroupId]),
             );
 
-            const currentNodesBounds = group.nodeIds.map((nodeId) =>
-                getNodeBounds(nodes[nodeId], dimension),
-            );
+            const currentNodes = group.nodeIds.map((nodeId) => nodes[nodeId]);
 
             return computeBounds(
-                [...currentNodesBounds, ...childGroupsBounds],
+                [...currentNodes, ...childNodes],
                 dimension,
+                2,
             );
         };
 

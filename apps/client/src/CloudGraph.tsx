@@ -80,6 +80,8 @@ export default () => {
 
         updatedPointForDimension();
     }, [dimension]);
+
+    console.log(nodes);
     return (
         <Graph>
             <GridBackground />

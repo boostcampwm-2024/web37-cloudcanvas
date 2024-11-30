@@ -1,6 +1,7 @@
-import { GRID_2D_SIZE } from '@constants';
-import { Bounds, Dimension, Group } from '@types';
+import { NODE_BASE_SIZE } from '@constants';
+import { Dimension, Group, Node, Size3D } from '@types';
 import { convert2dTo3dPoint, convert3dTo2dPoint } from '@utils';
+import { getNodeOffsetForDimension } from './node';
 
 export const GraphGroup = {
     id: '',
@@ -11,44 +12,67 @@ export const GraphGroup = {
     parentGroupId: '',
 };
 
-export const computeBounds = (_bounds: Bounds[], dimension: Dimension) => {
-    const padding = GRID_2D_SIZE * 2;
-    let bounds = _bounds;
-    if (dimension === '3d') {
-        bounds = bounds.map((bound) => ({
-            ...bound,
-            ...convert3dTo2dPoint({
-                x: bound.x,
-                y: bound.y,
-            }),
-        }));
+export const computeBounds = (
+    nodes: Node[],
+    dimension: Dimension,
+    paddingSize: number = 1,
+) => {
+    const padding = 90 * paddingSize;
+
+    if (dimension === '2d') {
+        const minX = Math.min(...nodes.map((node) => node.point.x));
+        const minY = Math.min(...nodes.map((node) => node.point.y));
+        const maxX = Math.max(
+            ...nodes.map((node) => node.point.x + node.size['2d'].width),
+        );
+        const maxY = Math.max(
+            ...nodes.map((node) => node.point.y + node.size['2d'].height),
+        );
+
+        return {
+            x: minX - padding,
+            y: minY - padding,
+            width: maxX - minX + padding * 2,
+            height: maxY - minY + padding * 2,
+        };
     }
 
-    const minX = Math.min(...bounds.map((bounds) => bounds.x));
-    const minY = Math.min(...bounds.map((bounds) => bounds.y));
-    const maxX = Math.max(...bounds.map((bounds) => bounds.x + bounds.width));
-    const maxY = Math.max(...bounds.map((bounds) => bounds.y + bounds.height));
-
-    let x = minX - padding;
-    let y = minY - padding;
-    let width = maxX - minX + padding * 2;
-    let height = maxY - minY + padding * 2;
-
     if (dimension === '3d') {
-        const minPoint = convert2dTo3dPoint({
+        //2d
+        nodes = nodes.map((node) => {
+            const offset = getNodeOffsetForDimension(
+                node.size['3d'],
+                NODE_BASE_SIZE['3d'] as Size3D,
+            );
+            const pos = convert3dTo2dPoint({
+                x: node.point.x - offset.x,
+                y: node.point.y - offset.y,
+            });
+            return {
+                ...node,
+                point: { x: pos.x, y: pos.y },
+            };
+        });
+        const minX = Math.min(...nodes.map((node) => node.point.x));
+        const minY = Math.min(...nodes.map((node) => node.point.y));
+        const maxX = Math.max(
+            ...nodes.map((node) => node.point.x + node.size['2d'].width),
+        );
+        const maxY = Math.max(
+            ...nodes.map((node) => node.point.y + node.size['2d'].height),
+        );
+
+        const { x, y } = convert2dTo3dPoint({
             x: minX - padding,
             y: minY - padding,
         });
-        x = minPoint.x;
-        y = minPoint.y;
+        return {
+            x,
+            y,
+            width: maxX - minX + padding * 2,
+            height: maxY - minY + padding * 2,
+        };
     }
-
-    return {
-        x,
-        y,
-        width,
-        height,
-    };
 };
 
 export const findParentGroup = (
