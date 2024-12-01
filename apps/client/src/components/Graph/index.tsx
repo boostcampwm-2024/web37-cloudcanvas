@@ -15,7 +15,15 @@ export default ({ children }: PropsWithChildren) => {
     const isPanning = useRef(false);
     const startPoint = useRef<Point>({ x: 0, y: 0 });
     const spaceActiveKey = useKey('space');
+    const initialViewBox = {
+        x: 0,
+        y: 0,
+        width: svgRef.current?.clientWidth || 0,
+        height: svgRef.current?.clientHeight || 0,
+    };
 
+    const MIN_ZOOM = 0.2;
+    const MAX_ZOOM = 1;
     const zoom = (wheelY: number, point: Point) => {
         if (!svgRef.current) return;
 
@@ -23,6 +31,12 @@ export default ({ children }: PropsWithChildren) => {
         const cursorSvgPoint = getSvgPoint(svgRef.current, point);
         if (!cursorSvgPoint) return;
 
+        const currentZoom = initialViewBox.width / viewBox.width;
+        const newZoom = currentZoom * (1 / zoomFactor);
+
+        if (newZoom < MIN_ZOOM || newZoom > MAX_ZOOM) {
+            return;
+        }
         dispatch({
             type: 'SET_VIEWBOX',
             payload: {
