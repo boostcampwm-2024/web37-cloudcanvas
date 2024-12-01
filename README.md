@@ -87,6 +87,8 @@ Cloud Canvas는 클라우드 인프라 설계를 **그래픽 인터페이스**�
 
 <img width="1024" alt="cicd" src="https://github.com/user-attachments/assets/286d7d2d-bb6a-4315-bcff-4a6ea7569077">
 
+---
+
 ## **팀 소개** 👩‍💻
 
 > 다양한 배경과 경험을 가진 네 명의 팀원이 Cloud Canvas를 만들고 있습니다.
