@@ -23,10 +23,6 @@ export const ServerNode: Node & {
         server_image_number: undefined,
         server_spec_code: undefined,
     },
-    filterConnectorTypes: {
-        '2d': ['top', 'right', 'bottom', 'left'],
-        '3d': ['top', 'right', 'bottom', 'left'],
-    },
 };
 
 export const ServerRequiredFields = {

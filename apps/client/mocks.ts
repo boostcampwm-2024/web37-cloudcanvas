@@ -1,5 +1,5 @@
-// import { Group, Node } from '@types';
-// import { nanoid } from 'nanoid';
+import { Group, Node } from '@types';
+import { nanoid } from 'nanoid';
 
 const CloudFunctionNode: Node = {
     id: `node-${nanoid()}`,

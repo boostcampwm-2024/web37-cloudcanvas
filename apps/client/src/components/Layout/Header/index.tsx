@@ -44,7 +44,7 @@ const StyledIconButton = styled(IconButton)(({ theme }) => ({
 
 export default () => {
     const { mode: themeMode, setMode: setThemeMode } = useColorScheme();
-    const { dimension, toggleDimension } = useDimensionContext();
+    const { dimension, changeDimension } = useDimensionContext();
     const [openDrawer, setOpenDrawer] = useState(false);
     const [terraformCode, setTerraformCode] = useState('');
     const { selectedResource } = useNCloud();
@@ -66,7 +66,6 @@ export default () => {
         }
 
         const Converter = new TerraformConverter();
-        console.log(nodeProperties);
         Converter.addResourceFromJson([nodeProperties]);
         setTerraformCode(Converter.generate());
         setOpenDrawer(true);
@@ -95,7 +94,9 @@ export default () => {
                     <ToggleButtonGroup
                         value={dimension}
                         exclusive
-                        onChange={toggleDimension}
+                        onChange={() =>
+                            changeDimension(dimension === '2d' ? '3d' : '2d')
+                        }
                         sx={{
                             height: '38px',
                         }}

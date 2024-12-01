@@ -23,10 +23,6 @@ export const LoadBalancerNode: Node & {
         networkType: undefined,
         subnetNoList: undefined,
     },
-    filterConnectorTypes: {
-        '2d': ['top', 'right', 'bottom', 'left'],
-        '3d': ['top', 'right', 'bottom', 'left'],
-    },
 };
 
 export const LoadBalancerRequiredFields = {

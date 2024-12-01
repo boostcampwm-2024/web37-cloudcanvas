@@ -15,9 +15,9 @@ createRoot(document.getElementById('root')!).render(
     <StrictMode>
         <ThemeProvider theme={theme} defaultMode="light">
             <CssBaseline />
-            <SvgProvider>
-                <DimensionProvider>
-                    <GraphProvider>
+            <DimensionProvider>
+                <SvgProvider>
+                    <GraphProvider initialZoomFactor={2}>
                         <GroupProvider>
                             <NodeProvider>
                                 <EdgeProvider>
@@ -28,8 +28,8 @@ createRoot(document.getElementById('root')!).render(
                             </NodeProvider>
                         </GroupProvider>
                     </GraphProvider>
-                </DimensionProvider>
-            </SvgProvider>
+                </SvgProvider>
+            </DimensionProvider>
         </ThemeProvider>
     </StrictMode>,
 );

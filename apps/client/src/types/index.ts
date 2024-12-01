@@ -28,9 +28,6 @@ export type Node = {
     };
     properties: { [id: string]: any };
     connectors: { [key: string]: Point };
-    filterConnectorTypes: {
-        [key: string]: string[];
-    };
 };
 
 export type Edge = {

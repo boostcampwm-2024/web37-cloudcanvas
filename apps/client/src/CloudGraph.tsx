@@ -7,12 +7,13 @@ import GridBackground from '@components/GridBackground';
 import Group from '@components/Group';
 import Node from '@components/Node';
 import { useEdgeContext } from '@contexts/EdgeContext';
+import { useGraphContext } from '@contexts/GraphConetxt';
 import { useGroupContext } from '@contexts/GroupContext';
 import { useNodeContext } from '@contexts/NodeContext';
 import useConnection from '@hooks/useConnection';
 import useGraph from '@hooks/useGraph';
 import useSelection from '@hooks/useSelection';
-import { useEffect, useLayoutEffect } from 'react';
+import { useEffect, useLayoutEffect, useRef } from 'react';
 
 export default () => {
     const {
@@ -25,6 +26,11 @@ export default () => {
         state: { groups },
     } = useGroupContext();
     const {
+        state: { viewBox },
+        dispatch: graphDispatch,
+    } = useGraphContext();
+
+    const {
         selectedNodeId,
         selectedEdge,
         selectedGroupId,
@@ -36,14 +42,13 @@ export default () => {
 
     const {
         svgRef,
-        prevDimension,
         dimension,
         moveNode,
         addEdge,
         splitEdge,
-        updatedPointForDimension,
         moveBendingPointer,
         getGroupBounds,
+        updateNodePointForDimension,
         moveGroup,
         removeNode,
         removeEdge,
@@ -58,6 +63,9 @@ export default () => {
     } = useConnection({
         updateEdgeFn: addEdge,
     });
+
+    const nodesRef = useRef(nodes);
+    const prevDimensionRef = useRef(dimension);
 
     useEffect(() => {
         const handleContextMenu = (e: MouseEvent) => e.preventDefault();
@@ -75,13 +83,20 @@ export default () => {
         };
     }, []);
 
-    useLayoutEffect(() => {
-        if (dimension === prevDimension) return;
+    useEffect(() => {
+        prevDimensionRef.current = dimension;
+    }, [dimension]);
+    [];
 
-        updatedPointForDimension();
+    useEffect(() => {
+        nodesRef.current = nodes;
+    }, [nodes]);
+
+    useLayoutEffect(() => {
+        if (prevDimensionRef.current === dimension) return;
+        updateNodePointForDimension(dimension);
     }, [dimension]);
 
-    console.log(nodes);
     return (
         <Graph>
             <GridBackground />

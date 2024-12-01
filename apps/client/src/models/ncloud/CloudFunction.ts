@@ -18,8 +18,4 @@ export const CloudFunctionNode: Node & {
     properties: {
         ...Networks,
     },
-    filterConnectorTypes: {
-        '2d': ['top', 'right', 'bottom', 'left'],
-        '3d': ['top', 'right', 'bottom', 'left'],
-    },
 };

@@ -19,7 +19,7 @@ const Node3D = ({ properties }: Props) => {
         <svg width="123" height="108.05">
             <path
                 fill="#ccc"
-                stroke="#a4c4e3"
+                stroke="#red"
                 d="M38.23 22.751v53.738l29.756-16.317v-54.6Z"
                 fill-rule="evenodd"
                 stroke-linejoin="round"

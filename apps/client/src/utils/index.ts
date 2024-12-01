@@ -4,6 +4,7 @@ import {
     GRID_3D_WIDTH_SIZE,
 } from '@constants';
 import {
+    Bounds,
     ConnectorMap,
     Dimension,
     GridPoint,
@@ -89,7 +90,8 @@ export const convert3dTo2dPoint = (point: Point) => {
 };
 
 export const convert2dTo3dPoint = (point: Point) => {
-    return gridToScreen3d(screenToGrid2d(point));
+    const { col, row } = screenToGrid2d(point);
+    return gridToScreen3d({ col: col + 1, row });
 };
 
 export const generateRandomRGB = () => {
@@ -158,11 +160,10 @@ const calcConnectorFor3D = (node: Node) => {
     };
 
     return {
-        top,
+        top: base,
         right,
         left,
         bottom,
-        center,
     };
 };
 
@@ -183,11 +184,7 @@ export const getConnectorPoints = (
         };
     }
 
-    const connector = calcConnectorFor3D(node) as any;
-    return node.filterConnectorTypes[dimension].reduce((acc: any, key: any) => {
-        acc[key] = connector[key];
-        return acc;
-    }, {});
+    return calcConnectorFor3D(node) as any;
 };
 
 //INFO: 선분과 내적/외적 사이의 최단 거리를 계산(For Bend Point)
@@ -242,7 +239,7 @@ export const findKeyByValue = (
     return Object.keys(list).find((key) => list[key] === value);
 };
 
-const calcIsoMatrixPoint = (point: Point) => {
+export const calcIsoMatrixPoint = (point: Point) => {
     const isoMatrix = new DOMMatrix()
         .rotate(30)
         .skewX(-30)

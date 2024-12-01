@@ -23,7 +23,13 @@ const initialState = {
     viewBox: { x: 0, y: 0, width: 0, height: 0 },
 };
 
-export const GraphProvider = ({ children }: { children: ReactNode }) => {
+export const GraphProvider = ({
+    children,
+    initialZoomFactor = 2,
+}: {
+    children: ReactNode;
+    initialZoomFactor: number;
+}) => {
     const [state, dispatch] = useReducer(graphReducer, initialState);
 
     useLayoutEffect(() => {
@@ -35,8 +41,8 @@ export const GraphProvider = ({ children }: { children: ReactNode }) => {
                 payload: {
                     x: state.viewBox.x || 0,
                     y: state.viewBox.y || 0,
-                    width: state.viewBox.width || svg.clientWidth,
-                    height: state.viewBox.height || svg.clientHeight,
+                    width: (state.viewBox.width || svg.clientWidth) * 2,
+                    height: (state.viewBox.height || svg.clientHeight) * 2,
                 },
             });
         };

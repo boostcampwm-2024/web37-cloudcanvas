@@ -35,9 +35,7 @@ export const computeBounds = (
             width: maxX - minX + padding * 2,
             height: maxY - minY + padding * 2,
         };
-    }
-
-    if (dimension === '3d') {
+    } else {
         //2d
         nodes = nodes.map((node) => {
             const offset = getNodeOffsetForDimension(

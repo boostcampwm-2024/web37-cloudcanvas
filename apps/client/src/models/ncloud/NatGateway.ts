@@ -16,10 +16,6 @@ export const NatGatewayNode: Node = {
     properties: {
         ...Networks,
     },
-    filterConnectorTypes: {
-        '2d': ['top', 'right', 'bottom', 'left'],
-        '3d': ['center'],
-    },
 };
 
 export const NatGatewayRequiredFields = {};
