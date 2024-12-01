@@ -91,7 +91,7 @@ const Node2D = ({ properties }: Props) => {
             <svg x={-150} y={-110} overflow="visible">
                 <g
                     fill="#693cc5"
-                    fill-opacity="1"
+                    fillOpacity="1"
                     stroke="none"
                     transform="scale(1.25) "
                 >
@@ -118,7 +118,7 @@ const Node2D = ({ properties }: Props) => {
                 >
                     <text
                         stroke="#ffffff"
-                        stroke-width="4"
+                        strokeWidth="4"
                         style={{ userSelect: 'none' }}
                     >
                         <tspan>ECS Cluster</tspan>
@@ -130,7 +130,7 @@ const Node2D = ({ properties }: Props) => {
             </svg>
             <polygon
                 points="0 0, 360 0, 360 360, 0 360"
-                stroke-width="4"
+                strokeWidth="4"
                 stroke="#4286c5"
                 fill="none"
             ></polygon>

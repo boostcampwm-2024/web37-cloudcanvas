@@ -21,8 +21,6 @@ const nodeFactory = (node: Node) => {
             return <MySQLDBNode {...node} />;
         case 'load-balancer':
             return <LoadBalancerNode {...node} />;
-        case 'object-storage':
-            return <ObjectStorageNode {...node} />;
         case 'container-registry':
             return <ContainerRegistryNode {...node} />;
         case 'nat-gateway':
