@@ -160,7 +160,7 @@ const calcConnectorFor3D = (node: Node) => {
     };
 
     return {
-        top: base,
+        top,
         right,
         left,
         bottom,
