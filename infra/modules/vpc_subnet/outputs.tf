@@ -4,11 +4,11 @@ output "vpc_id" {
 }
 
 output "public_subnets" {
-    description = "public subnets id"
+    description = "public subnets infos"
     value = ncloud_subnet.public_subnets[*]
 }
 
 output "private_subnets" {
-    description = "public subnets id"
+    description = "public subnets infos"
     value = ncloud_subnet.private_subnets[*]
 }
