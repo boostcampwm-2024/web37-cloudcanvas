@@ -18,19 +18,19 @@ export default ({ bounds, properties, color, children }: Props) => {
     const bottomLeftGrid = screenToGrid2d({ x: 0, y: bounds.height });
 
     const point1 = gridToScreen3d({
-        col: topLeftGrid.col,
+        col: topLeftGrid.col + 1,
         row: topLeftGrid.row,
     });
     const point2 = gridToScreen3d({
-        col: topRightGrid.col,
+        col: topRightGrid.col + 1,
         row: topRightGrid.row,
     });
     const point3 = gridToScreen3d({
-        col: bottomRightGrid.col,
+        col: bottomRightGrid.col + 1,
         row: bottomRightGrid.row,
     });
     const point4 = gridToScreen3d({
-        col: bottomLeftGrid.col,
+        col: bottomLeftGrid.col + 1,
         row: bottomLeftGrid.row,
     });
 
