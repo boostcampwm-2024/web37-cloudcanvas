@@ -12,10 +12,11 @@ import { SelectionProvider } from '@contexts/SelectionContext';
 import { SvgProvider } from '@contexts/SvgContext';
 import useFetch from '@hooks/useFetch';
 import Box from '@mui/material/Box';
-import { ReactNode, useEffect, useLayoutEffect } from 'react';
+import { ReactNode, useLayoutEffect } from 'react';
 import { urls } from './apis';
 
-const BASE_URL = 'http://localhost:3000';
+const BASE_URL = import.meta.env.VITE_API_URL;
+
 const CloudGraphProvider = ({ children }: { children: ReactNode }) => {
     const { execute: postLogin } = useFetch(urls(BASE_URL, 'login'), {
         method: 'POST',
