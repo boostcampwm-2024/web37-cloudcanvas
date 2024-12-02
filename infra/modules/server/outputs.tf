@@ -1,4 +1,9 @@
-output "servers_login_key" {
-  value     = ncloud_login_key.servers_login_key.private_key
-  sensitive = true
+output "server_publics" {
+  value = ncloud_server.public_servers[*]
+  description = "public server infos"
+}
+
+output "server_privates" {
+  value = ncloud_server.private_servers[*]
+  description = "private server infos"
 }
