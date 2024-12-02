@@ -6,6 +6,7 @@ import Graph from '@components/Graph';
 import GridBackground from '@components/GridBackground';
 import Group from '@components/Group';
 import Node from '@components/Node';
+import NodeActions from '@components/NodeActions';
 import { useEdgeContext } from '@contexts/EdgeContext';
 import { useGraphContext } from '@contexts/GraphConetxt';
 import { useGroupContext } from '@contexts/GroupContext';
@@ -13,10 +14,7 @@ import { useNodeContext } from '@contexts/NodeContext';
 import useConnection from '@hooks/useConnection';
 import useGraph from '@hooks/useGraph';
 import useSelection from '@hooks/useSelection';
-import { Box } from '@mui/material';
-import { useEffect, useLayoutEffect, useMemo, useRef } from 'react';
-import SpeedDial from '@components/SpeedDial';
-import NodeActions from '@components/NodeActions';
+import { useEffect, useLayoutEffect, useRef } from 'react';
 
 export default () => {
     const {

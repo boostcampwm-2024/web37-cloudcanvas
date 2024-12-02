@@ -11,7 +11,7 @@ export const MySQLDBNode: Node = {
     type: 'db-mysql',
     size: {
         '2d': { width: 90, height: 90 },
-        '3d': { width: 128, height: 137.5, depth: 82, offset: 0 },
+        '3d': { width: 128, height: 137.5, offset: 0 },
     },
     properties: {
         ...Networks,

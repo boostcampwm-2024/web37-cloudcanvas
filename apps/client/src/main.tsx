@@ -2,15 +2,36 @@ import { CssBaseline, ThemeProvider } from '@mui/material';
 import theme from '@theme';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { App, CloudGraphProvider } from './App.tsx';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { App } from './App.tsx';
+import Root from './Root.tsx';
+import { rootLoader } from './apis/loaders.ts';
 
+const router = createBrowserRouter([
+    {
+        element: <Root />,
+        loader: rootLoader,
+        children: [
+            {
+                path: '/',
+                element: <App />,
+            },
+            {
+                path: ':id',
+                element: <App />,
+            },
+            {
+                path: '*',
+                element: <div>Not Found</div>,
+            },
+        ],
+    },
+]);
 createRoot(document.getElementById('root')!).render(
     <StrictMode>
         <ThemeProvider theme={theme} defaultMode="light">
             <CssBaseline />
-            <CloudGraphProvider>
-                <App />
-            </CloudGraphProvider>
+            <RouterProvider router={router} />
         </ThemeProvider>
     </StrictMode>,
 );
