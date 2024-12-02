@@ -10,7 +10,12 @@ import {
     updateNearestConnectorPair,
 } from '@helpers/edge';
 import { computeBounds } from '@helpers/group';
-import { adjustNodePointForDimension, alignNodePoint } from '@helpers/node';
+import {
+    adjustNodePointForDimension,
+    alignNodePoint,
+    calculateNodeBoundingBox,
+} from '@helpers/node';
+import { calculateViewBox } from '@helpers/viewbox';
 import useSelection from '@hooks/useSelection';
 import { Connection, Dimension, Edge, Group, Node, Point } from '@types';
 import {
@@ -165,60 +170,20 @@ export default () => {
             };
         }, {});
 
-        // const updatedEdgePairs = Object.entries(updatedNodes).reduce(
-        //     (acc, [id, node]) => {
-        //         const connectedEdges = Object.values(updatedEdges).filter(
-        //             (edge) => edge.source.id === id || edge.target.id === id,
-        //         );
-        //         const result = updateNearestConnectorPair(
-        //             node,
-        //             updatedNodes,
-        //             connectedEdges as Edge[],
-        //         );
-        //         return {
-        //             ...acc,
-        //             ...result,
-        //         };
-        //     },
-        //     {},
-        // );
-
         //INFO: update ViewBox
-        if (Object.keys(updatedNodes).length === 0) return;
-        const updatedNodesArr = Object.values(updatedNodes);
-        const minX = Math.min(
-            ...updatedNodesArr.map((node: Node) => node.point.x),
-        );
-        const minY = Math.min(
-            ...updatedNodesArr.map((node: Node) => node.point.y),
-        );
+        if (Object.keys(updatedNodes).length === 0 || !svgRef.current) return;
+        const allNodeBounds = calculateNodeBoundingBox(updatedNodes, dimension);
 
-        const maxX = Math.max(
-            ...updatedNodesArr.map(
-                (node: Node) => node.point.x + node.size[dimension].width,
-            ),
-        );
-        const maxY = Math.max(
-            ...updatedNodesArr.map(
-                (node: Node) => node.point.y + node.size[dimension].height,
-            ),
-        );
-
-        const nodesWidth = maxX - minX;
-        const nodesHeight = maxY - minY;
-
-        const centerX = minX + nodesWidth / 2;
-        const centerY = minY + nodesHeight / 2;
-
-        const paddingWidth = (viewBox.x + viewBox.width) / 2;
-        const paddingHeight = (viewBox.y + viewBox.height) / 2;
+        const paddingWidth = svgRef.current.clientWidth ?? 0;
+        const paddingHeight = svgRef.current?.clientHeight ?? 0;
 
         graphDispatch({
             type: 'SET_VIEWBOX',
             payload: {
-                ...viewBox,
-                x: centerX - paddingWidth,
-                y: centerY - paddingHeight,
+                x: (allNodeBounds?.minX || 0) - paddingWidth,
+                y: (allNodeBounds?.minY || 0) - paddingHeight,
+                width: viewBox.width,
+                height: viewBox.height,
             },
         });
 

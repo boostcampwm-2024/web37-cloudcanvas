@@ -41,8 +41,12 @@ export const GraphProvider = ({
                 payload: {
                     x: state.viewBox.x || 0,
                     y: state.viewBox.y || 0,
-                    width: (state.viewBox.width || svg.clientWidth) * 2,
-                    height: (state.viewBox.height || svg.clientHeight) * 2,
+                    width:
+                        (state.viewBox.width || svg.clientWidth) *
+                        initialZoomFactor,
+                    height:
+                        (state.viewBox.height || svg.clientHeight) *
+                        initialZoomFactor,
                 },
             });
         };
