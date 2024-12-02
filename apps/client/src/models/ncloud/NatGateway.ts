@@ -2,20 +2,20 @@ import { GraphNode } from '@helpers/node';
 import { Node } from '@types';
 import { Networks, NetworksProp } from './Networks';
 
-export interface CloudFunctionProp extends NetworksProp {
+export interface NatGatewayProp extends NetworksProp {
     //TODO:
 }
 
-export const CloudFunctionNode: Node & {
-    properties: CloudFunctionProp;
-} = {
+export const NatGatewayNode: Node = {
     ...GraphNode,
-    type: 'cloud-function',
+    type: 'nat-gateway',
     size: {
         '2d': { width: 90, height: 90 },
-        '3d': { width: 96, height: 113.438, depth: 58, offset: 12.5 },
+        '3d': { width: 123, height: 108.05, depth: 74, offset: 0 },
     },
     properties: {
         ...Networks,
     },
 };
+
+export const NatGatewayRequiredFields = {};

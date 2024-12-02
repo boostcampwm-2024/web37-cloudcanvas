@@ -3,7 +3,16 @@ import {
     GRID_3D_HEIGHT_SIZE,
     GRID_3D_WIDTH_SIZE,
 } from '@constants';
-import { ConnectorMap, Dimension, GridPoint, Node, Point } from '@types';
+import {
+    Bounds,
+    ConnectorMap,
+    Dimension,
+    GridPoint,
+    Node,
+    Point,
+    Size,
+    Size3D,
+} from '@types';
 
 export const getDistance = (point1: Point, point2: Point) => {
     return Math.sqrt((point1.x - point2.x) ** 2 + (point1.y - point2.y) ** 2);
@@ -81,7 +90,8 @@ export const convert3dTo2dPoint = (point: Point) => {
 };
 
 export const convert2dTo3dPoint = (point: Point) => {
-    return gridToScreen3d(screenToGrid2d(point));
+    const { col, row } = screenToGrid2d(point);
+    return gridToScreen3d({ col: col + 1, row });
 };
 
 export const generateRandomRGB = () => {
@@ -91,31 +101,90 @@ export const generateRandomRGB = () => {
     return `rgb(${r},${g},${b})`;
 };
 
+export const get3DBasePoint = (point: Point, size: Size3D) => {
+    const grid = screenToGrid3d({
+        x: point.x,
+        y: point.y,
+    });
+
+    const ratio = size.width / 128;
+    const base = gridToScreen3d({
+        col: grid.col + (ratio > 1 ? 1 : ratio),
+        row: grid.row,
+    });
+
+    return {
+        x: base.x,
+        y: point.y + size.height + (size.offset ?? 0) - 74,
+    };
+};
+
+const calcConnectorFor3D = (node: Node) => {
+    const point = node.point;
+    const nodeSize = node.size['3d'] as Size3D;
+    const base = get3DBasePoint(point, nodeSize);
+
+    const baseBottom = {
+        x: base.x,
+        y: base.y - nodeSize.offset - nodeSize.depth + 74,
+    };
+
+    const center = {
+        x: base.x,
+        y: point.y + (baseBottom.y - point.y) / 2,
+    };
+
+    const _ratio = nodeSize.width / 128;
+    const ratio = _ratio < 1 ? 1 : _ratio;
+
+    const GRID_WIDTH_QUARTER_SIZE = GRID_3D_WIDTH_SIZE / 4;
+    const GRID_HEIGHT_QUARTER_SIZE = GRID_3D_HEIGHT_SIZE / 4;
+    const top = {
+        x: center.x + GRID_WIDTH_QUARTER_SIZE * ratio,
+        y: center.y - GRID_HEIGHT_QUARTER_SIZE * ratio,
+    };
+
+    const left = {
+        x: center.x - GRID_WIDTH_QUARTER_SIZE * ratio,
+        y: center.y - GRID_HEIGHT_QUARTER_SIZE * ratio,
+    };
+
+    const right = {
+        x: center.x + GRID_WIDTH_QUARTER_SIZE * ratio,
+        y: center.y + GRID_HEIGHT_QUARTER_SIZE * ratio,
+    };
+
+    const bottom = {
+        x: center.x - GRID_WIDTH_QUARTER_SIZE * ratio,
+        y: center.y + GRID_HEIGHT_QUARTER_SIZE * ratio,
+    };
+
+    return {
+        top,
+        right,
+        left,
+        bottom,
+    };
+};
+
 export const getConnectorPoints = (
     node: Node,
     dimension: Dimension,
-): Omit<ConnectorMap, 'center'> => {
+): ConnectorMap => {
     const point = node.point;
-    const { width, height } = node.size[dimension];
-    const depth = GRID_3D_HEIGHT_SIZE / 2;
-    return {
-        top: { x: point.x + width / 2, y: point.y },
-        right:
-            dimension === '2d'
-                ? { x: point.x + width, y: point.y + height / 2 }
-                : {
-                      x: point.x + width,
-                      y: point.y + (height - depth) / 2,
-                  },
-        left:
-            dimension === '2d'
-                ? { x: point.x, y: point.y + height / 2 }
-                : {
-                      x: point.x,
-                      y: point.y + (height - depth) / 2,
-                  },
-        bottom: { x: point.x + width / 2, y: point.y + height },
-    };
+    const nodeSize = node.size[dimension];
+    const { width, height } = nodeSize;
+
+    if (dimension === '2d') {
+        return {
+            top: { x: point.x + width / 2, y: point.y },
+            right: { x: point.x + width, y: point.y + height / 2 },
+            left: { x: point.x, y: point.y + height / 2 },
+            bottom: { x: point.x + width / 2, y: point.y + height },
+        };
+    }
+
+    return calcConnectorFor3D(node) as any;
 };
 
 //INFO: 선분과 내적/외적 사이의 최단 거리를 계산(For Bend Point)
@@ -168,4 +237,14 @@ export const findKeyByValue = (
     list: { [id: string]: string },
 ) => {
     return Object.keys(list).find((key) => list[key] === value);
+};
+
+export const calcIsoMatrixPoint = (point: Point) => {
+    const isoMatrix = new DOMMatrix()
+        .rotate(30)
+        .skewX(-30)
+        .scale(1, 0.8602)
+        .translate(point.x, point.y);
+
+    return isoMatrix; // 결과 행렬 반환
 };

@@ -22,21 +22,21 @@ export const NCLOUD_SERVICES = [
             },
         ],
     },
-    // {
-    //     title: 'container',
-    //     items: [
-    // {
-    //     title: 'Container Registry',
-    //     desc: 'Container Registry',
-    //     type: 'container-registry',
-    // },
-    //         {
-    //             title: 'Kubernetes',
-    //             desc: 'NCloud Kubernetes Service',
-    //             type: 'Kubernetes',
-    //         },
-    //     ],
-    // },
+    {
+        title: 'container',
+        items: [
+            {
+                title: 'Container Registry',
+                desc: 'Container Registry',
+                type: 'container-registry',
+            },
+            // {
+            //     title: 'Kubernetes',
+            //     desc: 'NCloud Kubernetes Service',
+            //     type: 'Kubernetes',
+            // },
+        ],
+    },
     {
         title: 'storage',
         items: [
@@ -85,6 +85,7 @@ export const NCLOUD_SERVICES = [
                 desc: 'load balancing',
                 type: 'load-balancer',
             },
+            { title: 'Nat Gateway', desc: 'nat gateway', type: 'nat-gateway' },
         ],
     },
 ];

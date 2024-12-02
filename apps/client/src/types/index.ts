@@ -7,9 +7,12 @@ export type GridPoint = { col: number; row: number };
 export type Size = {
     width: number;
     height: number;
-    offset?: number;
-    depth?: number;
 };
+
+export type Size3D = {
+    depth: number;
+    offset: number;
+} & Size;
 
 export type ViewBox = Point & Size;
 
@@ -21,7 +24,7 @@ export type Node = {
     point: Point;
     size: {
         '2d': Size;
-        '3d': Size;
+        '3d': Size3D;
     };
     properties: { [id: string]: any };
     connectors: { [key: string]: Point };

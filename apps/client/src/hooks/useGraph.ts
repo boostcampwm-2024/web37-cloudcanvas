@@ -1,5 +1,6 @@
 import { useDimensionContext } from '@contexts/DimensionContext';
 import { useEdgeContext } from '@contexts/EdgeContext';
+import { useGraphContext } from '@contexts/GraphConetxt';
 import { useGroupContext } from '@contexts/GroupContext';
 import { useNodeContext } from '@contexts/NodeContext';
 import { useSvgContext } from '@contexts/SvgContext';
@@ -9,13 +10,9 @@ import {
     updateNearestConnectorPair,
 } from '@helpers/edge';
 import { computeBounds } from '@helpers/group';
-import {
-    adjustNodePointForDimension,
-    alignNodePoint,
-    getNodeBounds,
-} from '@helpers/node';
+import { adjustNodePointForDimension, alignNodePoint } from '@helpers/node';
 import useSelection from '@hooks/useSelection';
-import { Connection, Edge, Group, Node, Point } from '@types';
+import { Connection, Dimension, Edge, Group, Node, Point } from '@types';
 import {
     alignPoint2d,
     alignPoint3d,
@@ -40,8 +37,13 @@ export default () => {
         dispatch: groupDispatch,
     } = useGroupContext();
 
+    const {
+        state: { viewBox },
+        dispatch: graphDispatch,
+    } = useGraphContext();
+
     const { clearSelection } = useSelection();
-    const { dimension, prevDimension } = useDimensionContext();
+    const { dimension } = useDimensionContext();
     const { svgRef } = useSvgContext();
 
     //INFO: Node
@@ -118,26 +120,115 @@ export default () => {
         clearSelection();
     };
 
-    const updateNodePointForDimension = () => {
-        const updatedNodes = Object.entries(nodes).reduce((acc, [id, node]) => {
-            const adjustedPoint = adjustNodePointForDimension(node, dimension);
-            const connectors = getConnectorPoints(
-                { ...node, point: adjustedPoint },
-                dimension,
+    //TODO: Refactoring필요
+    const updateNodePointForDimension = (dimension: Dimension) => {
+        //INFO: update node
+        const updatedNodes: Record<string, Node> = Object.entries(nodes).reduce(
+            (acc, [id, node]) => {
+                const adjustedPoint = adjustNodePointForDimension(
+                    node.point,
+                    node.size['3d'],
+                    dimension,
+                );
+
+                const connectors = getConnectorPoints(
+                    { ...node, point: adjustedPoint },
+                    dimension,
+                );
+
+                return {
+                    ...acc,
+                    [id]: {
+                        ...node,
+                        point: adjustedPoint,
+                        connectors,
+                    },
+                };
+            },
+            {},
+        );
+
+        //INFO:update edge
+        let updatedEdges = Object.entries(edges).reduce((acc, [id, edge]) => {
+            const adjustedBendingPoints = edge.bendingPoints.map((point) =>
+                dimension === '2d'
+                    ? convert3dTo2dPoint(point)
+                    : convert2dTo3dPoint(point),
             );
+
             return {
                 ...acc,
                 [id]: {
-                    ...node,
-                    point: adjustedPoint,
-                    connectors,
+                    ...edge,
+                    bendingPoints: adjustedBendingPoints,
                 },
             };
         }, {});
 
+        // const updatedEdgePairs = Object.entries(updatedNodes).reduce(
+        //     (acc, [id, node]) => {
+        //         const connectedEdges = Object.values(updatedEdges).filter(
+        //             (edge) => edge.source.id === id || edge.target.id === id,
+        //         );
+        //         const result = updateNearestConnectorPair(
+        //             node,
+        //             updatedNodes,
+        //             connectedEdges as Edge[],
+        //         );
+        //         return {
+        //             ...acc,
+        //             ...result,
+        //         };
+        //     },
+        //     {},
+        // );
+
+        //INFO: update ViewBox
+        const updatedNodesArr = Object.values(updatedNodes);
+        const minX = Math.min(
+            ...updatedNodesArr.map((node: Node) => node.point.x),
+        );
+        const minY = Math.min(
+            ...updatedNodesArr.map((node: Node) => node.point.y),
+        );
+
+        const maxX = Math.max(
+            ...updatedNodesArr.map(
+                (node: Node) => node.point.x + node.size[dimension].width,
+            ),
+        );
+        const maxY = Math.max(
+            ...updatedNodesArr.map(
+                (node: Node) => node.point.y + node.size[dimension].height,
+            ),
+        );
+
+        const nodesWidth = maxX - minX;
+        const nodesHeight = maxY - minY;
+
+        const centerX = minX + nodesWidth / 2;
+        const centerY = minY + nodesHeight / 2;
+
+        const paddingWidth = (viewBox.x + viewBox.width) / 2;
+        const paddingHeight = (viewBox.y + viewBox.height) / 2;
+
+        graphDispatch({
+            type: 'SET_VIEWBOX',
+            payload: {
+                ...viewBox,
+                x: centerX - paddingWidth,
+                y: centerY - paddingHeight,
+            },
+        });
+
         nodeDispatch({
             type: 'UPDATE_NODES',
             payload: updatedNodes,
+        });
+
+        edgeDispatch({
+            type: 'UPDATE_EDGES',
+            payload: updatedEdges,
         });
     };
 
@@ -256,29 +347,6 @@ export default () => {
         });
     };
 
-    const updateEdgePointForDimension = () => {
-        const updatedEdges = Object.entries(edges).reduce((acc, [id, edge]) => {
-            const adjustedBendingPoints = edge.bendingPoints.map((point) =>
-                dimension === '2d'
-                    ? convert3dTo2dPoint(point)
-                    : convert2dTo3dPoint(point),
-            );
-
-            return {
-                ...acc,
-                [id]: {
-                    ...edge,
-                    bendingPoints: adjustedBendingPoints,
-                },
-            };
-        }, {});
-
-        edgeDispatch({
-            type: 'UPDATE_EDGES',
-            payload: updatedEdges,
-        });
-    };
-
     //INFO: Group
 
     const addGroup = (group: Group) => {
@@ -374,36 +442,44 @@ export default () => {
 
         const recursiveGroupBounds = (group: Group): any => {
             if (group.childGroupIds.length === 0) {
-                const nodesBounds = group.nodeIds.map((nodeId) =>
-                    getNodeBounds(nodes[nodeId], dimension),
-                );
+                const innerNodes = group.nodeIds.map((nodeId) => nodes[nodeId]);
 
-                return computeBounds(nodesBounds, dimension);
+                return computeBounds(innerNodes, dimension, 2);
             }
-            const childGroupsBounds = group.childGroupIds.map((childGroupId) =>
-                recursiveGroupBounds(groups[childGroupId]),
-            );
+            const childGroups = group.childGroupIds.map((childGroupId) => {
+                const bounds = recursiveGroupBounds(groups[childGroupId]);
+                //TODO: Group 생성시 bounds 넣어줘야될 것 같음
+                return {
+                    point: {
+                        x: bounds.x,
+                        y: bounds.y,
+                    },
+                    size: {
+                        '2d': {
+                            width: bounds.width,
+                            height: bounds.height,
+                        },
+                        '3d': {
+                            width: 0,
+                            height: 0,
+                        },
+                    },
+                };
+            }) as Node[];
 
-            const currentNodesBounds = group.nodeIds.map((nodeId) =>
-                getNodeBounds(nodes[nodeId], dimension),
-            );
+            const currentNodes = group.nodeIds.map((nodeId) => nodes[nodeId]);
 
             return computeBounds(
-                [...currentNodesBounds, ...childGroupsBounds],
+                [...currentNodes, ...childGroups],
                 dimension,
+                2,
             );
         };
 
         return recursiveGroupBounds(group);
     };
 
-    const updatedPointForDimension = () => {
-        updateNodePointForDimension();
-        updateEdgePointForDimension();
-    };
-
     return {
-        prevDimension,
         dimension,
         svgRef,
         nodes,
@@ -415,6 +491,7 @@ export default () => {
         addEdge,
         removeEdge,
         splitEdge,
+        updateNodePointForDimension,
         moveBendingPointer,
         addGroup,
         addChildGroup,
@@ -426,7 +503,6 @@ export default () => {
         moveGroup,
         removeGroup,
         removeNodeFromGroup,
-        updatedPointForDimension,
         excludeNodeFromGroup,
     };
 };

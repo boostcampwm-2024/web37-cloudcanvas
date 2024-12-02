@@ -15,7 +15,7 @@ export const ServerNode: Node & {
     type: 'server',
     size: {
         '2d': { width: 90, height: 90 },
-        '3d': { width: 128, height: 111 },
+        '3d': { width: 128, height: 111, depth: 37, offset: 0 },
     },
     properties: {
         ...Networks,
