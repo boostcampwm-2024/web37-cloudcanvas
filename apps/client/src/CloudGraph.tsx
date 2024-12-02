@@ -13,7 +13,10 @@ import { useNodeContext } from '@contexts/NodeContext';
 import useConnection from '@hooks/useConnection';
 import useGraph from '@hooks/useGraph';
 import useSelection from '@hooks/useSelection';
-import { useEffect, useLayoutEffect, useRef } from 'react';
+import { Box } from '@mui/material';
+import { useEffect, useLayoutEffect, useMemo, useRef } from 'react';
+import SpeedDial from '@components/SpeedDial';
+import NodeActions from '@components/NodeActions';
 
 export default () => {
     const {
@@ -70,18 +73,30 @@ export default () => {
     useEffect(() => {
         const handleContextMenu = (e: MouseEvent) => e.preventDefault();
         const handleMouseDown = (e: MouseEvent) => {
-            if (!(e.target as HTMLElement).closest('.graph-ignore-select'))
+            if (
+                !(e.target as HTMLElement).closest('.graph-ignore-select') ||
+                isConnecting
+            )
                 clearSelection();
+        };
+        const handleClick = (e: MouseEvent) => {
+            if (isConnecting) {
+                closeConnection();
+                clearSelection();
+                document.body.style.cursor = 'default';
+            }
         };
 
         document.addEventListener('contextmenu', handleContextMenu);
         document.addEventListener('mousedown', handleMouseDown);
+        document.addEventListener('click', handleClick);
 
         return () => {
             document.removeEventListener('contextmenu', handleContextMenu);
             document.removeEventListener('mousedown', handleMouseDown);
+            document.removeEventListener('click', handleClick);
         };
-    }, []);
+    }, [isConnecting, selectedNodeId]);
 
     useEffect(() => {
         prevDimensionRef.current = dimension;
@@ -98,76 +113,82 @@ export default () => {
     }, [dimension]);
 
     return (
-        <Graph>
-            <GridBackground />
-            {Object.values(groups).map((group) => (
-                <Group
-                    key={group.id}
-                    group={group}
-                    bounds={getGroupBounds(group.id)}
-                    onMove={moveGroup}
-                />
-            ))}
-            {Object.values(nodes).map((node) => (
-                <g key={node.id}>
-                    <Node
-                        node={node}
-                        isSelected={selectedNodeId === node.id}
-                        onMove={moveNode}
-                        onSelect={selectNode}
-                        onRemove={removeNode}
+        <>
+            <Graph>
+                <GridBackground />
+                {Object.values(groups).map((group) => (
+                    <Group
+                        key={group.id}
+                        group={group}
+                        bounds={getGroupBounds(group.id)}
+                        onMove={moveGroup}
                     />
-                    <Connectors
-                        node={node}
-                        isSelected={selectedNodeId === node.id}
-                        isConnecting={isConnecting}
-                        onOpenConnection={openConnection}
-                        onConnectConnection={connectConnection}
-                        onCloseConnection={closeConnection}
-                    />
-                </g>
-            ))}
-            {connection && (
-                <Connection
-                    source={connection.source}
-                    target={connection.target}
-                />
-            )}
-
-            {edges &&
-                Object.values(edges).map((edge) => (
-                    <g key={edge.id}>
-                        <Edge
-                            edge={edge}
-                            selectedEdge={selectedEdge}
-                            sourceConnector={
-                                nodes[edge.source.id].connectors[
-                                    edge.source.connectorType
-                                ]
-                            }
-                            targetConnector={
-                                nodes[edge.target.id].connectors[
-                                    edge.target.connectorType
-                                ]
-                            }
-                            onSelectEntire={selectEntireEdge}
-                            onSelectSegment={selectSegEdge}
-                            onSplit={splitEdge}
-                            onRemove={removeEdge}
-                        />
-                        {edge.bendingPoints.map((point, index) => (
-                            <BendingPointer
-                                key={`${edge.id}-${index}`}
-                                edgeId={edge.id}
-                                point={point}
-                                index={index}
-                                onMove={(newPoint) =>
-                                    moveBendingPointer(edge.id, index, newPoint)
+                ))}
+                {edges &&
+                    Object.values(edges).map((edge) => (
+                        <g key={edge.id}>
+                            <Edge
+                                edge={edge}
+                                selectedEdge={selectedEdge}
+                                sourceConnector={
+                                    nodes[edge.source.id].connectors[
+                                        edge.source.connectorType
+                                    ]
                                 }
+                                targetConnector={
+                                    nodes[edge.target.id].connectors[
+                                        edge.target.connectorType
+                                    ]
+                                }
+                                onSelectEntire={selectEntireEdge}
+                                onSelectSegment={selectSegEdge}
+                                onSplit={splitEdge}
+                                onRemove={removeEdge}
                             />
-                        ))}
+                            {edge.bendingPoints.map((point, index) => (
+                                <BendingPointer
+                                    key={`${edge.id}-${index}`}
+                                    edgeId={edge.id}
+                                    point={point}
+                                    index={index}
+                                    onMove={(newPoint) =>
+                                        moveBendingPointer(
+                                            edge.id,
+                                            index,
+                                            newPoint,
+                                        )
+                                    }
+                                />
+                            ))}
+                        </g>
+                    ))}
+                {connection && (
+                    <Connection
+                        source={connection.source}
+                        target={connection.target}
+                    />
+                )}
+                {Object.values(nodes).map((node) => (
+                    <g key={node.id}>
+                        <Node
+                            node={node}
+                            isSelected={selectedNodeId === node.id}
+                            onMove={moveNode}
+                            onSelect={selectNode}
+                            onRemove={removeNode}
+                        />
+                        <Connectors node={node} />
                     </g>
                 ))}
-        </Graph>
+            </Graph>
+            {selectedNodeId && (
+                <NodeActions
+                    node={nodes[selectedNodeId]}
+                    isConnecting={isConnecting}
+                    onOpenConnection={openConnection}
+                    onConnectConnection={connectConnection}
+                />
+            )}
+        </>
     );
 };

@@ -1,8 +1,12 @@
+import { urls } from '@/src/apis';
 import { ServerRequiredFields } from '@/src/models/ncloud/Server';
 import { transformObject, validateObject } from '@/src/models/ncloud/utils';
 import CodeDrawer from '@components/CodeDrawer';
 import { useDimensionContext } from '@contexts/DimensionContext';
+import { useEdgeContext } from '@contexts/EdgeContext';
+import { useGroupContext } from '@contexts/GroupContext';
 import { useNodeContext } from '@contexts/NodeContext';
+import useFetch from '@hooks/useFetch';
 import useNCloud from '@hooks/useNCloud';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import GitHubIcon from '@mui/icons-material/GitHub';
@@ -51,6 +55,26 @@ export default () => {
     const {
         state: { nodes },
     } = useNodeContext();
+    const {
+        state: { groups },
+    } = useGroupContext();
+    const {
+        state: { edges },
+    } = useEdgeContext();
+
+    const BASE_URL = import.meta.env.VITE_API_URL;
+    const { execute } = useFetch(urls(BASE_URL, 'privateArchi', ''), {
+        method: 'POST',
+        body: {
+            cost: 273,
+            architecture: {
+                nodes,
+                groups,
+                edges,
+            },
+            title: 'fucking',
+        },
+    });
 
     const handleConvert = () => {
         if (!selectedResource) return;
@@ -76,6 +100,10 @@ export default () => {
 
     const openWindow = (url: string) => window.open(url, '_blank')?.focus();
 
+    const handleSave = () => {
+        execute().then((res) => console.log(res));
+    };
+
     return (
         <>
             <StyledBox>
@@ -85,6 +113,7 @@ export default () => {
                     </Typography>
                 </Stack>
                 <Stack direction="row" spacing={1} alignItems="center">
+                    <Button onClick={handleSave}>Save</Button>
                     <Button
                         className="graph-ignore-select"
                         onClick={handleConvert}

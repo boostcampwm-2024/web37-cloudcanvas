@@ -3,7 +3,7 @@ import { useSvgContext } from '@contexts/SvgContext';
 import useKey from '@hooks/useKey';
 import { Point } from '@types';
 import { getSvgPoint } from '@utils';
-import { PropsWithChildren, useRef } from 'react';
+import { PropsWithChildren, useRef, useEffect } from 'react';
 
 export default ({ children }: PropsWithChildren) => {
     const { svgRef } = useSvgContext();
@@ -24,6 +24,14 @@ export default ({ children }: PropsWithChildren) => {
 
     const MIN_ZOOM = 0.2;
     const MAX_ZOOM = 1;
+
+    const zoomEndTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+    const handleZoomEnd = () => {
+        document.body.style.cursor = 'default';
+        console.log('Zoom action ended.');
+    };
+
     const zoom = (wheelY: number, point: Point) => {
         if (!svgRef.current) return;
 
@@ -85,8 +93,20 @@ export default ({ children }: PropsWithChildren) => {
     const handleWheel = (e: React.WheelEvent<SVGSVGElement>) => {
         const { deltaY, clientX, clientY } = e;
         zoom(deltaY, { x: clientX, y: clientY });
-        if (deltaY > 0) document.body.style.cursor = 'zoom-out';
-        else document.body.style.cursor = 'zoom-in';
+        if (deltaY > 0) {
+            document.body.style.cursor = 'zoom-out';
+        } else {
+            document.body.style.cursor = 'zoom-in';
+        }
+
+        if (zoomEndTimer.current) {
+            clearTimeout(zoomEndTimer.current);
+        }
+
+        zoomEndTimer.current = setTimeout(() => {
+            handleZoomEnd();
+            zoomEndTimer.current = null;
+        }, 200);
     };
 
     const handleMouseDown = (e: React.MouseEvent<SVGSVGElement>) => {
@@ -106,6 +126,14 @@ export default ({ children }: PropsWithChildren) => {
         stopPan();
         document.body.style.cursor = 'default';
     };
+
+    useEffect(() => {
+        return () => {
+            if (zoomEndTimer.current) {
+                clearTimeout(zoomEndTimer.current);
+            }
+        };
+    }, []);
 
     return (
         <svg

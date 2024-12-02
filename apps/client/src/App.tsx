@@ -17,11 +17,20 @@ import { urls } from './apis';
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
-const CloudGraphProvider = ({ children }: { children: ReactNode }) => {
-    const { execute: postLogin } = useFetch(urls(BASE_URL, 'login'), {
+export const CloudGraphProvider = ({ children }: { children: ReactNode }) => {
+    const {
+        error: errorLogin,
+        loading: loadingLogin,
+        execute: postLogin,
+    } = useFetch(urls(BASE_URL, 'login'), {
         method: 'POST',
     });
-    const { data, execute } = useFetch(urls(BASE_URL, 'privateArchi', 1), {
+    const {
+        error: errorArchi,
+        loading: loadingArchi,
+        data,
+        execute,
+    } = useFetch(urls(BASE_URL, 'privateArchi', 1), {
         method: 'GET',
     });
 
@@ -29,15 +38,18 @@ const CloudGraphProvider = ({ children }: { children: ReactNode }) => {
         postLogin({});
     }, []);
 
-    console.log(data);
+    if (loadingArchi || loadingLogin) return null;
+    if (errorArchi || errorLogin) return <div>error</div>;
 
     return (
         <DimensionProvider>
             <SvgProvider>
                 <GraphProvider initialZoomFactor={2}>
-                    <GroupProvider>
-                        <NodeProvider>
-                            <EdgeProvider>
+                    <GroupProvider initialGroups={data.arichitecture?.groups}>
+                        <NodeProvider initialNodes={data.architectrue?.nodes}>
+                            <EdgeProvider
+                                initialEdges={data.archiectecture?.edges}
+                            >
                                 <SelectionProvider>
                                     {children}
                                 </SelectionProvider>
@@ -50,9 +62,9 @@ const CloudGraphProvider = ({ children }: { children: ReactNode }) => {
     );
 };
 
-function App() {
+export const App = () => {
     return (
-        <CloudGraphProvider>
+        <>
             <Box
                 sx={{
                     height: '100%',
@@ -75,8 +87,6 @@ function App() {
 
             <NetworksBar />
             <PropertiesBar />
-        </CloudGraphProvider>
+        </>
     );
-}
-
-export default App;
+};

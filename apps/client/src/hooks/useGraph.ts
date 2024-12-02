@@ -184,6 +184,7 @@ export default () => {
         // );
 
         //INFO: update ViewBox
+        if (Object.keys(updatedNodes).length === 0) return;
         const updatedNodesArr = Object.values(updatedNodes);
         const minX = Math.min(
             ...updatedNodesArr.map((node: Node) => node.point.x),
