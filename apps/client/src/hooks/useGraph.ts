@@ -172,20 +172,19 @@ export default () => {
 
         //INFO: update ViewBox
         if (Object.keys(updatedNodes).length === 0 || !svgRef.current) return;
-        const allNodeBounds = calculateNodeBoundingBox(updatedNodes, dimension);
-
-        const paddingWidth = svgRef.current.clientWidth ?? 0;
-        const paddingHeight = svgRef.current?.clientHeight ?? 0;
-
-        graphDispatch({
-            type: 'SET_VIEWBOX',
-            payload: {
-                x: (allNodeBounds?.minX || 0) - paddingWidth,
-                y: (allNodeBounds?.minY || 0) - paddingHeight,
-                width: viewBox.width,
-                height: viewBox.height,
-            },
-        });
+        // const allNodeBounds = calculateNodeBoundingBox(updatedNodes, dimension);
+        //
+        // const paddingWidth = svgRef.current.clientWidth ?? 0;
+        // const paddingHeight = svgRef.current?.clientHeight ?? 0;
+        //
+        // graphDispatch({
+        //     type: 'SET_VIEWBOX',
+        //     payload: {
+        //         ...viewBox,
+        //         width: viewBox.width,
+        //         height: viewBox.height,
+        //     },
+        // });
 
         nodeDispatch({
             type: 'UPDATE_NODES',

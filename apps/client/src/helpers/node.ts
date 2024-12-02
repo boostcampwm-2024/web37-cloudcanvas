@@ -89,7 +89,6 @@ export const calculateNodeBoundingBox = (
     dimension: Dimension,
 ) => {
     const nodesArr = Object.values(nodes);
-    if (nodesArr.length === 0) return null;
 
     const minX = Math.min(...nodesArr.map((node) => node.point.x));
     const minY = Math.min(...nodesArr.map((node) => node.point.y));

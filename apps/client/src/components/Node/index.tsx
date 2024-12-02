@@ -8,6 +8,7 @@ import { Node, Point } from '@types';
 import { useEffect } from 'react';
 import LoadBalancerNode from './ncloud/LoadBalancer';
 import NatGatewayNode from './ncloud/NatGateway';
+import useGraph from '@hooks/useGraph';
 
 const nodeFactory = (node: Node) => {
     switch (node.type) {
@@ -39,6 +40,7 @@ type Props = {
 export default ({ node, isSelected, onMove, onSelect, onRemove }: Props) => {
     const { id, point } = node;
 
+    const { svgRef } = useGraph();
     const { isDragging, startDrag, drag, stopDrag } = useDrag({
         initialPoint: point,
         updateFn: (newPoint) => onMove(id, newPoint),
@@ -68,14 +70,17 @@ export default ({ node, isSelected, onMove, onSelect, onRemove }: Props) => {
     };
 
     useEffect(() => {
+        if (!svgRef.current) return;
         if (isDragging) {
             document.addEventListener('mousemove', handleMouseMove);
             document.addEventListener('mouseup', handleMouseUp);
+            svgRef.current.addEventListener('mouseleave', handleMouseUp);
         }
 
         return () => {
-            document.removeEventListener('mousemove', handleMouseMove);
-            document.removeEventListener('mouseup', handleMouseUp);
+            document?.removeEventListener('mousemove', handleMouseMove);
+            document?.removeEventListener('mouseup', handleMouseUp);
+            svgRef.current?.removeEventListener('mouseleave', handleMouseUp);
         };
     }, [isDragging]);
 

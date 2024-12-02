@@ -20,7 +20,7 @@ export default ({ children, initialData }: Props) => {
     return (
         <DimensionProvider>
             <SvgProvider>
-                <GraphProvider initialZoomFactor={2}>
+                <GraphProvider initialZoomFactor={3}>
                     <GroupProvider initialGroups={initialData?.groups}>
                         <NodeProvider initialNodes={initialData?.nodes}>
                             <EdgeProvider initialEdges={initialData?.edges}>

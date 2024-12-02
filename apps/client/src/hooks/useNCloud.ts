@@ -1,6 +1,7 @@
 import { NcloudGroupFactory, NcloudNodeFactory } from '@/src/models/ncloud';
 import { DEFAULT_REGION, REGIONS } from '@/src/models/ncloud/constants';
-import { getInitPoint } from '@helpers/cloud';
+import { useDimensionContext } from '@contexts/DimensionContext';
+import { useGraphContext } from '@contexts/GraphConetxt';
 import useGraph from '@hooks/useGraph';
 import useSelection from '@hooks/useSelection';
 import { Region } from '@types';
@@ -35,6 +36,11 @@ export default () => {
         addGroup,
         isExistGroup,
     } = useGraph();
+
+    const {
+        state: { viewBox },
+    } = useGraphContext();
+    const { dimension } = useDimensionContext();
 
     useEffect(() => {
         if (!selectedNodeId || !nodes[selectedNodeId]) {
@@ -80,6 +86,7 @@ export default () => {
     const createResource = (type: string) => {
         if (!svgRef.current) return;
 
+        console.log(viewBox);
         const node = NcloudNodeFactory(type);
         const id = `node-${nanoid()}`;
 
@@ -94,7 +101,10 @@ export default () => {
                     value: region.value,
                 },
             },
-            point: getInitPoint(svgRef.current!),
+            point: {
+                x: viewBox.x + 300,
+                y: viewBox.y + viewBox.height / 2,
+            },
         });
 
         const regionId = REGIONS[DEFAULT_REGION].id;
