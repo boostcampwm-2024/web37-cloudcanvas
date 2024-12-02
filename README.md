@@ -1,5 +1,5 @@
 <p align="middle" >
-  <img src="https://github.com/user-attachments/assets/10ca29c8-f363-431e-8e80-4ac5e869745b" alt="Cloud Canvas" width="300" height="300"/>
+<img width="" alt="cicd" src="https://github.com/user-attachments/assets/a01828bf-7603-4262-9761-6a44b361c2bd">
 </p>
 
 <h2 align="center">🎨 Cloud Canvas 🎨</h2>
