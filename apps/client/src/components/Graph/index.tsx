@@ -8,22 +8,16 @@ import { PropsWithChildren, useRef, useEffect } from 'react';
 export default ({ children }: PropsWithChildren) => {
     const { svgRef } = useSvgContext();
     const {
-        state: { viewBox },
+        state: { viewBox, initialViewBox },
         dispatch,
     } = useGraphContext();
 
     const isPanning = useRef(false);
     const startPoint = useRef<Point>({ x: 0, y: 0 });
     const spaceActiveKey = useKey('space');
-    const initialViewBox = {
-        x: 0,
-        y: 0,
-        width: svgRef.current?.clientWidth || 0,
-        height: svgRef.current?.clientHeight || 0,
-    };
 
-    const MIN_ZOOM = 0.2;
-    const MAX_ZOOM = 1;
+    const MIN_ZOOM = 0.1;
+    const MAX_ZOOM = 3;
 
     const zoomEndTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -45,6 +39,9 @@ export default ({ children }: PropsWithChildren) => {
         if (newZoom < MIN_ZOOM || newZoom > MAX_ZOOM) {
             return;
         }
+
+        const newWidth = viewBox.width * zoomFactor;
+        const newHeight = viewBox.height * zoomFactor;
         dispatch({
             type: 'SET_VIEWBOX',
             payload: {
@@ -54,8 +51,8 @@ export default ({ children }: PropsWithChildren) => {
                 y:
                     viewBox.y +
                     (cursorSvgPoint.y - viewBox.y) * (1 - zoomFactor),
-                width: viewBox.width * zoomFactor,
-                height: viewBox.height * zoomFactor,
+                width: newWidth,
+                height: newHeight,
             },
         });
     };
@@ -141,6 +138,7 @@ export default ({ children }: PropsWithChildren) => {
             ref={svgRef}
             viewBox={`${viewBox?.x} ${viewBox?.y} ${viewBox?.width} ${viewBox?.height}`}
             width="100%"
+            preserveAspectRatio="xMidYMid meet"
             height="100%"
             onWheel={handleWheel}
             onMouseDown={handleMouseDown}

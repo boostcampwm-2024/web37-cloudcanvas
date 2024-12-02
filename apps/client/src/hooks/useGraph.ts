@@ -1,3 +1,4 @@
+import { GRID_2D_SIZE } from '@constants';
 import { useDimensionContext } from '@contexts/DimensionContext';
 import { useEdgeContext } from '@contexts/EdgeContext';
 import { useGraphContext } from '@contexts/GraphConetxt';
@@ -15,7 +16,6 @@ import {
     alignNodePoint,
     calculateNodeBoundingBox,
 } from '@helpers/node';
-import { calculateViewBox } from '@helpers/viewbox';
 import useSelection from '@hooks/useSelection';
 import { Connection, Dimension, Edge, Group, Node, Point } from '@types';
 import {
@@ -172,19 +172,40 @@ export default () => {
 
         //INFO: update ViewBox
         if (Object.keys(updatedNodes).length === 0 || !svgRef.current) return;
-        // const allNodeBounds = calculateNodeBoundingBox(updatedNodes, dimension);
-        //
-        // const paddingWidth = svgRef.current.clientWidth ?? 0;
-        // const paddingHeight = svgRef.current?.clientHeight ?? 0;
-        //
-        // graphDispatch({
-        //     type: 'SET_VIEWBOX',
-        //     payload: {
-        //         ...viewBox,
-        //         width: viewBox.width,
-        //         height: viewBox.height,
-        //     },
-        // });
+        const allNodeBounds = calculateNodeBoundingBox(updatedNodes, dimension);
+        const viewBoxCenter = {
+            x: viewBox.x + viewBox.width / 2,
+            y: viewBox.y + viewBox.height / 2,
+        };
+        const allNodeCenter = {
+            x: allNodeBounds.minX + allNodeBounds.width / 2,
+            y: allNodeBounds.minY + allNodeBounds.height / 2,
+        };
+
+        const diff = {
+            x: viewBoxCenter.x - allNodeCenter.x,
+            y: viewBoxCenter.y - allNodeCenter.y,
+        };
+
+        const padding = GRID_2D_SIZE * 8;
+        let newWidth =
+            viewBox.width < allNodeBounds.width
+                ? allNodeBounds.width + padding
+                : viewBox.width;
+        let newHeight =
+            viewBox.height < allNodeBounds.height
+                ? allNodeBounds.height + padding
+                : viewBox.height;
+
+        graphDispatch({
+            type: 'SET_VIEWBOX',
+            payload: {
+                x: viewBox.x - diff.x,
+                y: viewBox.y - diff.y,
+                width: newWidth,
+                height: newHeight,
+            },
+        });
 
         nodeDispatch({
             type: 'UPDATE_NODES',

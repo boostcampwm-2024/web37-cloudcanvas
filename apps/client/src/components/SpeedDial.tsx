@@ -50,7 +50,7 @@ export default ({ actions, point, onClickActions }: Props) => {
     return (
         <StyledSpeedDial
             ariaLabel="Node Actions"
-            className="graph-ignore-select"
+            className="graph-ignore-select node-actions"
             sx={{
                 position: 'absolute',
                 top: point.top - offset,

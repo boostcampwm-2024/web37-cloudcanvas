@@ -31,7 +31,7 @@ export default () => {
     const navigate = useNavigate();
     const url = useLocation();
 
-    const { execute } = useFetch(urls('privateArchi', ''), {
+    const { execute: saveArchitecture } = useFetch(urls('privateArchi', ''), {
         method: 'POST',
         body: {
             cost: 273,
@@ -64,11 +64,12 @@ export default () => {
     };
 
     const handleSave = () => {
-        execute().then((res) => console.log(res));
+        saveArchitecture();
     };
 
     return (
         <>
+            <Button onClick={handleSave}>Share</Button>
             <Button onClick={handleSave}>Save</Button>
             <Button
                 className="graph-ignore-select"

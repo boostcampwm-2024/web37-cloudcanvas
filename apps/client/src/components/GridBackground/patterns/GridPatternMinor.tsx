@@ -28,6 +28,7 @@ export default ({ points, dimension }: Props) => {
                 width={width}
                 height={height}
                 patternUnits="userSpaceOnUse"
+                patternTransform={`scale(${1 / 5})`}
             >
                 <path
                     d={d1}

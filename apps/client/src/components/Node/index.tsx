@@ -58,7 +58,8 @@ export default ({ node, isSelected, onMove, onSelect, onRemove }: Props) => {
         drag({ x: e.clientX, y: e.clientY });
     };
 
-    const handleMouseUp = () => {
+    const handleMouseUp = (e: MouseEvent) => {
+        if ((e.relatedTarget as HTMLElement)?.closest('.node-actions')) return;
         stopDrag();
         document.body.style.cursor = 'default';
     };
