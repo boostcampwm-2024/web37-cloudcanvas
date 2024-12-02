@@ -18,8 +18,8 @@ type Props = {
 
 const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
     [`& .MuiSpeedDial-fab`]: {
-        width: 40,
-        height: 40,
+        width: 38,
+        height: 32,
     },
     [`& .MuiSpeedDial-actions`]: {
         paddingTop: 30,
