@@ -8,6 +8,7 @@ import { StarIcon } from '@/ui/StarIcon';
 import { Tag } from '@/ui/Tag';
 import { fetcher } from '@/utils/fetcher';
 import { useParams } from 'next/navigation';
+import { useState } from 'react';
 import useSWR from 'swr';
 
 interface PublicArchitecture {
@@ -19,6 +20,7 @@ interface PublicArchitecture {
     cost: number;
     tags: { tag: { name: string } }[];
     stars: any[];
+    isAuthor: boolean;
     _count: {
         stars: number;
         imports: number;
@@ -33,7 +35,10 @@ export default function ArchitectureDetailPage() {
     );
 
     if (isLoading) return <LoadingSpinner />;
-    if (error) return <ErrorMessage message={(error as Error).message} />;
+    if (error) {
+        // return <div>{JSON.stringify(error)}</div>;
+        return <ErrorMessage message={(error as Error).message} />;
+    }
 
     const {
         title,
@@ -42,11 +47,26 @@ export default function ArchitectureDetailPage() {
         cost,
         tags,
         stars: starData,
+        isAuthor,
         _count: { stars, imports },
     } = data!;
 
     const isStarred = starData?.length > 0;
     const isLoggedIn = localStorage.getItem('isLoggedIn') !== null;
+
+    const handleDelete = async () => {
+        const shouldDelete = confirm('삭제하시겠습니까?');
+        if (!shouldDelete) return;
+        await fetch(
+            `${process.env.BACK_URL}/public-architectures/${params.id}`,
+            {
+                method: 'DELETE',
+                credentials: 'include',
+            },
+        );
+        alert('삭제되었습니다.');
+        location.href = '/';
+    };
 
     const toggleStar = async () => {
         await fetch(
@@ -87,12 +107,12 @@ export default function ArchitectureDetailPage() {
                         <h2 className="text-4xl font-extrabold flex-1">
                             {title}
                         </h2>
-                        {isLoggedIn && (
+                        {isAuthor && (
                             <>
                                 <button>
                                     <EditIcon />
                                 </button>
-                                <button>
+                                <button onClick={handleDelete}>
                                     <DeleteIcon />
                                 </button>
                             </>
@@ -103,7 +123,7 @@ export default function ArchitectureDetailPage() {
                     <div>{new Date(createdAt).toLocaleString()}</div>
                     <div>{author}</div>
                     <div className="flex gap-1">
-                        <span className="text-black">{imports}</span>
+                        <span>{imports}</span>
                         <span>imported</span>
                     </div>
                 </div>
