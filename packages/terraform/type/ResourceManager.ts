@@ -2,6 +2,10 @@ import { NCloudModel } from '../interface/NCloudModel';
 
 export class ResourceManager {
     private resources: Array<{ resource: NCloudModel; region?: string }>;
+    private resourceMap: Map<
+        string | undefined,
+        { resource: NCloudModel; region?: string }
+    >;
     private readonly nameMap: Map<string, string>;
     private readonly regionMap: Map<string, Set<string>>;
 
@@ -9,11 +13,13 @@ export class ResourceManager {
         this.resources = [];
         this.nameMap = new Map();
         this.regionMap = new Map();
+        this.resourceMap = new Map();
     }
 
     addResource(resource: NCloudModel, region?: string): void {
-        this.resources.push({ resource, region });
-
+        if (!this.resourceMap.has(resource.name)) {
+            this.resources.push({ resource, region });
+        }
         if (resource.name) {
             this.nameMap.set(resource.serviceType, resource.name);
         }
@@ -24,12 +30,11 @@ export class ResourceManager {
             }
             this.regionMap.get(resource.serviceType)?.add(region);
         }
+        this.resourceMap.set(resource.name, { resource, region });
     }
 
     getResources(): Array<{ resource: NCloudModel; region?: string }> {
-        return [...this.resources].sort(
-            (a, b) => a.resource.priority - b.resource.priority,
-        );
+        return [...this.resources];
     }
 
     getNameMap(): Map<string, string> {
