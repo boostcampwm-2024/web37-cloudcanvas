@@ -3,9 +3,9 @@ import { Node } from '@types';
 import { Networks, NetworksProp } from './Networks';
 
 export interface LoadBalancerProp extends NetworksProp {
-    name?: string;
-    networkType?: string;
-    subnetNoList?: [];
+    name: string | null;
+    networkType: string | null;
+    subnetNoList: [] | null;
 }
 
 export const LoadBalancerNode: Node & {
@@ -19,9 +19,9 @@ export const LoadBalancerNode: Node & {
     },
     properties: {
         ...Networks,
-        name: undefined,
-        networkType: undefined,
-        subnetNoList: undefined,
+        name: null,
+        networkType: null,
+        subnetNoList: null,
     },
 };
 

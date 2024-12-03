@@ -261,3 +261,17 @@ export const isEmpty = (something: any) => {
     if (Object.keys(something).length === 0) return true;
     return false;
 };
+
+export const undefinedReplacer = (_: string, value: any) => {
+    if (value === undefined) {
+        return { __undefined__: true };
+    }
+    return value;
+};
+
+export const undefinedReviver = (_: string, value: any) => {
+    if (value && typeof value === 'object' && value.__undefined__) {
+        return null;
+    }
+    return value;
+};

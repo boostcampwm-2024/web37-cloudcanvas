@@ -1,3 +1,4 @@
+import { undefinedReplacer } from '@utils';
 import { useState, useEffect } from 'react';
 
 type HttpMethod = 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE';
@@ -39,9 +40,9 @@ function useFetch<T = any>(
                     ...headers,
                 },
                 body: executeBody
-                    ? JSON.stringify(executeBody)
+                    ? JSON.stringify(executeBody, undefinedReplacer)
                     : body
-                      ? JSON.stringify(body)
+                      ? JSON.stringify(body, undefinedReplacer)
                       : null,
                 credentials: credentials ?? 'include',
             });

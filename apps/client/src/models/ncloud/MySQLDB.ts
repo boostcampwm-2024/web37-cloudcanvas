@@ -4,13 +4,13 @@ import { Networks, NetworksProp } from './Networks';
 import validator from 'validator';
 
 export type MYSQLDBProp = {
-    serverName?: string;
-    serverNamePrefix?: string;
-    userName?: string;
-    userPassword?: string;
-    hostIp?: string;
-    databaseName?: string;
-    serviceName?: string;
+    serverName: string | null;
+    serverNamePrefix: string | null;
+    userName: string | null;
+    userPassword: string | null;
+    hostIp: string | null;
+    databaseName: string | null;
+    serviceName: string | null;
 };
 
 export const MySQLDBNode: Node & {
@@ -24,13 +24,13 @@ export const MySQLDBNode: Node & {
     },
     properties: {
         ...Networks,
-        serverName: undefined,
-        serverNamePrefix: undefined,
-        userName: undefined,
-        userPassword: undefined,
-        hostIp: undefined,
-        databaseName: undefined,
-        serviceName: undefined,
+        serverName: null,
+        serverNamePrefix: null,
+        userName: null,
+        userPassword: null,
+        hostIp: null,
+        databaseName: null,
+        serviceName: null,
     },
 };
 

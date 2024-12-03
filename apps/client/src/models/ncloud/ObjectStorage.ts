@@ -3,7 +3,7 @@ import { Node } from '@types';
 import { Networks, NetworksProp } from './Networks';
 
 export interface ObjectStorageProp extends NetworksProp {
-    bucketName?: string;
+    bucketName: string | null;
 }
 
 export const ObjectStorageNode: Node & {
@@ -17,7 +17,7 @@ export const ObjectStorageNode: Node & {
     },
     properties: {
         ...Networks,
-        bucketName: undefined,
+        bucketName: null,
     },
 };
 

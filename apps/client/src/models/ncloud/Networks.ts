@@ -2,15 +2,15 @@ import { GraphGroup } from '@helpers/group';
 import { Group } from '@types';
 
 export type NetworksProp = {
-    region?: { key: string; value: string };
-    subnet?: { key: string; value: string };
-    vpc?: { key: string; value: string };
+    region: { key: string; value: string } | null;
+    subnet: { key: string; value: string } | null;
+    vpc: { key: string; value: string } | null;
 };
 
 export const Networks: NetworksProp = {
-    region: undefined,
-    subnet: undefined,
-    vpc: undefined,
+    region: null,
+    subnet: null,
+    vpc: null,
 };
 
 export const NetworksRequiredFields = {
