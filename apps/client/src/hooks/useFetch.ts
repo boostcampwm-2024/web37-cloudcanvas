@@ -48,7 +48,7 @@ function useFetch<T = any>(
             });
 
             if (!response.ok) {
-                throw new Error(`HTTP 오류! 상태 코드: ${response.status}`);
+                throw new Error(`Request Errors: ${response.status}`);
             }
 
             const result: T = await response.json();

@@ -31,7 +31,7 @@ export default ({ open, onClose }: Props) => {
 
     const [tags, setTags] = useState<{ label: string; value: string }[]>([]);
 
-    const { execute: saveArchitecture } = useFetch(urls('share'), {
+    const { error, execute: shareArchitecture } = useFetch(urls('share'), {
         method: 'POST',
     });
 
@@ -41,14 +41,14 @@ export default ({ open, onClose }: Props) => {
 
     const handleChange = (values: OnChangeValue<any, any>) => setTags(values);
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
         const formJson = Object.fromEntries((formData as any).entries());
         const title = formJson.title;
         const cloudTags = tags.map((tag) => tag.value);
 
-        saveArchitecture({
+        await shareArchitecture({
             cost: 0,
             tags: cloudTags,
             architecture: {
@@ -58,6 +58,12 @@ export default ({ open, onClose }: Props) => {
             },
             title,
         });
+
+        if (error) {
+            alert('Failed to share');
+        } else {
+            alert('Successfully shared');
+        }
         handleClose();
     };
 
