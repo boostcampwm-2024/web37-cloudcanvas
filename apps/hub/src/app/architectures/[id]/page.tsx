@@ -1,4 +1,6 @@
 'use client';
+import { DeleteIcon } from '@/ui/DeleteIcon';
+import { EditIcon } from '@/ui/EditIcon';
 import { ErrorMessage } from '@/ui/ErrorMessage';
 import { ImportIcon } from '@/ui/ImportIcon';
 import { LoadingSpinner } from '@/ui/LoadingSpinner';
@@ -17,6 +19,7 @@ interface PublicArchitecture {
     cost: number;
     tags: { tag: { name: string } }[];
     stars: any[];
+    isAuthor: boolean;
     _count: {
         stars: number;
         imports: number;
@@ -40,11 +43,26 @@ export default function ArchitectureDetailPage() {
         cost,
         tags,
         stars: starData,
+        isAuthor,
         _count: { stars, imports },
     } = data!;
 
     const isStarred = starData?.length > 0;
     const isLoggedIn = localStorage.getItem('isLoggedIn') !== null;
+
+    const handleDelete = async () => {
+        const shouldDelete = confirm('삭제하시겠습니까?');
+        if (!shouldDelete) return;
+        await fetch(
+            `${process.env.BACK_URL}/public-architectures/${params.id}`,
+            {
+                method: 'DELETE',
+                credentials: 'include',
+            },
+        );
+        alert('삭제되었습니다.');
+        location.href = '/';
+    };
 
     const toggleStar = async () => {
         await fetch(
@@ -81,25 +99,36 @@ export default function ArchitectureDetailPage() {
                             <Tag key={name} tag={name} />
                         ))}
                     </div>
-                    <h2 className="text-4xl font-extrabold">{title}</h2>
-                </div>
-                <div className="flex gap-6 text-gray-500 text-sm">
-                    <div className="flex gap-1">
-                        <span>by</span>
-                        <span className="text-black">{author}</span>
+                    <div className="flex gap-2">
+                        <h2 className="text-4xl font-extrabold flex-1">
+                            {title}
+                        </h2>
+                        {isAuthor && (
+                            <>
+                                <button>
+                                    <EditIcon />
+                                </button>
+                                <button onClick={handleDelete}>
+                                    <DeleteIcon />
+                                </button>
+                            </>
+                        )}
                     </div>
+                </div>
+                <div className="flex gap-4 text-gray-500 text-sm">
                     <div>{new Date(createdAt).toLocaleString()}</div>
+                    <div>{author}</div>
                     <div className="flex gap-1">
-                        <span className="text-black">{imports}</span>
+                        <span>{imports}</span>
                         <span>imported</span>
                     </div>
                 </div>
                 <div className="flex gap-4 justify-end items-center">
                     <div className="mr-2">
                         <span className="font-black text-xl text-emerald-600">
-                            ${cost}
+                            ₩{cost}
                         </span>
-                        <span className="text-xs"> / month</span>
+                        <span> / month</span>
                     </div>
                     <button
                         className={`flex items-center gap-1 ${isLoggedIn && isStarred ? 'text-yellow-400' : 'text-gray-300'}`}

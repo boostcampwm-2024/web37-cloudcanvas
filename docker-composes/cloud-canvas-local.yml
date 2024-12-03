@@ -25,7 +25,6 @@ services:
         container_name: mysql
         environment:
             MYSQL_ROOT_PASSWORD: rootpassword
-            # MYSQL_DATABASE: cloud_canvas
             MYSQL_USER: cloud_canvas_user
             MYSQL_PASSWORD: password
         ports:

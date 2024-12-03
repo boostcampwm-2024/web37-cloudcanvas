@@ -47,8 +47,7 @@ async function bootstrap() {
             allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
             credentials: true,
         });
-    }
-    else {
+    } else {
         app.enableCors({
             origin: 'https://cloudcanvas.kro.kr',
             methods: [
