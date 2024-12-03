@@ -25,7 +25,6 @@ services:
         container_name: mysql
         environment:
             MYSQL_ROOT_PASSWORD: rootpassword
-            MYSQL_DATABASE: cloud_canvas
             MYSQL_USER: cloud_canvas_user
             MYSQL_PASSWORD: password
         ports:
@@ -74,7 +73,7 @@ services:
                 condition: service_healthy
             redis:
                 condition: service_healthy
-        entrypoint: sh -c "cd apps/server && npx prisma migrate dev && npx prisma db seed && node ./dist/src/main.js"
+        entrypoint: sh -c "cd apps/server && npx prisma migrate dev && node ./dist/src/main.js"
         networks:
             - cloud-canvas-network
         restart: unless-stopped
