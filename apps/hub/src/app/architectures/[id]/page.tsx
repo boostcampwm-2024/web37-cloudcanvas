@@ -1,4 +1,6 @@
 'use client';
+import { DeleteIcon } from '@/ui/DeleteIcon';
+import { EditIcon } from '@/ui/EditIcon';
 import { ErrorMessage } from '@/ui/ErrorMessage';
 import { ImportIcon } from '@/ui/ImportIcon';
 import { LoadingSpinner } from '@/ui/LoadingSpinner';
@@ -81,14 +83,25 @@ export default function ArchitectureDetailPage() {
                             <Tag key={name} tag={name} />
                         ))}
                     </div>
-                    <h2 className="text-4xl font-extrabold">{title}</h2>
-                </div>
-                <div className="flex gap-6 text-gray-500 text-sm">
-                    <div className="flex gap-1">
-                        <span>by</span>
-                        <span className="text-black">{author}</span>
+                    <div className="flex gap-2">
+                        <h2 className="text-4xl font-extrabold flex-1">
+                            {title}
+                        </h2>
+                        {isLoggedIn && (
+                            <>
+                                <button>
+                                    <EditIcon />
+                                </button>
+                                <button>
+                                    <DeleteIcon />
+                                </button>
+                            </>
+                        )}
                     </div>
+                </div>
+                <div className="flex gap-4 text-gray-500 text-sm">
                     <div>{new Date(createdAt).toLocaleString()}</div>
+                    <div>{author}</div>
                     <div className="flex gap-1">
                         <span className="text-black">{imports}</span>
                         <span>imported</span>
