@@ -88,9 +88,12 @@ export default () => {
         const validResult = validateResource(resources);
         const isValid = validResult.every((result) => result.isValid);
         if (!isValid) {
+            let errorMessages = '';
             validResult.forEach((result) => {
-                alert(`${result.type} is not valid properties`);
+                errorMessages += `${result.type}, `;
             });
+
+            alert(`${errorMessages.slice(0, -2)} properties are not valid`);
             return;
         }
 
