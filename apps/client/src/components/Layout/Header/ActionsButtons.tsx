@@ -2,6 +2,7 @@ import { urls } from '@/src/apis';
 import { ServerRequiredFields } from '@/src/models/ncloud/Server';
 import { transformObject, validateObject } from '@/src/models/ncloud/utils';
 import CodeDrawer from '@components/CodeDrawer';
+import ShareDialog from '@components/ShareDialog';
 import { useDimensionContext } from '@contexts/DimensionContext';
 import { useEdgeContext } from '@contexts/EdgeContext';
 import { useGroupContext } from '@contexts/GroupContext';
@@ -28,8 +29,16 @@ export default () => {
     const { dimension, changeDimension } = useDimensionContext();
     const [openDrawer, setOpenDrawer] = useState(false);
     const [terraformCode, setTerraformCode] = useState('');
+    const [open, setOpen] = useState(false);
     const navigate = useNavigate();
     const url = useLocation();
+
+    const handleOpenShareDialog = () => {
+        setOpen(true);
+    };
+    const handleCloseShareDialog = () => {
+        setOpen(false);
+    };
 
     const { execute: saveArchitecture } = useFetch(urls('privateArchi', ''), {
         method: 'POST',
@@ -67,9 +76,10 @@ export default () => {
         saveArchitecture();
     };
 
+    console.log(open);
     return (
         <>
-            <Button onClick={handleSave}>Share</Button>
+            <Button onClick={handleOpenShareDialog}>Share</Button>
             <Button onClick={handleSave}>Save</Button>
             <Button
                 className="graph-ignore-select"
@@ -96,6 +106,7 @@ export default () => {
                 open={openDrawer}
                 onClose={() => setOpenDrawer(false)}
             />
+            <ShareDialog open={open} onClose={handleCloseShareDialog} />
         </>
     );
 };
