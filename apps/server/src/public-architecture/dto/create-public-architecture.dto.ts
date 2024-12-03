@@ -23,5 +23,5 @@ export class CreatePublicArchitectureDto {
     @IsOptional()
     @IsArray()
     @IsString({ each: true })
-    tag?: string[];
+    tags?: string[];
 }
