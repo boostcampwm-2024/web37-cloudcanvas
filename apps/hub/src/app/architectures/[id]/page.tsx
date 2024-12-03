@@ -97,9 +97,9 @@ export default function ArchitectureDetailPage() {
                 <div className="flex gap-4 justify-end items-center">
                     <div className="mr-2">
                         <span className="font-black text-xl text-emerald-600">
-                            ${cost}
+                            ₩{cost}
                         </span>
-                        <span className="text-xs"> / month</span>
+                        <span> / month</span>
                     </div>
                     <button
                         className={`flex items-center gap-1 ${isLoggedIn && isStarred ? 'text-yellow-400' : 'text-gray-300'}`}
