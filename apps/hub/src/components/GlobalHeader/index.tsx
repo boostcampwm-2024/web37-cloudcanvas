@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { LinkButton } from '@/ui/LinkButton';
+import { CloudCanvasIcon } from '@/ui/CloudCanvasIcon';
 
 export const GlobalHeader = () => {
     const router = useRouter();
@@ -40,10 +41,13 @@ export const GlobalHeader = () => {
     };
 
     return (
-        <header className="sticky top-0 w-full bg-slate-100">
+        <header className="sticky top-0 w-full bg-gray-50 shadow">
             <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4">
-                <Link href="/">
-                    <h1 className="text-xl font-bold">Cloud Canvas</h1>
+                <Link href="/" className="flex items-center gap-2">
+                    <CloudCanvasIcon />
+                    <h1 className="text-3xl font-bold font-gamjaFlower">
+                        Cloud Canvas
+                    </h1>
                 </Link>
                 {/* TODO: 검색창 추가(새 컴포넌트로) */}
                 <nav className="flex">
