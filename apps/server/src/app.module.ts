@@ -10,6 +10,8 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { MyModule } from './my/my.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { NcloudResourcesService } from './ncloud-resources/ncloud-resources.service.js';
+import { CloudsModule } from './clouds/clouds.module';
+import { resourceUsage } from 'process';
 
 @Module({
     imports: [
@@ -20,8 +22,13 @@ import { NcloudResourcesService } from './ncloud-resources/ncloud-resources.serv
         PrivateArchitectureModule,
         MyModule,
         ScheduleModule.forRoot(),
+        CloudsModule,
     ],
     controllers: [AppController],
     providers: [AppService, PrismaService, NcloudResourcesService],
 })
 export class AppModule {}
+
+
+
+
