@@ -8,7 +8,6 @@ import { StarIcon } from '@/ui/StarIcon';
 import { Tag } from '@/ui/Tag';
 import { fetcher } from '@/utils/fetcher';
 import { useParams } from 'next/navigation';
-import { useState } from 'react';
 import useSWR from 'swr';
 
 interface PublicArchitecture {
@@ -35,10 +34,7 @@ export default function ArchitectureDetailPage() {
     );
 
     if (isLoading) return <LoadingSpinner />;
-    if (error) {
-        // return <div>{JSON.stringify(error)}</div>;
-        return <ErrorMessage message={(error as Error).message} />;
-    }
+    if (error) return <ErrorMessage message={(error as Error).message} />;
 
     const {
         title,
