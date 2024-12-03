@@ -3,7 +3,7 @@ import { Node } from '@types';
 import { Networks, NetworksProp } from './Networks';
 
 export interface ObjectStorageProp extends NetworksProp {
-    //TODO:
+    bucketName?: string;
 }
 
 export const ObjectStorageNode: Node & {
@@ -17,5 +17,13 @@ export const ObjectStorageNode: Node & {
     },
     properties: {
         ...Networks,
+        bucketName: undefined,
     },
+};
+
+export const ObjectStorageRequiredFields = {
+    bucketName: true,
+    vpc: true,
+    subnet: true,
+    region: true,
 };

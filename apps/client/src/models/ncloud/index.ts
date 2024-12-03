@@ -1,11 +1,14 @@
 import { CloudFunctionNode } from './CloudFunction';
 import { ContainerRegistryNode } from './ContainerRegistry';
 import { LoadBalancerNode } from './LoadBalancer';
-import { MySQLDBNode } from './MySQLDB';
+import { MySQLDBNode, MySQLDBRequiredFields } from './MySQLDB';
 import { NatGatewayNode } from './NatGateway';
 import { RegionGroup, SubnetGroup, VpcGroup } from './Networks';
-import { ObjectStorageNode } from './ObjectStorage';
-import { ServerNode } from './Server';
+import {
+    ObjectStorageNode,
+    ObjectStorageRequiredFields,
+} from './ObjectStorage';
+import { ServerNode, ServerRequiredFields } from './Server';
 
 export const NcloudNodeFactory = (type: string) => {
     switch (type) {
@@ -41,5 +44,18 @@ export const NcloudGroupFactory = (type: string) => {
         default: {
             throw new Error(`Unknown type: ${type}`);
         }
+    }
+};
+
+export const getPropertyFilters = (type: string) => {
+    switch (type) {
+        case 'server':
+            return ServerRequiredFields;
+        case 'object-storage':
+            return ObjectStorageRequiredFields;
+        case 'db-mysql':
+            return MySQLDBRequiredFields;
+        default:
+            return {};
     }
 };

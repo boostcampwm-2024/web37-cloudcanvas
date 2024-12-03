@@ -29,4 +29,7 @@ export const ServerRequiredFields = {
     name: true,
     server_image_number: true,
     server_spec_code: true,
+    vpc: true,
+    subnet: true,
+    region: true,
 };

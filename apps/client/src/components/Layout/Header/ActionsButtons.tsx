@@ -1,4 +1,5 @@
 import { urls } from '@/src/apis';
+import { getPropertyFilters } from '@/src/models/ncloud';
 import { ServerRequiredFields } from '@/src/models/ncloud/Server';
 import { transformObject, validateObject } from '@/src/models/ncloud/utils';
 import CodeDrawer from '@components/CodeDrawer';
@@ -53,21 +54,53 @@ export default () => {
         },
     });
 
-    const handleConvertTerraform = () => {
-        if (!selectedResource) return;
-        const nodeProperties = {
-            type: selectedResource.type,
-            name: selectedResource.properties.name,
-            properties: transformObject(selectedResource.properties),
-        };
+    const CURRENT_ALLOWED_TYPES = ['server', 'object-storage', 'db-mysql'];
+    const validateResource = (
+        resources: {
+            type: string;
+            properties: any;
+        }[],
+    ) => {
+        const validResult: { type: string; isValid: boolean }[] = [];
+        resources.forEach((resource) => {
+            if (
+                !validateObject(
+                    resource.properties,
+                    getPropertyFilters(resource.type),
+                )
+            ) {
+                validResult.push({ type: resource.type, isValid: false });
+            }
+        });
 
-        if (!validateObject(nodeProperties.properties, ServerRequiredFields)) {
-            alert('Is not valid');
+        return validResult;
+    };
+    const handleConvertTerraform = () => {
+        let resources = selectedResource
+            ? [
+                  {
+                      type: selectedResource.type,
+                      properties: transformObject(selectedResource.properties),
+                  },
+              ]
+            : Object.values(nodes)
+                  .filter((node) => CURRENT_ALLOWED_TYPES.includes(node.type))
+                  .map((node) => ({
+                      type: node.type,
+                      properties: transformObject(node.properties),
+                  }));
+
+        const validResult = validateResource(resources);
+        const isValid = validResult.every((result) => result.isValid);
+        if (!isValid) {
+            validResult.forEach((result) => {
+                alert(`${result.type} is not valid properties`);
+            });
             return;
         }
 
         const Converter = new TerraformConverter();
-        Converter.addResourceFromJson([nodeProperties]);
+        Converter.addResourceFromJson(resources);
         setTerraformCode(Converter.generate());
         setOpenDrawer(true);
     };
@@ -76,7 +109,6 @@ export default () => {
         saveArchitecture();
     };
 
-    console.log(open);
     return (
         <>
             <Button onClick={handleOpenShareDialog}>Share</Button>
