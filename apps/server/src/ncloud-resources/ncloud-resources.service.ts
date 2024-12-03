@@ -23,11 +23,8 @@ export class NcloudResourcesService {
             string,
             Record<string, number | string>[]
         > = new Map();
-        // console.log(result.productPriceList);
         result.productPriceList.forEach((product) => {
-            if (
-                product.serverProductCode
-            ) {
+            if (product.serverProductCode) {
                 console.log(product);
                 if (!ncloudServerResourceMap.has(product.productType.codeName))
                     ncloudServerResourceMap.set(
@@ -37,7 +34,7 @@ export class NcloudResourcesService {
                 const {
                     serverProductCode,
                     priceList: [{ price: monthPrice }, { price: hourPrice }],
-                    productName
+                    productName,
                 }: {
                     serverProductCode: string;
                     priceList: { price: number }[];
@@ -47,7 +44,7 @@ export class NcloudResourcesService {
                     serverProductCode: serverProductCode.toLowerCase(),
                     monthPrice,
                     hourPrice,
-                    productName
+                    productName,
                 });
             }
         });
@@ -84,7 +81,8 @@ export class NcloudResourcesService {
                                 monthCost: parseFloat(
                                     '' + ncloudServerResource.monthPrice,
                                 ),
-                                productName: ncloudServerResource.productName as string,
+                                productName:
+                                    ncloudServerResource.productName as string,
                             }),
                         );
                     },
@@ -92,17 +90,9 @@ export class NcloudResourcesService {
             );
 
             const flattenedResources = ncloudServerResources.flat();
-            // console.log(flattenedResources);
-
             await tx.ncloudServerResource.createMany({
                 data: flattenedResources,
             });
-            // console.log(await tx.ncloudServerResourceType.findMany({}));
-            // console.log(JSON.stringify(await tx.ncloudServerResource.findMany({
-            //     select: {
-            //         serverSpecCode: true
-            //     }
-            // }), null, 2));
         });
     }
 

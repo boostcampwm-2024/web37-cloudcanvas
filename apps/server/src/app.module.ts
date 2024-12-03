@@ -28,7 +28,3 @@ import { resourceUsage } from 'process';
     providers: [AppService, PrismaService, NcloudResourcesService],
 })
 export class AppModule {}
-
-
-
-
