@@ -1,6 +1,5 @@
 import { urls } from '@/src/apis';
 import { getPropertyFilters } from '@/src/models/ncloud';
-import { ServerRequiredFields } from '@/src/models/ncloud/Server';
 import { transformObject, validateObject } from '@/src/models/ncloud/utils';
 import CodeDrawer from '@components/CodeDrawer';
 import ShareDialog from '@components/ShareDialog';
@@ -12,9 +11,10 @@ import useFetch from '@hooks/useFetch';
 import useNCloud from '@hooks/useNCloud';
 import { Button, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { TerraformConverter } from 'terraform/converter/TerraformConverter';
 
+const CURRENT_ALLOWED_RESOURCE_TYPES = ['server', 'object-storage', 'db-mysql'];
 export default () => {
     const {
         state: { nodes },
@@ -32,7 +32,7 @@ export default () => {
     const [terraformCode, setTerraformCode] = useState('');
     const [open, setOpen] = useState(false);
     const navigate = useNavigate();
-    const url = useLocation();
+    const params = useParams();
 
     const handleOpenShareDialog = () => {
         setOpen(true);
@@ -41,20 +41,13 @@ export default () => {
         setOpen(false);
     };
 
-    const { execute: saveArchitecture } = useFetch(urls('privateArchi', ''), {
-        method: 'POST',
-        body: {
-            cost: 273,
-            architecture: {
-                nodes,
-                groups,
-                edges,
-            },
-            title: 'fucking',
+    const { execute: saveArchitecture } = useFetch(
+        urls('privateArchi', params?.id ?? ''),
+        {
+            method: params?.id ? 'PATCH' : 'POST',
         },
-    });
+    );
 
-    const CURRENT_ALLOWED_TYPES = ['server', 'object-storage', 'db-mysql'];
     const validateResource = (
         resources: {
             type: string;
@@ -84,7 +77,9 @@ export default () => {
                   },
               ]
             : Object.values(nodes)
-                  .filter((node) => CURRENT_ALLOWED_TYPES.includes(node.type))
+                  .filter((node) =>
+                      CURRENT_ALLOWED_RESOURCE_TYPES.includes(node.type),
+                  )
                   .map((node) => ({
                       type: node.type,
                       properties: transformObject(node.properties),
@@ -105,8 +100,19 @@ export default () => {
         setOpenDrawer(true);
     };
 
-    const handleSave = () => {
-        saveArchitecture();
+    const handleSave = async () => {
+        const resp = await saveArchitecture({
+            cost: 0,
+            architecture: {
+                nodes,
+                groups,
+                edges,
+            },
+            title: 'Test',
+        });
+        if (resp.id) {
+            navigate(`${resp.id}`);
+        }
     };
 
     return (

@@ -15,7 +15,7 @@ interface UseFetchResult<T> {
     data: T | null;
     loading: boolean;
     error: Error | null;
-    execute: (body?: any) => Promise<void>;
+    execute: (body?: any) => Promise<T | null>;
 }
 
 function useFetch<T = any>(
@@ -53,8 +53,10 @@ function useFetch<T = any>(
 
             const result: T = await response.json();
             setData(result);
+            return result;
         } catch (err: any) {
             setError(err);
+            return null;
         } finally {
             setLoading(false);
         }

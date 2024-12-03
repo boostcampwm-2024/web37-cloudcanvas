@@ -8,22 +8,58 @@ import Select, { OnChangeValue } from 'react-select';
 import { useState } from 'react';
 import Creatable, { useCreatable } from 'react-select/creatable';
 import { Stack, FormControl } from '@mui/material';
+import { useEdgeContext } from '@contexts/EdgeContext';
+import { useGroupContext } from '@contexts/GroupContext';
+import { useNodeContext } from '@contexts/NodeContext';
+import useFetch from '@hooks/useFetch';
+import { urls } from '../apis';
 type Props = {
     open: boolean;
     onClose: () => void;
 };
 
 export default ({ open, onClose }: Props) => {
-    const [selected, setSelected] = useState([
-        { value: 'cloud', label: 'Cloud' },
-    ]);
+    const {
+        state: { nodes },
+    } = useNodeContext();
+    const {
+        state: { groups },
+    } = useGroupContext();
+    const {
+        state: { edges },
+    } = useEdgeContext();
+
+    const [tags, setTags] = useState<{ label: string; value: string }[]>([]);
+
+    const { execute: saveArchitecture } = useFetch(urls('share'), {
+        method: 'POST',
+    });
 
     const handleClose = () => {
         onClose();
     };
 
-    const handleChange = (values: OnChangeValue<any, any>) =>
-        setSelected(values);
+    const handleChange = (values: OnChangeValue<any, any>) => setTags(values);
+
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        const formData = new FormData(event.currentTarget);
+        const formJson = Object.fromEntries((formData as any).entries());
+        const title = formJson.title;
+        const cloudTags = tags.map((tag) => tag.value);
+
+        saveArchitecture({
+            cost: 0,
+            tags: cloudTags,
+            architecture: {
+                nodes,
+                groups,
+                edges,
+            },
+            title,
+        });
+        handleClose();
+    };
 
     return (
         <Dialog
@@ -31,15 +67,7 @@ export default ({ open, onClose }: Props) => {
             onClose={handleClose}
             PaperProps={{
                 component: 'form',
-                onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
-                    event.preventDefault();
-                    const formData = new FormData(event.currentTarget);
-                    const formJson = Object.fromEntries(
-                        (formData as any).entries(),
-                    );
-                    const email = formJson.email;
-                    // handleClose();
-                },
+                onSubmit: handleSubmit,
             }}
         >
             <DialogTitle>Share</DialogTitle>
@@ -58,14 +86,17 @@ export default ({ open, onClose }: Props) => {
                             variant="outlined"
                             type="text"
                             fullWidth
+                            inputProps={{
+                                style: { height: '36px', padding: '2px 8px' },
+                            }}
                         />
                     </FormControl>
                     <FormControl>
                         <label style={{ marginBottom: 8 }}>Tags</label>
                         <Creatable
                             isMulti
-                            name="colors"
-                            value={selected}
+                            name="tags"
+                            value={tags}
                             onChange={handleChange}
                             styles={{
                                 menu: (provided) => ({

@@ -5,9 +5,6 @@ export const URLS = {
     privateArchi: (id: string) => `private-architectures/${id}`,
 };
 
-// title
-// tag
-// json
 export const urls = (path: keyof typeof URLS, slug?: any) => {
     const urls = URLS[path];
     if (typeof urls === 'function') {
