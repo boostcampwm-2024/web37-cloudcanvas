@@ -11,7 +11,7 @@ export const NatGatewayNode: Node = {
     type: 'nat-gateway',
     size: {
         '2d': { width: 90, height: 90 },
-        '3d': { width: 123, height: 108.05, depth: 74, offset: 0 },
+        '3d': { width: 123, height: 108.05, offset: 0 },
     },
     properties: {
         ...Networks,

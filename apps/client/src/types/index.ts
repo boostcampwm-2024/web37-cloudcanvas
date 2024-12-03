@@ -10,7 +10,6 @@ export type Size = {
 };
 
 export type Size3D = {
-    depth: number;
     offset: number;
 } & Size;
 

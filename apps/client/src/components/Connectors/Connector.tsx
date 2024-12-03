@@ -4,10 +4,9 @@ import { Point } from '@types';
 type Props = {
     visible: boolean;
     point: Point;
-    onMouseDown: (e: React.MouseEvent) => void;
 };
 
-export default ({ point, visible, onMouseDown }: Props) => {
+export default ({ point, visible }: Props) => {
     const theme = useTheme();
 
     return (
@@ -19,7 +18,6 @@ export default ({ point, visible, onMouseDown }: Props) => {
             style={{
                 visibility: visible ? 'visible' : 'hidden',
             }}
-            onMouseDown={onMouseDown}
         />
     );
 };

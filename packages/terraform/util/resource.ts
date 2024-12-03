@@ -10,7 +10,7 @@ import {
 
 export const processDependencies = (node: any): any[] => {
     if (
-        !['server', 'loadbalancer', 'mysql', 'redis'].includes(
+        !['server', 'loadbalancer', 'db-mysql', 'redis'].includes(
             node.type.toLowerCase(),
         )
     )
@@ -42,8 +42,8 @@ export const processDependencies = (node: any): any[] => {
     return dependencies;
 };
 
-export const processNodes = (nodes: any[]): any[] =>
-    nodes.reduce(
+export const processNodes = (nodes: any[]): any[] => {
+    return nodes.reduce(
         (acc: CloudCanvasNode[], node) => [
             ...acc,
             ...processDependencies(node),
@@ -51,3 +51,4 @@ export const processNodes = (nodes: any[]): any[] =>
         ],
         [],
     );
+};

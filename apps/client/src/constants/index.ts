@@ -89,10 +89,3 @@ export const NCLOUD_SERVICES = [
         ],
     },
 ];
-
-export const NETWORKS_CATEGORIES = [
-    'region',
-    'vpc',
-    'subnet',
-    // 'security-group',
-];

@@ -98,6 +98,7 @@ export default ({ updateEdgeFn }: Props) => {
         ) {
             updateEdgeFn(sourceRef.current, targetRef.current);
         }
+        targetRef.current = null;
     };
 
     return {

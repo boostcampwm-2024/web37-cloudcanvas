@@ -4,12 +4,8 @@ import {
     groupReducer,
     GroupState,
 } from '@contexts/GroupContext/reducer';
-import {
-    createContext,
-    PropsWithChildren,
-    useContext,
-    useReducer,
-} from 'react';
+import { isEmpty } from '@utils';
+import { createContext, ReactNode, useContext, useReducer } from 'react';
 
 type GroupContextProps = {
     state: GroupState;
@@ -22,8 +18,19 @@ const initialState: GroupState = {
     groups: {},
 };
 
-export const GroupProvider = ({ children }: PropsWithChildren) => {
-    const [state, dispatch] = useReducer(groupReducer, initialState);
+export const GroupProvider = ({
+    children,
+    initialGroups,
+}: {
+    children: ReactNode;
+    initialGroups?: GroupState['groups'];
+}) => {
+    const [state, dispatch] = useReducer(
+        groupReducer,
+        isEmpty(initialGroups)
+            ? initialState
+            : { groups: initialGroups as GroupState['groups'] },
+    );
 
     return (
         <GroupContext.Provider value={{ state, dispatch }}>

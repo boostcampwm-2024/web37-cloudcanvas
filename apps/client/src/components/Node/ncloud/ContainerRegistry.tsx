@@ -58,7 +58,7 @@ const Node3D = ({ properties }: Props) => {
                     <polygon points="-10 -43, 246 105, -10 253, -266 105"></polygon>
                 </clipPath>
                 <g
-                    clip-path="url(#clip-adcdd432-1660-44d6-96f3-755297b72a97)"
+                    clipPath="url(#clip-adcdd432-1660-44d6-96f3-755297b72a97)"
                     fontFamily="Noto Sans"
                     fontSize="32pt"
                     fill="#000000"
@@ -69,10 +69,10 @@ const Node3D = ({ properties }: Props) => {
                         strokeWidth="4"
                         transform="matrix(0.707 0.409 -0.707 0.409 0 0)"
                     >
-                        <tspan>ECS Cluster</tspan>
+                        <tspan>Container</tspan>
                     </text>
                     <text transform="matrix(0.707 0.409 -0.707 0.409 0 0)">
-                        <tspan>ECS Cluster</tspan>
+                        <tspan>Container</tspan>
                     </text>
                 </g>
             </svg>
@@ -91,7 +91,7 @@ const Node2D = ({ properties }: Props) => {
             <svg x={-150} y={-110} overflow="visible">
                 <g
                     fill="#693cc5"
-                    fill-opacity="1"
+                    fillOpacity="1"
                     stroke="none"
                     transform="scale(1.25) "
                 >
@@ -118,19 +118,19 @@ const Node2D = ({ properties }: Props) => {
                 >
                     <text
                         stroke="#ffffff"
-                        stroke-width="4"
+                        strokeWidth="4"
                         style={{ userSelect: 'none' }}
                     >
-                        <tspan>ECS Cluster</tspan>
+                        <tspan>Container</tspan>
                     </text>
                     <text>
-                        <tspan>ECS Cluster</tspan>
+                        <tspan>Container</tspan>
                     </text>
                 </g>
             </svg>
             <polygon
                 points="0 0, 360 0, 360 360, 0 360"
-                stroke-width="4"
+                strokeWidth="4"
                 stroke="#4286c5"
                 fill="none"
             ></polygon>

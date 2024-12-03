@@ -19,7 +19,6 @@ const Region3D = ({ bounds, properties, color }: Props) => {
 };
 
 const Region2D = ({ bounds, color, properties }: Props) => {
-    console.log(bounds);
     const points = `0 0, 0 ${bounds.height}, ${bounds.width} ${bounds.height}, ${bounds.width} 0`;
 
     return (

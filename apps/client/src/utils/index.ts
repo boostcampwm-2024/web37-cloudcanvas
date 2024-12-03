@@ -26,6 +26,16 @@ export const getSvgPoint = (svg: SVGSVGElement, point: Point) => {
     return svgPoint.matrixTransform(screenCTM!.inverse());
 };
 
+export const getScreenPoint = (svg: SVGSVGElement, point: Point): DOMPoint => {
+    const svgPoint = svg.createSVGPoint();
+    svgPoint.x = point.x;
+    svgPoint.y = point.y;
+
+    const screenCTM = svg.getScreenCTM();
+
+    return svgPoint.matrixTransform(screenCTM!);
+};
+
 export const gridToScreen3d = (gridPoint: GridPoint): Point => {
     const { col, row } = gridPoint;
 
@@ -90,8 +100,7 @@ export const convert3dTo2dPoint = (point: Point) => {
 };
 
 export const convert2dTo3dPoint = (point: Point) => {
-    const { col, row } = screenToGrid2d(point);
-    return gridToScreen3d({ col: col + 1, row });
+    return gridToScreen3d(screenToGrid2d(point));
 };
 
 export const generateRandomRGB = () => {
@@ -124,18 +133,13 @@ const calcConnectorFor3D = (node: Node) => {
     const nodeSize = node.size['3d'] as Size3D;
     const base = get3DBasePoint(point, nodeSize);
 
-    const baseBottom = {
-        x: base.x,
-        y: base.y - nodeSize.offset - nodeSize.depth + 74,
-    };
+    const _ratio = nodeSize.width / 128;
+    const ratio = _ratio < 1 ? 1 : _ratio;
 
     const center = {
         x: base.x,
-        y: point.y + (baseBottom.y - point.y) / 2,
+        y: base.y + 74 - 37 * ratio,
     };
-
-    const _ratio = nodeSize.width / 128;
-    const ratio = _ratio < 1 ? 1 : _ratio;
 
     const GRID_WIDTH_QUARTER_SIZE = GRID_3D_WIDTH_SIZE / 4;
     const GRID_HEIGHT_QUARTER_SIZE = GRID_3D_HEIGHT_SIZE / 4;
@@ -164,6 +168,7 @@ const calcConnectorFor3D = (node: Node) => {
         right,
         left,
         bottom,
+        center,
     };
 };
 
@@ -181,6 +186,7 @@ export const getConnectorPoints = (
             right: { x: point.x + width, y: point.y + height / 2 },
             left: { x: point.x, y: point.y + height / 2 },
             bottom: { x: point.x + width / 2, y: point.y + height },
+            center: { x: point.x + width / 2, y: point.y + height / 2 },
         };
     }
 
@@ -247,4 +253,25 @@ export const calcIsoMatrixPoint = (point: Point) => {
         .translate(point.x, point.y);
 
     return isoMatrix; // 결과 행렬 반환
+};
+
+export const isEmpty = (something: any) => {
+    if (!something) return true;
+    if (Array.isArray(something) && something.length === 0) return true;
+    if (Object.keys(something).length === 0) return true;
+    return false;
+};
+
+export const undefinedReplacer = (_: string, value: any) => {
+    if (value === undefined) {
+        return { __undefined__: true };
+    }
+    return value;
+};
+
+export const undefinedReviver = (_: string, value: any) => {
+    if (value && typeof value === 'object' && value.__undefined__) {
+        return null;
+    }
+    return value;
 };
