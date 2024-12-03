@@ -103,14 +103,20 @@ export default () => {
         const id = `node-${nanoid()}`;
 
         const region = REGIONS[currentRegion.current];
+        const regionGroup = findRegionGroup(region.value);
+        const regionId = regionGroup ? regionGroup.id : region.id;
+        const regionValue = regionGroup
+            ? regionGroup.properties.value
+            : region.value;
+
         addNode({
             ...node,
             id,
             properties: {
                 ...node.properties,
                 region: {
-                    id: region.id,
-                    value: region.value,
+                    id: regionId,
+                    value: regionValue,
                 },
             },
             point: {
@@ -119,11 +125,10 @@ export default () => {
             },
         });
 
-        const regionGroup = findRegionGroup(region.value);
         if (!regionGroup) {
-            createRegion(region.id, region.value);
+            createRegion(regionId, regionValue);
         }
-        addNodeToGroup(regionGroup ? regionGroup.id : region.id, id);
+        addNodeToGroup(regionId, id);
     };
 
     const createRegion = (id: string, region: string) => {
@@ -133,6 +138,7 @@ export default () => {
             nodeIds: [],
             properties: {
                 name: REGIONS[region].label,
+                value: region,
             },
         });
     };

@@ -69,10 +69,10 @@ const Node3D = ({ properties }: Props) => {
                         strokeWidth="4"
                         transform="matrix(0.707 0.409 -0.707 0.409 0 0)"
                     >
-                        <tspan>ECS Cluster</tspan>
+                        <tspan>Container</tspan>
                     </text>
                     <text transform="matrix(0.707 0.409 -0.707 0.409 0 0)">
-                        <tspan>ECS Cluster</tspan>
+                        <tspan>Container</tspan>
                     </text>
                 </g>
             </svg>
@@ -121,10 +121,10 @@ const Node2D = ({ properties }: Props) => {
                         strokeWidth="4"
                         style={{ userSelect: 'none' }}
                     >
-                        <tspan>ECS Cluster</tspan>
+                        <tspan>Container</tspan>
                     </text>
                     <text>
-                        <tspan>ECS Cluster</tspan>
+                        <tspan>Container</tspan>
                     </text>
                 </g>
             </svg>
