@@ -51,9 +51,9 @@ export const SERVER_IMAGE_SPEC_CODE: {
     ],
 };
 
-const krRegionId = `kr-${nanoid()}`;
-const jpRegionId = `jp-${nanoid()}`;
-const sgRegionId = `sg-${nanoid()}`;
+const krRegionId = `kr-region-unique`;
+const jpRegionId = `jp-region-unique`;
+const sgRegionId = `sg-region-unique`;
 export const REGIONS: { [key: string]: any } = {
     KR: {
         id: krRegionId,

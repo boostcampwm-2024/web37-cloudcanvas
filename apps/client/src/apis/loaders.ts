@@ -35,8 +35,6 @@ export const rootLoader = async ({ params }: LoaderFunctionArgs) => {
     let data;
     try {
         data = JSON.parse(text, undefinedReviver);
-        console.log(text);
-        console.log(data);
     } catch (error) {
         throw new Response('Invalid JSON response', { status: 500 });
     }
