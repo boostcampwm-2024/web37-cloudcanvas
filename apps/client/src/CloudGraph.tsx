@@ -185,6 +185,7 @@ export default () => {
                     isConnecting={isConnecting}
                     onOpenConnection={openConnection}
                     onConnectConnection={connectConnection}
+                    onRemoveNode={removeNode}
                 />
             )}
         </>

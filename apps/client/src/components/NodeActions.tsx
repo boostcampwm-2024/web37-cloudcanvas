@@ -12,18 +12,19 @@ type Props = {
     isConnecting: boolean;
     onOpenConnection: (from: Connection) => void;
     onConnectConnection: (point: Point) => void;
+    onRemoveNode: (id: string) => void;
 };
 
 const actions = [
     { icon: <InsightsIcon />, name: 'Edge', type: 'edge' },
     { icon: <DeleteIcon />, name: 'Remove', type: 'remove' },
-    { icon: <ContentCopyIcon />, name: 'Copy', type: 'copy' },
 ];
 export default ({
     node,
     isConnecting,
     onOpenConnection,
     onConnectConnection,
+    onRemoveNode,
 }: Props) => {
     const { id: selectedNodeId, connectors } = node;
     const { svgRef } = useSvgContext();
@@ -34,6 +35,11 @@ export default ({
         switch (type) {
             case 'edge': {
                 openConnection(e, 'right', node.connectors.right);
+                return;
+            }
+            case 'remove': {
+                onRemoveNode(selectedNodeId);
+                return;
             }
             default: {
                 console.error('Not supported action type');
