@@ -23,7 +23,7 @@ export const ArchitectureItem = ({
 }) => {
     const { imports, stars } = _count;
     return (
-        <li className="hover:bg-gray-50 border-b flex px-3 py-2 pl-4">
+        <li className="hover:bg-gray-50 border-b flex px-3 py-2 pl-4 items-center">
             <div className="flex flex-col w-full">
                 <div>
                     <Link href={`/architectures/${id}`}>{title}</Link>
@@ -38,11 +38,9 @@ export const ArchitectureItem = ({
                     ))}
                 </div>
             </div>
-            <div className="flex items-center text-sm">
-                <div className="w-28">{cost}</div>
-                <div className="w-28">{imports}</div>
-                <div className="w-28">{stars}</div>
-            </div>
+            <div className="w-40">{cost}</div>
+            <div className="w-40">{imports}</div>
+            <div className="w-40">{stars}</div>
         </li>
     );
 };

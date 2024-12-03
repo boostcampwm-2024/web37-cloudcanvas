@@ -27,7 +27,7 @@ export const BoardHeader = ({
     };
 
     return (
-        <div className="bg-gray-50 flex border-b p-4 font-semibold">
+        <div className="bg-slate-50 flex border-b p-4 font-semibold">
             {columns.map((column) => (
                 <div
                     key={column.key}
