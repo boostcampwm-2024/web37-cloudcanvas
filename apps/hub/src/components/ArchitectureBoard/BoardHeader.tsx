@@ -13,9 +13,9 @@ export const BoardHeader = ({
 }) => {
     const columns = [
         { key: 'name', title: 'Architecture', width: 'w-full' },
-        { key: 'cost', title: 'Costs', width: 'w-40' },
-        { key: 'imports', title: 'Imports', width: 'w-40' },
+        { key: 'cost', title: 'Costs', width: 'w-52' },
         { key: 'stars', title: 'Stars', width: 'w-40' },
+        { key: 'imports', title: 'Imports', width: 'w-40' },
     ];
 
     const getSortIcon = (columnKey: string) => {

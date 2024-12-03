@@ -28,9 +28,9 @@ export const ArchitectureItem = ({
                 <div>
                     <Link href={`/architectures/${id}`}>{title}</Link>
                 </div>
-                <div className="text-xs text-gray-400 flex">
+                <div className="text-xs text-gray-400 flex gap-3">
                     <div>{new Date(createdAt).toLocaleString()}</div>
-                    <div className="ml-2">{author.name}</div>
+                    <div>{author.name}</div>
                 </div>
                 <div className="flex gap-1 mt-1">
                     {tags?.map(({ tag: { name } }) => (
@@ -38,9 +38,9 @@ export const ArchitectureItem = ({
                     ))}
                 </div>
             </div>
-            <div className="w-40">{cost}</div>
-            <div className="w-40">{imports}</div>
+            <div className="w-52">{cost}</div>
             <div className="w-40">{stars}</div>
+            <div className="w-40">{imports}</div>
         </li>
     );
 };
