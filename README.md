@@ -172,7 +172,7 @@ Cloud Canvas는 클라우드 인프라 설계를 **그래픽 인터페이스**�
 
 ### **인프라 설계**
 
-![image](https://github.com/user-attachments/assets/893a5dab-3705-40fb-b628-70724ea278c5)
+![image](https://github.com/user-attachments/assets/cd589ef7-8084-4f70-bfaf-1fabec75e746)
 
 ### **애플리케이션 설계**
 
