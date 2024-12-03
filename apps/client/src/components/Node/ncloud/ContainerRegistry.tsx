@@ -58,7 +58,7 @@ const Node3D = ({ properties }: Props) => {
                     <polygon points="-10 -43, 246 105, -10 253, -266 105"></polygon>
                 </clipPath>
                 <g
-                    clip-path="url(#clip-adcdd432-1660-44d6-96f3-755297b72a97)"
+                    clipPath="url(#clip-adcdd432-1660-44d6-96f3-755297b72a97)"
                     fontFamily="Noto Sans"
                     fontSize="32pt"
                     fill="#000000"
