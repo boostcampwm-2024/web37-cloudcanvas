@@ -112,6 +112,7 @@ export const updateNearestConnectorPair = (
                 const lastBendPoint =
                     edge.bendingPoints[edge.bendingPoints.length - 1];
                 const bendConnector = generateBendConnector(lastBendPoint);
+                //TODO: 이름 변경 필요
                 const { movingConnector } = findNearestConnectorPair(
                     movingConnectors,
                     [bendConnector],

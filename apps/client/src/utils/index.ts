@@ -3,7 +3,16 @@ import {
     GRID_3D_HEIGHT_SIZE,
     GRID_3D_WIDTH_SIZE,
 } from '@constants';
-import { ConnectorMap, Dimension, GridPoint, Node, Point } from '@types';
+import {
+    Bounds,
+    ConnectorMap,
+    Dimension,
+    GridPoint,
+    Node,
+    Point,
+    Size,
+    Size3D,
+} from '@types';
 
 export const getDistance = (point1: Point, point2: Point) => {
     return Math.sqrt((point1.x - point2.x) ** 2 + (point1.y - point2.y) ** 2);
@@ -15,6 +24,16 @@ export const getSvgPoint = (svg: SVGSVGElement, point: Point) => {
     svgPoint.y = point.y;
     const screenCTM = svg.getScreenCTM();
     return svgPoint.matrixTransform(screenCTM!.inverse());
+};
+
+export const getScreenPoint = (svg: SVGSVGElement, point: Point): DOMPoint => {
+    const svgPoint = svg.createSVGPoint();
+    svgPoint.x = point.x;
+    svgPoint.y = point.y;
+
+    const screenCTM = svg.getScreenCTM();
+
+    return svgPoint.matrixTransform(screenCTM!);
 };
 
 export const gridToScreen3d = (gridPoint: GridPoint): Point => {
@@ -91,31 +110,87 @@ export const generateRandomRGB = () => {
     return `rgb(${r},${g},${b})`;
 };
 
+export const get3DBasePoint = (point: Point, size: Size3D) => {
+    const grid = screenToGrid3d({
+        x: point.x,
+        y: point.y,
+    });
+
+    const ratio = size.width / 128;
+    const base = gridToScreen3d({
+        col: grid.col + (ratio > 1 ? 1 : ratio),
+        row: grid.row,
+    });
+
+    return {
+        x: base.x,
+        y: point.y + size.height + (size.offset ?? 0) - 74,
+    };
+};
+
+const calcConnectorFor3D = (node: Node) => {
+    const point = node.point;
+    const nodeSize = node.size['3d'] as Size3D;
+    const base = get3DBasePoint(point, nodeSize);
+
+    const _ratio = nodeSize.width / 128;
+    const ratio = _ratio < 1 ? 1 : _ratio;
+
+    const center = {
+        x: base.x,
+        y: base.y + 74 - 37 * ratio,
+    };
+
+    const GRID_WIDTH_QUARTER_SIZE = GRID_3D_WIDTH_SIZE / 4;
+    const GRID_HEIGHT_QUARTER_SIZE = GRID_3D_HEIGHT_SIZE / 4;
+    const top = {
+        x: center.x + GRID_WIDTH_QUARTER_SIZE * ratio,
+        y: center.y - GRID_HEIGHT_QUARTER_SIZE * ratio,
+    };
+
+    const left = {
+        x: center.x - GRID_WIDTH_QUARTER_SIZE * ratio,
+        y: center.y - GRID_HEIGHT_QUARTER_SIZE * ratio,
+    };
+
+    const right = {
+        x: center.x + GRID_WIDTH_QUARTER_SIZE * ratio,
+        y: center.y + GRID_HEIGHT_QUARTER_SIZE * ratio,
+    };
+
+    const bottom = {
+        x: center.x - GRID_WIDTH_QUARTER_SIZE * ratio,
+        y: center.y + GRID_HEIGHT_QUARTER_SIZE * ratio,
+    };
+
+    return {
+        top,
+        right,
+        left,
+        bottom,
+        center,
+    };
+};
+
 export const getConnectorPoints = (
     node: Node,
     dimension: Dimension,
-): Omit<ConnectorMap, 'center'> => {
+): ConnectorMap => {
     const point = node.point;
-    const { width, height } = node.size[dimension];
-    const depth = GRID_3D_HEIGHT_SIZE / 2;
-    return {
-        top: { x: point.x + width / 2, y: point.y },
-        right:
-            dimension === '2d'
-                ? { x: point.x + width, y: point.y + height / 2 }
-                : {
-                      x: point.x + width,
-                      y: point.y + (height - depth) / 2,
-                  },
-        left:
-            dimension === '2d'
-                ? { x: point.x, y: point.y + height / 2 }
-                : {
-                      x: point.x,
-                      y: point.y + (height - depth) / 2,
-                  },
-        bottom: { x: point.x + width / 2, y: point.y + height },
-    };
+    const nodeSize = node.size[dimension];
+    const { width, height } = nodeSize;
+
+    if (dimension === '2d') {
+        return {
+            top: { x: point.x + width / 2, y: point.y },
+            right: { x: point.x + width, y: point.y + height / 2 },
+            left: { x: point.x, y: point.y + height / 2 },
+            bottom: { x: point.x + width / 2, y: point.y + height },
+            center: { x: point.x + width / 2, y: point.y + height / 2 },
+        };
+    }
+
+    return calcConnectorFor3D(node) as any;
 };
 
 //INFO: 선분과 내적/외적 사이의 최단 거리를 계산(For Bend Point)
@@ -150,4 +225,53 @@ export const getDistanceToSegment = (
     const dx = p.x - xx;
     const dy = p.y - yy;
     return Math.sqrt(dx * dx + dy * dy);
+};
+
+const debounce = (func: (...args: any[]) => void, delay: number) => {
+    let timeout: ReturnType<typeof setTimeout> | null = null;
+
+    return (...args: any[]) => {
+        if (timeout) clearTimeout(timeout); // 이전 타이머 제거
+        timeout = setTimeout(() => {
+            func(...args); // 지정된 시간 후 함수 실행
+        }, delay);
+    };
+};
+
+export const findKeyByValue = (
+    value: string,
+    list: { [id: string]: string },
+) => {
+    return Object.keys(list).find((key) => list[key] === value);
+};
+
+export const calcIsoMatrixPoint = (point: Point) => {
+    const isoMatrix = new DOMMatrix()
+        .rotate(30)
+        .skewX(-30)
+        .scale(1, 0.8602)
+        .translate(point.x, point.y);
+
+    return isoMatrix; // 결과 행렬 반환
+};
+
+export const isEmpty = (something: any) => {
+    if (!something) return true;
+    if (Array.isArray(something) && something.length === 0) return true;
+    if (Object.keys(something).length === 0) return true;
+    return false;
+};
+
+export const undefinedReplacer = (_: string, value: any) => {
+    if (value === undefined) {
+        return { __undefined__: true };
+    }
+    return value;
+};
+
+export const undefinedReviver = (_: string, value: any) => {
+    if (value && typeof value === 'object' && value.__undefined__) {
+        return null;
+    }
+    return value;
 };

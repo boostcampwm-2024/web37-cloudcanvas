@@ -4,7 +4,7 @@ export const LinkButton = ({ text, href }: { text: string; href: string }) => {
     return (
         <Link
             href={href}
-            className="bg-blue-700 text-white py-2 px-4 rounded-lg"
+            className="bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-800 transition"
         >
             {text}
         </Link>

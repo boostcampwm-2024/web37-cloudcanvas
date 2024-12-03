@@ -3,6 +3,8 @@ import {
     edgeReducer,
     EdgeState,
 } from '@contexts/EdgeContext/reducer';
+import { Edge } from '@types';
+import { isEmpty } from '@utils';
 import { createContext, ReactNode, useContext, useReducer } from 'react';
 
 type EdgeContextProps = {
@@ -17,8 +19,19 @@ const initialState: EdgeState = {
     connection: null,
 };
 
-export const EdgeProvider = ({ children }: { children: ReactNode }) => {
-    const [state, dispatch] = useReducer(edgeReducer, initialState);
+export const EdgeProvider = ({
+    children,
+    initialEdges,
+}: {
+    children: ReactNode;
+    initialEdges?: EdgeState['edges'];
+}) => {
+    const [state, dispatch] = useReducer(edgeReducer, {
+        edges: isEmpty(initialEdges)
+            ? initialState.edges
+            : (initialEdges as EdgeState['edges']),
+        connection: null,
+    });
 
     return (
         <EdgeContext.Provider value={{ state, dispatch }}>

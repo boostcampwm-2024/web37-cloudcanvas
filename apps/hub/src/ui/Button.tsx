@@ -9,7 +9,7 @@ export const Button = ({
 }) => {
     return (
         <button
-            className="bg-blue-700 text-white py-2 px-4 rounded-lg"
+            className="bg-blue-600 text-white font-semibold py-1.5 px-4 rounded-lg hover:bg-blue-800 transition"
             {...props}
         >
             {children}

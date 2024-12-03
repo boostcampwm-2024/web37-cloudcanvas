@@ -1,9 +1,9 @@
-import { mockInitialState } from '../../../mocks';
 import {
     NodeAction,
     nodeReducer,
     NodeState,
 } from '@contexts/NodeContext/reducer';
+import { isEmpty } from '@utils';
 import {
     createContext,
     Dispatch,
@@ -23,8 +23,19 @@ const initialState: NodeState = {
     nodes: {},
 };
 
-export const NodeProvider = ({ children }: { children: ReactNode }) => {
-    const [state, dispatch] = useReducer(nodeReducer, initialState);
+export const NodeProvider = ({
+    children,
+    initialNodes,
+}: {
+    children: ReactNode;
+    initialNodes?: NodeState['nodes'];
+}) => {
+    const [state, dispatch] = useReducer(
+        nodeReducer,
+        isEmpty(initialNodes)
+            ? initialState
+            : { nodes: initialNodes as NodeState['nodes'] },
+    );
 
     return (
         <NodeContext.Provider value={{ state, dispatch }}>

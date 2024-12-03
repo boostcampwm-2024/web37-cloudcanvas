@@ -1,36 +1,13 @@
 import CloudGraph from '@/src/CloudGraph';
-import ErrorBoundary from '@components/ErrorBoundary';
-import Header from '@components/Layout/Header';
-import Sidebar from '@components/Layout/Sidebar';
 import NetworksBar from '@components/NCloud/NetworksBar/index';
-import Box from '@mui/material/Box';
+import PropertiesBar from '@components/NCloud/PropertiesBar';
 
-function App() {
+export const App = () => {
     return (
         <>
-            <Box
-                sx={{
-                    height: '100%',
-                    display: 'flex',
-                }}
-            >
-                <Sidebar />
-                <Box
-                    sx={{
-                        width: '100%',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        overflow: 'hidden',
-                    }}
-                >
-                    <Header />
-                    <CloudGraph />
-                </Box>
-            </Box>
-
+            <CloudGraph />
             <NetworksBar />
+            <PropertiesBar />
         </>
     );
-}
-
-export default App;
+};

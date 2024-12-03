@@ -4,12 +4,6 @@
     "description": "",
     "private": true,
     "keywords": [],
-    "exports": {
-        ".": {
-            "types": "./src/index.ts",
-            "default": "./dist/index.js"
-        }
-    },
     "scripts": {
         "start": "cross-env NODE_ENV=development node dist/index.js",
         "dev": "tsx watch src/index.ts",
@@ -29,5 +23,18 @@
         "dotenv": "^16.4.5",
         "tsup": "^8.3.5",
         "tsx": "^4.19.2"
+    },
+    "exports": {
+        ".": {
+            "import": "./dist/index.mjs",
+            "require": "./dist/index.js"
+        }
+    },
+    "typesVersions": {
+        "*": {
+            "*": [
+                "src/*"
+            ]
+        }
     }
 }

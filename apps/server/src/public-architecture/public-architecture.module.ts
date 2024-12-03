@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-import { PublicArchitectureService } from './public-architecture.service.js';
-import { PublicArchitectureController } from './public-architecture.controller.js';
-import { PrismaModule } from '../prisma/prisma.module.js';
+import { PublicArchitectureService } from './public-architecture.service';
+import { PublicArchitectureController } from './public-architecture.controller';
+import { PrismaModule } from 'src/prisma/prisma.module';
 
 @Module({
     imports: [PrismaModule],

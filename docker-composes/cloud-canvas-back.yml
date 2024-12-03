@@ -3,12 +3,15 @@ services:
         image: t84ar7xr.kr.private-ncr.ntruss.com/back:dev
         container_name: back
         environment:
+            NODE_ENV: production
             DATABASE_URL: ${DATABASE_URL}
+            NCLOUD_ACCESS_KEY: ${NCLOUD_ACCESS_KEY}
+            NCLOUD_SECRET_KEY: ${NCLOUD_SECRET_KEY}
             REDIS_HOST: ${REDIS_HOST}
             REDIS_PORT: ${REDIS_PORT}
         ports:
             - '3000:3000'
-        entrypoint: sh -c "npx prisma generate && npx prisma migrate reset --force && node ./dist/src/main.js"
+        entrypoint: sh -c "cd apps/server && npx prisma migrate reset --force && node ./dist/src/main.js"
         networks:
             - cloud-canvas-network
         restart: unless-stopped

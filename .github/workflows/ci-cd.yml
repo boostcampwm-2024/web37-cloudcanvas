@@ -32,6 +32,16 @@ jobs:
                       cloud-canvas.kr.ncr.ntruss.com/front:dev
                       cloud-canvas.kr.ncr.ntruss.com/front:${{ github.sha }}
 
+            - name: Docker front-hub image build and push
+              uses: docker/build-push-action@v3
+              with:
+                  context: .
+                  file: ./apps/hub/Dockerfile
+                  push: true
+                  tags: |
+                      cloud-canvas.kr.ncr.ntruss.com/front-hub:dev
+                      cloud-canvas.kr.ncr.ntruss.com/front-hub:${{ github.sha }}
+
             - name: Docker back image build and push
               uses: docker/build-push-action@v3
               with:

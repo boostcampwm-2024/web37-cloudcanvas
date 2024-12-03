@@ -1,4 +1,4 @@
-import { PrismaExceptionFilter } from './prisma-exception.filter.js';
+import { PrismaExceptionFilter } from './prisma-exception.filter';
 
 describe('PrismaExceptionFilter', () => {
     it('should be defined', () => {

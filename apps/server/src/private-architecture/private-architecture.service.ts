@@ -1,13 +1,13 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service.js';
-import { FindArchitectureDto } from './dto/find-architecture.dto.js';
-import { FindVersionDto } from './dto/find-version.dto.js';
-import { FindVersionsDto } from './dto/find-versions.dto.js';
-import { ModifyArchitectureDto } from './dto/modify-architecture.dto.js';
-import { RemoveArchitectureDto } from './dto/remove-architecture.dto.js';
-import { RemoveVersionDto } from './dto/remove-version.dto.js';
-import { SaveArchitectureDto } from './dto/save-architecture.dto.js';
-import { SaveVersionDto } from './dto/save-version.dto.js';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { FindArchitectureDto } from './dto/find-architecture.dto';
+import { FindVersionDto } from './dto/find-version.dto';
+import { FindVersionsDto } from './dto/find-versions.dto';
+import { ModifyArchitectureDto } from './dto/modify-architecture.dto';
+import { RemoveArchitectureDto } from './dto/remove-architecture.dto';
+import { RemoveVersionDto } from './dto/remove-version.dto';
+import { SaveArchitectureDto } from './dto/save-architecture.dto';
+import { SaveVersionDto } from './dto/save-version.dto';
 
 @Injectable()
 export class PrivateArchitectureService {
@@ -55,14 +55,8 @@ export class PrivateArchitectureService {
         architecture,
         cost,
     }: ModifyArchitectureDto) {
-        const privateArchitecture =
-            await this.prisma.privateArchitecture.findUnique({
-                where: {
-                    id,
-                    authorId,
-                },
-            });
-        if (!privateArchitecture) throw new ForbiddenException();
+        const isAuthor = await this.isArchitectureAuthor(id, authorId);
+        if (!isAuthor) throw new ForbiddenException();
         return this.prisma.privateArchitecture.update({
             where: {
                 id,
@@ -77,16 +71,9 @@ export class PrivateArchitectureService {
     }
 
     async removeArchitecture({ id, userId: authorId }: RemoveArchitectureDto) {
+        const isAuthor = await this.isArchitectureAuthor(id, authorId);
+        if (!isAuthor) throw new ForbiddenException();
         return await this.prisma.$transaction(async (tx) => {
-            const privateArchitecture = await tx.privateArchitecture.findUnique(
-                {
-                    where: {
-                        id,
-                        authorId,
-                    },
-                },
-            );
-            if (!privateArchitecture) throw new ForbiddenException();
             await tx.version.deleteMany({
                 where: {
                     privateArchitectureId: id,
@@ -102,14 +89,8 @@ export class PrivateArchitectureService {
     }
 
     async findVersions({ id, userId: authorId }: FindVersionsDto) {
-        const privateArchitecture =
-            await this.prisma.privateArchitecture.findUnique({
-                where: {
-                    id,
-                    authorId,
-                },
-            });
-        if (!privateArchitecture) throw new ForbiddenException();
+        const isAuthor = await this.isArchitectureAuthor(id, authorId);
+        if (!isAuthor) throw new ForbiddenException();
         return await this.prisma.version.findMany({
             select: {
                 id: true,
@@ -129,20 +110,11 @@ export class PrivateArchitectureService {
         architecture,
         cost,
     }: SaveVersionDto) {
-        const privateArchitecture =
-            await this.prisma.privateArchitecture.findUnique({
-                select: {
-                    id: true,
-                },
-                where: {
-                    id,
-                    authorId,
-                },
-            });
-        if (!privateArchitecture) throw new ForbiddenException();
+        const isAuthor = await this.isArchitectureAuthor(id, authorId);
+        if (!isAuthor) throw new ForbiddenException();
         return this.prisma.version.create({
             data: {
-                privateArchitectureId: privateArchitecture.id,
+                privateArchitectureId: id,
                 title,
                 architecture,
                 cost,
@@ -151,17 +123,8 @@ export class PrivateArchitectureService {
     }
 
     async removeVersion({ userId: authorId, id, versionId }: RemoveVersionDto) {
-        const privateArchitecture =
-            await this.prisma.privateArchitecture.findUnique({
-                select: {
-                    id: true,
-                },
-                where: {
-                    id,
-                    authorId,
-                },
-            });
-        if (!privateArchitecture) throw new ForbiddenException();
+        const isAuthor = await this.isArchitectureAuthor(id, authorId);
+        if (!isAuthor) throw new ForbiddenException();
         const privateArchitectureVersion = await this.prisma.version.findUnique(
             {
                 where: {
@@ -178,17 +141,8 @@ export class PrivateArchitectureService {
     }
 
     async findVersion({ userId: authorId, id, versionId }: FindVersionDto) {
-        const privateArchitecture =
-            await this.prisma.privateArchitecture.findUnique({
-                select: {
-                    id: true,
-                },
-                where: {
-                    id,
-                    authorId,
-                },
-            });
-        if (!privateArchitecture) throw new ForbiddenException();
+        const isAuthor = await this.isArchitectureAuthor(id, authorId);
+        if (!isAuthor) throw new ForbiddenException();
         const privateArchitectureVersion = await this.prisma.version.findUnique(
             {
                 select: {
@@ -201,5 +155,12 @@ export class PrivateArchitectureService {
         );
         if (!privateArchitectureVersion) throw new ForbiddenException();
         return privateArchitectureVersion;
+    }
+
+    async isArchitectureAuthor(id: number, authorId: number): Promise<boolean> {
+        return !!(await this.prisma.privateArchitecture.findUnique({
+            select: { id: true },
+            where: { id, authorId },
+        }));
     }
 }

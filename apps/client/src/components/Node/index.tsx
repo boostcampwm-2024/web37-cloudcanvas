@@ -1,10 +1,14 @@
 import CloudFunctionNode from '@components/Node/ncloud/CloudFunctionNode';
-import DBMySQLNode from '@components/Node/ncloud/DBMySQLNode';
+import ContainerRegistryNode from '@components/Node/ncloud/ContainerRegistry';
+import MySQLDBNode from '@components/Node/ncloud/MySQLDBNode';
 import ObjectStorageNode from '@components/Node/ncloud/ObjectStorageNode';
 import ServerNode from '@components/Node/ncloud/ServerNode';
 import useDrag from '@hooks/useDrag';
 import { Node, Point } from '@types';
 import { useEffect } from 'react';
+import LoadBalancerNode from './ncloud/LoadBalancer';
+import NatGatewayNode from './ncloud/NatGateway';
+import useGraph from '@hooks/useGraph';
 
 const nodeFactory = (node: Node) => {
     switch (node.type) {
@@ -15,7 +19,13 @@ const nodeFactory = (node: Node) => {
         case 'object-storage':
             return <ObjectStorageNode {...node} />;
         case 'db-mysql':
-            return <DBMySQLNode {...node} />;
+            return <MySQLDBNode {...node} />;
+        case 'load-balancer':
+            return <LoadBalancerNode {...node} />;
+        case 'container-registry':
+            return <ContainerRegistryNode {...node} />;
+        case 'nat-gateway':
+            return <NatGatewayNode {...node} />;
         default:
             null;
     }
@@ -30,6 +40,7 @@ type Props = {
 export default ({ node, isSelected, onMove, onSelect, onRemove }: Props) => {
     const { id, point } = node;
 
+    const { svgRef } = useGraph();
     const { isDragging, startDrag, drag, stopDrag } = useDrag({
         initialPoint: point,
         updateFn: (newPoint) => onMove(id, newPoint),
@@ -47,7 +58,8 @@ export default ({ node, isSelected, onMove, onSelect, onRemove }: Props) => {
         drag({ x: e.clientX, y: e.clientY });
     };
 
-    const handleMouseUp = () => {
+    const handleMouseUp = (e: MouseEvent) => {
+        if ((e.relatedTarget as HTMLElement)?.closest('.node-actions')) return;
         stopDrag();
         document.body.style.cursor = 'default';
     };
@@ -59,14 +71,17 @@ export default ({ node, isSelected, onMove, onSelect, onRemove }: Props) => {
     };
 
     useEffect(() => {
+        if (!svgRef.current) return;
         if (isDragging) {
             document.addEventListener('mousemove', handleMouseMove);
             document.addEventListener('mouseup', handleMouseUp);
+            svgRef.current.addEventListener('mouseleave', handleMouseUp);
         }
 
         return () => {
-            document.removeEventListener('mousemove', handleMouseMove);
-            document.removeEventListener('mouseup', handleMouseUp);
+            document?.removeEventListener('mousemove', handleMouseMove);
+            document?.removeEventListener('mouseup', handleMouseUp);
+            svgRef.current?.removeEventListener('mouseleave', handleMouseUp);
         };
     }, [isDragging]);
 

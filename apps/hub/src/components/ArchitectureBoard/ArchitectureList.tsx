@@ -1,6 +1,6 @@
 import { ArchitectureItem } from './ArchitectureItem';
 
-export const ArchitectureList = ({ data }) => {
+export const ArchitectureList = ({ data }: { data: Array<any> }) => {
     if (!data?.length) {
         return (
             <div className="max-w-5xl mx-auto">
@@ -13,13 +13,9 @@ export const ArchitectureList = ({ data }) => {
 
     return (
         <div className="mb-10">
-            {/* <div className="max-w-5xl mx-auto"> */}
-            {/* <div className="overflow-x-auto my-4"> */}
             {data.map((item) => (
                 <ArchitectureItem key={item.id} {...item} />
             ))}
-            {/* </div> */}
-            {/* </div> */}
         </div>
     );
 };

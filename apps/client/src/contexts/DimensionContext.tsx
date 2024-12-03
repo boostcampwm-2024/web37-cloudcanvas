@@ -3,27 +3,24 @@ import { createContext, ReactNode, useContext, useRef, useState } from 'react';
 
 type DimensionState = {
     dimension: Dimension;
-    prevDimension: Dimension;
-    toggleDimension: () => void;
+    changeDimension: (newDimension: Dimension) => void;
 };
 
 const DimensionContext = createContext<DimensionState | null>(null);
 
 export const DimensionProvider = ({ children }: { children: ReactNode }) => {
     const [dimension, setDimension] = useState<Dimension>('2d');
-    const prevDimensionRef = useRef<Dimension | null>('2d');
 
-    const toggleDimension = () => {
-        prevDimensionRef.current = dimension;
-        setDimension((prev) => (prev === '2d' ? '3d' : '2d'));
+    const changeDimension = (newDimension: Dimension) => {
+        if (dimension === newDimension) return;
+        setDimension(newDimension);
     };
 
     return (
         <DimensionContext.Provider
             value={{
                 dimension,
-                prevDimension: prevDimensionRef.current!,
-                toggleDimension,
+                changeDimension,
             }}
         >
             {children}

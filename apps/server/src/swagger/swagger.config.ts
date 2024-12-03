@@ -1,5 +1,5 @@
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { SWAGGER_README } from './swagger.readme.js';
+import { SWAGGER_README } from './swagger.readme';
 
 export const swaggerConfig = (app) => {
     const config = new DocumentBuilder()
