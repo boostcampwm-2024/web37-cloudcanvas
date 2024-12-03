@@ -5,6 +5,12 @@
 <h2 align="center">🎨 Cloud Canvas 🎨</h2>
 <p align="middle">쉽고 빠르게, 누구나 클라우드를 설계하는 즐거운 경험을!(배너로 대체 예정)</p>
 
+<div align=center>
+  <a href="https://hits.seeyoufarm.com">
+    <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fboostcampwm-2024%2Fweb37-cloud-canvas&count_bg=%2390EE90&title_bg=%2332CD32&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false"/>
+  </a>
+</div>
+
 ## Cloud Canvas ✨
 
 Cloud Canvas는 클라우드 인프라를 **그래픽 인터페이스**로 손쉽게 설계하고, 이를 **Terraform 코드**로 자동 변환할 수 있는 혁신적인 도구입니다. 국내 클라우드 플랫폼을 지원하며, 사용자가 **직관적으로** 인프라를 설계하고 **빠르게 배포**할 수 있도록 돕습니다.
