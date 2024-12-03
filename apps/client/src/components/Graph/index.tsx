@@ -23,7 +23,6 @@ export default ({ children }: PropsWithChildren) => {
 
     const handleZoomEnd = () => {
         document.body.style.cursor = 'default';
-        console.log('Zoom action ended.');
     };
 
     const zoom = (wheelY: number, point: Point) => {

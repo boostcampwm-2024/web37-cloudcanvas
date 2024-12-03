@@ -16,6 +16,7 @@ import {
     alignNodePoint,
     calculateNodeBoundingBox,
 } from '@helpers/node';
+import { calcViewBoxBounds } from '@helpers/viewBox';
 import useSelection from '@hooks/useSelection';
 import { Connection, Dimension, Edge, Group, Node, Point } from '@types';
 import {
@@ -172,39 +173,15 @@ export default () => {
 
         //INFO: update ViewBox
         if (Object.keys(updatedNodes).length === 0 || !svgRef.current) return;
-        const allNodeBounds = calculateNodeBoundingBox(updatedNodes, dimension);
-        const viewBoxCenter = {
-            x: viewBox.x + viewBox.width / 2,
-            y: viewBox.y + viewBox.height / 2,
-        };
-        const allNodeCenter = {
-            x: allNodeBounds.minX + allNodeBounds.width / 2,
-            y: allNodeBounds.minY + allNodeBounds.height / 2,
-        };
-
-        const diff = {
-            x: viewBoxCenter.x - allNodeCenter.x,
-            y: viewBoxCenter.y - allNodeCenter.y,
-        };
-
-        const padding = GRID_2D_SIZE * 8;
-        let newWidth =
-            viewBox.width < allNodeBounds.width
-                ? allNodeBounds.width + padding
-                : viewBox.width;
-        let newHeight =
-            viewBox.height < allNodeBounds.height
-                ? allNodeBounds.height + padding
-                : viewBox.height;
+        const updatedViewBox = calcViewBoxBounds(
+            updatedNodes,
+            viewBox,
+            dimension,
+        );
 
         graphDispatch({
             type: 'SET_VIEWBOX',
-            payload: {
-                x: viewBox.x - diff.x,
-                y: viewBox.y - diff.y,
-                width: newWidth,
-                height: newHeight,
-            },
+            payload: updatedViewBox,
         });
 
         nodeDispatch({

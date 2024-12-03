@@ -7,7 +7,7 @@ import useSelection from '@hooks/useSelection';
 import { Region } from '@types';
 import { findKeyByValue } from '@utils';
 import { nanoid } from 'nanoid';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 export default () => {
     const { selectedNodeId, selectedGroupId } = useSelection();
@@ -22,6 +22,7 @@ export default () => {
 
     const [vpcList, setVpcList] = useState<{ [id: string]: string }>({});
     const [subnetList, setSubnetList] = useState<{ [id: string]: string }>({});
+    const currentRegion = useRef(DEFAULT_REGION);
 
     const {
         nodes,
@@ -83,14 +84,25 @@ export default () => {
         });
     }, [selectedNodeId, nodes]);
 
+    useEffect(() => {
+        currentRegion.current =
+            selectedResource?.properties.region?.value ?? currentRegion.current;
+    }, [selectedResource]);
+
+    const findRegionGroup = (region: string) => {
+        const prefixId = (id: string) => id.split('-')[0].toLowerCase();
+        return Object.values(groups).find(
+            (group) => prefixId(group.id) === region.toLowerCase(),
+        );
+    };
+
     const createResource = (type: string) => {
         if (!svgRef.current) return;
 
-        console.log(viewBox);
         const node = NcloudNodeFactory(type);
         const id = `node-${nanoid()}`;
 
-        const region = REGIONS[DEFAULT_REGION];
+        const region = REGIONS[currentRegion.current];
         addNode({
             ...node,
             id,
@@ -107,11 +119,11 @@ export default () => {
             },
         });
 
-        const regionId = REGIONS[DEFAULT_REGION].id;
-        if (!isExistGroup(regionId)) {
-            createRegion(regionId, region.value);
+        const regionGroup = findRegionGroup(region.value);
+        if (!regionGroup) {
+            createRegion(region.id, region.value);
         }
-        addNodeToGroup(regionId, id);
+        addNodeToGroup(regionGroup ? regionGroup.id : region.id, id);
     };
 
     const createRegion = (id: string, region: string) => {
@@ -127,20 +139,25 @@ export default () => {
 
     const changeRegion = (id: string, newRegion: Region) => {
         if (!selectedNodeId) return;
-        if (!isExistGroup(id)) {
+        const regionGroup = findRegionGroup(newRegion);
+
+        if (!regionGroup) {
             createRegion(id, newRegion);
         }
 
-        addNodeToGroup(id, selectedNodeId);
-        const node = nodes[selectedNodeId];
-        const { properties } = node;
+        const regionId = regionGroup ? regionGroup.id : id;
+
+        addNodeToGroup(regionId, selectedNodeId);
+
+        const { properties } = nodes[selectedNodeId];
         if (properties.region) {
-            removeNodeFromGroup(properties.region.id, selectedNodeId);
+            const prevRegionId = findRegionGroup(properties.region.value)?.id;
+            removeNodeFromGroup(prevRegionId!, selectedNodeId);
         }
 
         updateProperties(selectedNodeId, {
             region: {
-                id,
+                id: regionId,
                 value: REGIONS[newRegion].value,
             },
         });

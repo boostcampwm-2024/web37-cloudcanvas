@@ -19,7 +19,6 @@ export default ({ open, onClose }: Props) => {
     ]);
 
     const handleClose = () => {
-        console.log(111);
         onClose();
     };
 

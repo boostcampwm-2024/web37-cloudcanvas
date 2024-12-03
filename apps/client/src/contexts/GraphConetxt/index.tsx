@@ -3,6 +3,7 @@ import {
     graphReducer,
     GraphState,
 } from '@contexts/GraphConetxt/reducer';
+import { ViewBox } from '@types';
 import {
     createContext,
     Dispatch,
@@ -26,38 +27,17 @@ const initialState = {
 
 export const GraphProvider = ({
     children,
-    initialZoomFactor = 1,
+    initialViewBox,
 }: {
     children: ReactNode;
-    initialZoomFactor: number;
+    initialViewBox: ViewBox;
 }) => {
-    const [state, dispatch] = useReducer(graphReducer, initialState);
+    const [state, dispatch] = useReducer(graphReducer, {
+        ...initialState,
+        viewBox: initialViewBox,
+        initialViewBox,
+    });
 
-    useLayoutEffect(() => {
-        const svg = document.getElementById('cloud-graph');
-        if (!svg) return;
-        const updateViewBoxSize = () => {
-            dispatch({
-                type: 'INITIAL_VIEWBOX',
-                payload: {
-                    x: state.viewBox.x || 0,
-                    y: state.viewBox.y || 0,
-                    width:
-                        (state.viewBox.width || svg.clientWidth) *
-                        initialZoomFactor,
-                    height:
-                        (state.viewBox.height || svg.clientHeight) *
-                        initialZoomFactor,
-                },
-            });
-        };
-        updateViewBoxSize();
-        window.addEventListener('resize', updateViewBoxSize);
-
-        return () => {
-            window.removeEventListener('resize', updateViewBoxSize);
-        };
-    }, []);
     return (
         <CanvasContext.Provider value={{ state, dispatch }}>
             {children}
