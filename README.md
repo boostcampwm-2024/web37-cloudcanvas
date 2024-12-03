@@ -180,10 +180,6 @@ Cloud Canvas는 클라우드 인프라 설계를 **그래픽 인터페이스**�
 
 ![image](https://github.com/user-attachments/assets/93ce4bd2-933a-40aa-bc14-8bb6429723d3)
 
-### **CI/CD 파이프라인**
-
-<img width="1024" alt="cicd" src="https://github.com/user-attachments/assets/286d7d2d-bb6a-4315-bcff-4a6ea7569077">
-
 ## 우리의 Next!
 
 ## 🌈 **함께하세요!**
