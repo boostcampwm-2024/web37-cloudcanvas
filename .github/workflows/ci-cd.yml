@@ -31,6 +31,8 @@ jobs:
                   tags: |
                       cloud-canvas.kr.ncr.ntruss.com/front:dev
                       cloud-canvas.kr.ncr.ntruss.com/front:${{ github.sha }}
+                  build-args: |
+                      VITE_API_URL=${{ secrets.VITE_API_URL }}
 
             - name: Docker front-hub image build and push
               uses: docker/build-push-action@v3
