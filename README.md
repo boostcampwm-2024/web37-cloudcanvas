@@ -1,9 +1,9 @@
 <p align="middle" >
-<img width="" alt="cicd" src="https://github.com/user-attachments/assets/a01828bf-7603-4262-9761-6a44b361c2bd">
+<img src="https://github.com/user-attachments/assets/86793107-9566-45ea-949a-36699f98b48b">
 </p>
 
 <h2 align="center">🎨 Cloud Canvas 🎨</h2>
-<p align="middle">쉽고 빠르게, 누구나 클라우드를 설계하는 즐거운 경험을!(배너로 대체 예정)</p>
+<h3 align="middle">쉽고 빠르게, 누구나 클라우드를 설계하는 즐거운 경험을!</h3>
 
 <div align=center>
   <a href="https://hits.seeyoufarm.com">
