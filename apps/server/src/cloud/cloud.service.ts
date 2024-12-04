@@ -1,9 +1,14 @@
+import { InjectRedis } from '@nestjs-modules/ioredis';
 import { Injectable, NotFoundException } from '@nestjs/common';
+import Redis from 'ioredis';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class CloudService {
-    constructor(private readonly prisma: PrismaService) {}
+    constructor(
+        private readonly prisma: PrismaService,
+        @InjectRedis() private readonly redis: Redis,
+    ) {}
 
     async findCloudResourcePrices() {
         return Object.fromEntries(await this.getCloudResourcesMap());
@@ -35,14 +40,17 @@ export class CloudService {
     }
 
     private async getCloudResourcesMap() {
-        const prices = await this.prisma.ncloudServerResource.findMany({
-            select: {
-                serverSpecCode: true,
-                productName: true,
-                hourCost: true,
-                monthCost: true,
-            },
-        });
+        const cachePrices = JSON.parse(await this.redis.get('cloudResource'));
+        const prices =
+            cachePrices ||
+            (await this.prisma.ncloudServerResource.findMany({
+                select: {
+                    serverSpecCode: true,
+                    productName: true,
+                    hourCost: true,
+                    monthCost: true,
+                },
+            }));
         const priceMap = new Map<string, Record<string, number | string>>();
         prices.map((price) => {
             const { productName, hourCost, monthCost } = price;

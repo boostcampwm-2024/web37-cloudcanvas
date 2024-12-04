@@ -11,9 +11,14 @@ import { MyModule } from './my/my.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { NcloudResourcesService } from './ncloud-resource/ncloud-resource.service.js';
 import { CloudModule } from './cloud/cloud.module';
+import { RedisModule } from '@nestjs-modules/ioredis';
 
 @Module({
     imports: [
+        RedisModule.forRoot({
+            type: 'single',
+            url: `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`,
+        }),
         ConfigModule.forRoot(),
         AuthModule,
         UserModule,
