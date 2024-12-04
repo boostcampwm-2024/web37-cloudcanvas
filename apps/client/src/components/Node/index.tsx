@@ -4,11 +4,12 @@ import MySQLDBNode from '@components/Node/ncloud/MySQLDBNode';
 import ObjectStorageNode from '@components/Node/ncloud/ObjectStorageNode';
 import ServerNode from '@components/Node/ncloud/ServerNode';
 import useDrag from '@hooks/useDrag';
+import useGraph from '@hooks/useGraph';
 import { Node, Point } from '@types';
 import { useEffect } from 'react';
+import ImageBlockNode from './common/ImageBlockNode';
 import LoadBalancerNode from './ncloud/LoadBalancer';
 import NatGatewayNode from './ncloud/NatGateway';
-import useGraph from '@hooks/useGraph';
 
 const nodeFactory = (node: Node) => {
     switch (node.type) {
@@ -26,6 +27,8 @@ const nodeFactory = (node: Node) => {
             return <ContainerRegistryNode {...node} />;
         case 'nat-gateway':
             return <NatGatewayNode {...node} />;
+        case 'image-block':
+            return <ImageBlockNode />;
         default:
             null;
     }

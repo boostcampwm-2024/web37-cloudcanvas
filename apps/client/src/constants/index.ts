@@ -6,7 +6,13 @@ export const NODE_BASE_SIZE = {
     '3d': { width: 128, height: 111 },
 };
 
-export const NCLOUD_SERVICES = [
+export const SIDEBAR_RESOURCES = [
+    {
+        title: 'Common',
+        items: [
+            { title: 'Image Block', desc: 'Image Block', type: 'image-block' },
+        ],
+    },
     {
         title: 'compute',
         items: [
