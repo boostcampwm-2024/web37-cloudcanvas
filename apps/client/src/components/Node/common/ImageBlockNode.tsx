@@ -111,7 +111,7 @@ const ImageBlock2D = ({
 
 export default () => {
     const { dimension } = useDimensionContext();
-    const [imgSrc, setImgSrc] = useState<string>('assets/upload.svg');
+    const [imgSrc, setImgSrc] = useState<string>('/assets/upload.svg');
     const [isInnerDropZone, setIsInnerDropZone] = useState(false);
 
     const handleDrop = async (e: any) => {

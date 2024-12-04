@@ -91,7 +91,7 @@ export default ({ region, disabled = false, onChangeRegion }: Props) => {
                         >
                             <ListItemIcon>
                                 <img
-                                    src={`assets/${option.value.toUpperCase()}.svg`}
+                                    src={`/assets/${option.value.toUpperCase()}.svg`}
                                     alt="flag"
                                 />
                             </ListItemIcon>
