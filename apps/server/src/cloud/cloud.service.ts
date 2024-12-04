@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import * as data from '../../node.json';
 
@@ -7,7 +7,35 @@ export class CloudService {
     constructor(private readonly prisma: PrismaService) {}
 
     async findCloudResourcePrices() {
-        // console.log(Object.values(data));
+        return Object.fromEntries(await this.getCloudResourcesMap());
+    }
+
+    async calculatePrice(nodes?: Record<string, any>) {
+        if (nodes && !Object.keys(nodes).length) throw new NotFoundException();
+        const cloudResourcesPriceMap = await this.getCloudResourcesMap();
+        const nodeValues = Object.values(data);
+        const totalMonthPrice = nodeValues.reduce(
+            (price, nodeValue): number => {
+                if (nodeValue.properties['server_spec_code']) {
+                    if (
+                        !cloudResourcesPriceMap.has(
+                            nodeValue.properties['server_spec_code'],
+                        )
+                    )
+                        throw new NotFoundException();
+                    price += cloudResourcesPriceMap.get(
+                        nodeValue.properties['server_spec_code'],
+                    ).monthCost as number;
+                    return price;
+                }
+                return price;
+            },
+            0,
+        );
+        return { totalMonthPrice };
+    }
+
+    private async getCloudResourcesMap() {
         const prices = await this.prisma.ncloudServerResource.findMany({
             select: {
                 serverSpecCode: true,
@@ -25,23 +53,6 @@ export class CloudService {
                 monthCost,
             });
         });
-        return Object.fromEntries(priceMap);
-    }
-
-    async calculatePrice(nodes?: Record<string, any>) {
-        const prices = await this.findCloudResourcePrices();
-        const nodeValues = Object.values(data);
-        const totalMonthPrice = nodeValues.reduce(
-            (price, nodeValue): number => {
-                if (nodeValue.properties['server_spec_code']) {
-                    price += prices[nodeValue.properties['server_spec_code']]
-                        .monthCost as number;
-                    return price;
-                }
-                return price;
-            },
-            0,
-        );
-        return { totalMonthPrice };
+        return priceMap;
     }
 }

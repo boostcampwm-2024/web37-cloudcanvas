@@ -10,8 +10,8 @@ export class CloudController {
         return this.service.findCloudResourcePrices();
     }
 
-    // @Get('/test')
-    // getTestPrices() {
-    //     return this.service.calculatePrice()
-    // }
+    @Get('/test')
+    getTestPrices() {
+        return this.service.calculatePrice();
+    }
 }
