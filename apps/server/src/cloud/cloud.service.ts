@@ -10,10 +10,10 @@ export class CloudService {
         return Object.fromEntries(await this.getCloudResourcesMap());
     }
 
-    async calculatePrice(nodes?: Record<string, any>) {
+    async calculatePrice(nodes: Record<string, any>) {
         if (nodes && !Object.keys(nodes).length) throw new NotFoundException();
         const cloudResourcesPriceMap = await this.getCloudResourcesMap();
-        const nodeValues = Object.values(data);
+        const nodeValues = Object.values(nodes);
         const totalMonthPrice = nodeValues.reduce(
             (price, nodeValue): number => {
                 if (nodeValue.properties['server_spec_code']) {

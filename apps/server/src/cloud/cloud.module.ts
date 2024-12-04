@@ -7,5 +7,6 @@ import { PrismaModule } from 'src/prisma/prisma.module';
     imports: [PrismaModule],
     controllers: [CloudController],
     providers: [CloudService],
+    exports: [CloudService],
 })
 export class CloudModule {}
