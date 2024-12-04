@@ -13,10 +13,14 @@ import { RemoveArchitectureDto } from './dto/remove-architecture.dto';
 import { UnstarDto } from './dto/unstar.dto';
 import { StarDto } from './dto/star.dto';
 import { ImportDto } from './dto/import.dto';
+import { CloudService } from 'src/cloud/cloud.service';
 
 @Injectable()
 export class PublicArchitectureService {
-    constructor(private readonly prisma: PrismaService) {}
+    constructor(
+        private readonly prisma: PrismaService,
+        private readonly cloud: CloudService,
+    ) {}
 
     async findArchitectures(queryParams: FindArchitecturesDto) {
         const [data, total] = await this.prisma.$transaction([
@@ -55,18 +59,18 @@ export class PublicArchitectureService {
         return { data, total };
     }
 
-    saveArchitecture({
+    async saveArchitecture({
         title,
         architecture,
-        cost,
         tags,
         userId: authorId,
     }: SaveArchitectureDto) {
+        const cost = await this.cloud.calculatePrice(architecture?.nodes);
         return this.prisma.publicArchitecture.create({
             data: {
                 title,
                 architecture,
-                cost,
+                cost: cost.totalMonthPrice,
                 authorId,
                 tags: {
                     create: tags.map((name) => ({

@@ -24,6 +24,6 @@ import { CloudModule } from './cloud/cloud.module';
         CloudModule,
     ],
     controllers: [AppController],
-    providers: [AppService, PrismaService],
+    providers: [AppService, PrismaService, NcloudResourcesService],
 })
 export class AppModule {}
