@@ -1,7 +1,7 @@
 import { NODE_BASE_SIZE } from '@constants';
 import { Dimension, Group, Node, Size3D } from '@types';
 import { convert2dTo3dPoint, convert3dTo2dPoint } from '@utils';
-import { getNodeOffsetForDimension } from './node';
+import { calculateNodeBoundingBox, getNodeOffsetForDimension } from './node';
 
 export const GraphGroup = {
     id: '',
@@ -20,20 +20,16 @@ export const computeBounds = (
     const padding = 90 * paddingSize;
 
     if (dimension === '2d') {
-        const minX = Math.min(...nodes.map((node) => node.point.x));
-        const minY = Math.min(...nodes.map((node) => node.point.y));
-        const maxX = Math.max(
-            ...nodes.map((node) => node.point.x + node.size['2d'].width),
-        );
-        const maxY = Math.max(
-            ...nodes.map((node) => node.point.y + node.size['2d'].height),
+        const { minX, minY, width, height } = calculateNodeBoundingBox(
+            Object.values(nodes),
+            '2d',
         );
 
         return {
             x: minX - padding,
             y: minY - padding,
-            width: maxX - minX + padding * 2,
-            height: maxY - minY + padding * 2,
+            width: width + padding * 2,
+            height: height + padding * 2,
         };
     } else {
         //2d
@@ -51,15 +47,11 @@ export const computeBounds = (
                 point: { x: pos.x, y: pos.y },
             };
         });
-        const minX = Math.min(...nodes.map((node) => node.point.x));
-        const minY = Math.min(...nodes.map((node) => node.point.y));
-        const maxX = Math.max(
-            ...nodes.map((node) => node.point.x + node.size['2d'].width),
-        );
-        const maxY = Math.max(
-            ...nodes.map((node) => node.point.y + node.size['2d'].height),
-        );
 
+        const { minX, minY, width, height } = calculateNodeBoundingBox(
+            Object.values(nodes),
+            '2d',
+        );
         const { x, y } = convert2dTo3dPoint({
             x: minX - padding,
             y: minY - padding,
@@ -67,8 +59,8 @@ export const computeBounds = (
         return {
             x,
             y,
-            width: maxX - minX + padding * 2,
-            height: maxY - minY + padding * 2,
+            width: width + padding * 2,
+            height: height + padding * 2,
         };
     }
 };

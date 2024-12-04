@@ -84,19 +84,17 @@ export const alignNodePoint = (
 };
 
 export const calculateNodeBoundingBox = (
-    nodes: Record<string, Node>,
+    nodes: Node[],
     dimension: Dimension,
 ) => {
-    const nodesArr = Object.values(nodes);
-
-    const minX = Math.min(...nodesArr.map((node) => node.point.x));
-    const minY = Math.min(...nodesArr.map((node) => node.point.y));
+    const minX = Math.min(...nodes.map((node) => node.point.x));
+    const minY = Math.min(...nodes.map((node) => node.point.y));
 
     const maxX = Math.max(
-        ...nodesArr.map((node) => node.point.x + node.size[dimension].width),
+        ...nodes.map((node) => node.point.x + node.size[dimension].width),
     );
     const maxY = Math.max(
-        ...nodesArr.map((node) => node.point.y + node.size[dimension].height),
+        ...nodes.map((node) => node.point.y + node.size[dimension].height),
     );
 
     const width = maxX - minX;

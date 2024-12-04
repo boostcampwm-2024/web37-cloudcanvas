@@ -187,15 +187,15 @@ export const getDistanceToSegment = (
     p1: Point,
     p2: Point,
 ): number => {
-    const A = p.x - p1.x;
-    const B = p.y - p1.y;
-    const C = p2.x - p1.x;
-    const D = p2.y - p1.y;
+    const Px = p.x - p1.x;
+    const Py = p.y - p1.y;
+    const P2x = p2.x - p1.x;
+    const P2y = p2.y - p1.y;
 
-    const dot = A * C + B * D;
-    const len_sq = C * C + D * D;
+    const dot = Px * P2x + Py * P2y;
+    const lineLen = P2x * P2x + P2y * P2y;
     let param = -1;
-    if (len_sq !== 0) param = dot / len_sq;
+    if (lineLen !== 0) param = dot / lineLen;
 
     let xx, yy;
 
@@ -206,8 +206,8 @@ export const getDistanceToSegment = (
         xx = p2.x;
         yy = p2.y;
     } else {
-        xx = p1.x + param * C;
-        yy = p1.y + param * D;
+        xx = p1.x + param * P2x;
+        yy = p1.y + param * P2y;
     }
 
     const dx = p.x - xx;

@@ -7,7 +7,10 @@ export const calcViewBoxBounds = (
     viewBox: ViewBox,
     dimension: Dimension,
 ) => {
-    const allNodeBounds = calculateNodeBoundingBox(nodes, dimension);
+    const allNodeBounds = calculateNodeBoundingBox(
+        Object.values(nodes),
+        dimension,
+    );
     const viewBoxCenter = {
         x: viewBox.x + viewBox.width / 2,
         y: viewBox.y + viewBox.height / 2,
