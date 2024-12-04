@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { NcloudResourcesService } from './ncloud-resources.service';
+import { NcloudResourcesService } from './ncloud-resource.service';
 
 describe('NcloudResourcesService', () => {
     let service: NcloudResourcesService;
