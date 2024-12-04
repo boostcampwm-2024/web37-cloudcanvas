@@ -21,7 +21,7 @@ const Node3D = ({ properties }: Props) => {
                 fill="none"
                 stroke="#a4c4e3"
                 d="M.955 37.877 32.333 55.8h32.334l31.378-17.923M32.333 55.8v36.211M64.667 55.8v36.574"
-                stroke-width="1.04"
+                strokeWidth="1.04"
             ></path>
             <path
                 fill="#4286c5"
@@ -51,7 +51,7 @@ const Node3D = ({ properties }: Props) => {
                 fill="#ffffff"
                 stroke="#ffffff"
                 d="m46.993 26.089 6.654-1.146-4.324 5.168c.189-1.691-.757-3.313-2.33-4.022Z"
-                stroke-width=".36"
+                strokeWidth=".36"
             ></path>
             <path
                 fill="#ffffff"
@@ -61,7 +61,7 @@ const Node3D = ({ properties }: Props) => {
                 fill="#ffffff"
                 stroke="#ffffff"
                 d="m39.76 23.812 4.676-4.854-.405 6.716c-.855-1.474-2.582-2.221-4.271-1.862Z"
-                stroke-width=".36"
+                strokeWidth=".36"
             ></path>
             <path
                 fill="#ffffff"
@@ -71,13 +71,13 @@ const Node3D = ({ properties }: Props) => {
                 fill="#ffffff"
                 stroke="#ffffff"
                 d="m56.68 28.957 6.608 1.387-5.936 3.209c.804-1.503.526-3.358-.672-4.596Z"
-                stroke-width=".36"
+                strokeWidth=".36"
             ></path>
             <path
                 fill="#ffffff"
                 stroke="#ffffff"
                 d="m37.96 33.977 13.12-7.547m-13.207 7.497 5.792-13.134m-5.628 13.229 22.478-3.281"
-                stroke-width="1.93"
+                strokeWidth="1.93"
             ></path>
         </svg>
     );

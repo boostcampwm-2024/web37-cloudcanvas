@@ -1,0 +1,153 @@
+import { urls } from '@/src/apis';
+import { getPropertyFilters } from '@/src/models/ncloud';
+import { transformObject, validateObject } from '@/src/models/ncloud/utils';
+import CodeDrawer from '@components/CodeDrawer';
+import ShareDialog from '@components/ShareDialog';
+import { useDimensionContext } from '@contexts/DimensionContext';
+import { useEdgeContext } from '@contexts/EdgeContext';
+import { useGroupContext } from '@contexts/GroupContext';
+import { useNodeContext } from '@contexts/NodeContext';
+import useFetch from '@hooks/useFetch';
+import useNCloud from '@hooks/useNCloud';
+import { Button, ToggleButton, ToggleButtonGroup } from '@mui/material';
+import { useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { TerraformConverter } from 'terraform/converter/TerraformConverter';
+
+const CURRENT_ALLOWED_RESOURCE_TYPES = ['server', 'object-storage', 'db-mysql'];
+export default () => {
+    const {
+        state: { nodes },
+    } = useNodeContext();
+    const {
+        state: { groups },
+    } = useGroupContext();
+    const {
+        state: { edges },
+    } = useEdgeContext();
+
+    const { selectedResource } = useNCloud();
+    const { dimension, changeDimension } = useDimensionContext();
+    const [openDrawer, setOpenDrawer] = useState(false);
+    const [terraformCode, setTerraformCode] = useState('');
+    const [open, setOpen] = useState(false);
+    const navigate = useNavigate();
+    const params = useParams();
+
+    const handleOpenShareDialog = () => {
+        setOpen(true);
+    };
+    const handleCloseShareDialog = () => {
+        setOpen(false);
+    };
+
+    const { execute: saveArchitecture } = useFetch(
+        urls('privateArchi', params?.id ?? ''),
+        {
+            method: params?.id ? 'PATCH' : 'POST',
+        },
+    );
+
+    const validateResource = (
+        resources: {
+            type: string;
+            properties: any;
+        }[],
+    ) => {
+        const validResult: { type: string; isValid: boolean }[] = [];
+        resources.forEach((resource) => {
+            if (
+                !validateObject(
+                    resource.properties,
+                    getPropertyFilters(resource.type),
+                )
+            ) {
+                validResult.push({ type: resource.type, isValid: false });
+            }
+        });
+
+        return validResult;
+    };
+    const handleConvertTerraform = () => {
+        let resources = selectedResource
+            ? [
+                  {
+                      type: selectedResource.type,
+                      properties: transformObject(selectedResource.properties),
+                  },
+              ]
+            : Object.values(nodes)
+                  .filter((node) =>
+                      CURRENT_ALLOWED_RESOURCE_TYPES.includes(node.type),
+                  )
+                  .map((node) => ({
+                      type: node.type,
+                      properties: transformObject(node.properties),
+                  }));
+
+        const validResult = validateResource(resources);
+        const isValid = validResult.every((result) => result.isValid);
+        if (!isValid) {
+            let errorMessages = '';
+            validResult.forEach((result) => {
+                errorMessages += `${result.type}, `;
+            });
+
+            alert(`${errorMessages.slice(0, -2)} properties are not valid`);
+            return;
+        }
+
+        const Converter = new TerraformConverter();
+        Converter.addResourceFromJson(resources);
+        setTerraformCode(Converter.generate());
+        setOpenDrawer(true);
+    };
+
+    const handleSave = async () => {
+        const resp = await saveArchitecture({
+            cost: 0,
+            architecture: {
+                nodes,
+                groups,
+                edges,
+            },
+            title: 'Test',
+        });
+        if (resp.id) {
+            navigate(`${resp.id}`);
+        }
+    };
+
+    return (
+        <>
+            <Button onClick={handleOpenShareDialog}>Share</Button>
+            <Button onClick={handleSave}>Save</Button>
+            <Button
+                className="graph-ignore-select"
+                onClick={handleConvertTerraform}
+            >
+                Converter
+            </Button>
+            <ToggleButtonGroup
+                value={dimension}
+                exclusive
+                onChange={() =>
+                    changeDimension(dimension === '2d' ? '3d' : '2d')
+                }
+                sx={{
+                    height: '38px',
+                }}
+            >
+                <ToggleButton value="2d">2D</ToggleButton>
+                <ToggleButton value="3d">3D</ToggleButton>
+            </ToggleButtonGroup>
+
+            <CodeDrawer
+                code={terraformCode}
+                open={openDrawer}
+                onClose={() => setOpenDrawer(false)}
+            />
+            <ShareDialog open={open} onClose={handleCloseShareDialog} />
+        </>
+    );
+};

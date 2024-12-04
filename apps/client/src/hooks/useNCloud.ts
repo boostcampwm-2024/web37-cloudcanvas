@@ -1,12 +1,13 @@
 import { NcloudGroupFactory, NcloudNodeFactory } from '@/src/models/ncloud';
 import { DEFAULT_REGION, REGIONS } from '@/src/models/ncloud/constants';
-import { getInitPoint } from '@helpers/cloud';
+import { useDimensionContext } from '@contexts/DimensionContext';
+import { useGraphContext } from '@contexts/GraphConetxt';
 import useGraph from '@hooks/useGraph';
 import useSelection from '@hooks/useSelection';
 import { Region } from '@types';
 import { findKeyByValue } from '@utils';
 import { nanoid } from 'nanoid';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 export default () => {
     const { selectedNodeId, selectedGroupId } = useSelection();
@@ -21,6 +22,7 @@ export default () => {
 
     const [vpcList, setVpcList] = useState<{ [id: string]: string }>({});
     const [subnetList, setSubnetList] = useState<{ [id: string]: string }>({});
+    const currentRegion = useRef(DEFAULT_REGION);
 
     const {
         nodes,
@@ -35,6 +37,11 @@ export default () => {
         addGroup,
         isExistGroup,
     } = useGraph();
+
+    const {
+        state: { viewBox },
+    } = useGraphContext();
+    const { dimension } = useDimensionContext();
 
     useEffect(() => {
         if (!selectedNodeId || !nodes[selectedNodeId]) {
@@ -77,29 +84,49 @@ export default () => {
         });
     }, [selectedNodeId, nodes]);
 
+    useEffect(() => {
+        currentRegion.current =
+            selectedResource?.properties.region?.value ?? currentRegion.current;
+    }, [selectedResource]);
+
+    const findRegionGroup = (region: string) => {
+        const prefixId = (id: string) => id.split('-')[0].toLowerCase();
+        return Object.values(groups).find(
+            (group) => prefixId(group.id) === region.toLowerCase(),
+        );
+    };
+
     const createResource = (type: string) => {
         if (!svgRef.current) return;
 
         const node = NcloudNodeFactory(type);
         const id = `node-${nanoid()}`;
 
-        const region = REGIONS[DEFAULT_REGION];
+        const region = REGIONS[currentRegion.current];
+        const regionGroup = findRegionGroup(region.value);
+        const regionId = regionGroup ? regionGroup.id : region.id;
+        const regionValue = regionGroup
+            ? regionGroup.properties.value
+            : region.value;
+
         addNode({
             ...node,
             id,
             properties: {
                 ...node.properties,
                 region: {
-                    id: region.id,
-                    value: region.value,
+                    id: regionId,
+                    value: regionValue,
                 },
             },
-            point: getInitPoint(svgRef.current!),
+            point: {
+                x: viewBox.x + 300,
+                y: viewBox.y + viewBox.height / 2,
+            },
         });
 
-        const regionId = REGIONS[DEFAULT_REGION].id;
-        if (!isExistGroup(regionId)) {
-            createRegion(regionId, region.value);
+        if (!regionGroup) {
+            createRegion(regionId, regionValue);
         }
         addNodeToGroup(regionId, id);
     };
@@ -111,26 +138,32 @@ export default () => {
             nodeIds: [],
             properties: {
                 name: REGIONS[region].label,
+                value: region,
             },
         });
     };
 
     const changeRegion = (id: string, newRegion: Region) => {
         if (!selectedNodeId) return;
-        if (!isExistGroup(id)) {
+        const regionGroup = findRegionGroup(newRegion);
+
+        if (!regionGroup) {
             createRegion(id, newRegion);
         }
 
-        addNodeToGroup(id, selectedNodeId);
-        const node = nodes[selectedNodeId];
-        const { properties } = node;
+        const regionId = regionGroup ? regionGroup.id : id;
+
+        addNodeToGroup(regionId, selectedNodeId);
+
+        const { properties } = nodes[selectedNodeId];
         if (properties.region) {
-            removeNodeFromGroup(properties.region.id, selectedNodeId);
+            const prevRegionId = findRegionGroup(properties.region.value)?.id;
+            removeNodeFromGroup(prevRegionId!, selectedNodeId);
         }
 
         updateProperties(selectedNodeId, {
             region: {
-                id,
+                id: regionId,
                 value: REGIONS[newRegion].value,
             },
         });

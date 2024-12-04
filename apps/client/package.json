@@ -6,22 +6,27 @@
     "keywords": [],
     "type": "module",
     "scripts": {
-        "start": "serve dist",
-        "dev": "vite",
-        "build": "tsc -b && vite build",
-        "clean": "rm -rf dist"
+        "dev": "vite --mode development",
+        "build:prod": "tsc -b && vite build --mode production",
+        "build:dev": "tsc -b && vite build --mode development",
+        "clean": "rm -rf dist",
+        "preview": "vite preview"
     },
     "dependencies": {
         "@emotion/react": "^11.13.3",
         "@emotion/styled": "^11.13.0",
         "@mui/icons-material": "^6.1.5",
         "@mui/material": "^6.1.5",
+        "@types/validator": "^13.12.2",
         "nanoid": "^5.0.8",
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
+        "react-router-dom": "^7.0.1",
+        "react-select": "^5.8.3",
         "react-syntax-highlighter": "^15.6.1",
         "react-type-animation": "^3.2.0",
-        "terraform": "file:../../packages/terraform"
+        "terraform": "file:../../packages/terraform",
+        "validator": "^13.12.0"
     },
     "devDependencies": {
         "@types/react": "^18.3.11",

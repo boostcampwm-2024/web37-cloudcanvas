@@ -19,56 +19,56 @@ const Node3D = ({ properties }: Props) => {
         <svg width="123" height="108.05">
             <path
                 fill="#ccc"
-                stroke="#red"
+                stroke="#a4c4e3"
                 d="M38.23 22.751v53.738l29.756-16.317v-54.6Z"
-                fill-rule="evenodd"
-                stroke-linejoin="round"
-                stroke-width="1.011"
+                fillRule="evenodd"
+                strokeLinejoin="round"
+                strokeWidth="1.011"
             ></path>
             <path
                 fill="#e6e6e6"
                 stroke="#a4c4e3"
                 d="m1 8.421 37.23 14.33v53.738L1 44.247Z"
-                fill-rule="evenodd"
-                stroke-linejoin="round"
+                fillRule="evenodd"
+                strokeLinejoin="round"
             ></path>
             <path
                 fill="#fff"
                 stroke="#a4c4e3"
                 d="M38.23 22.751 67.986 5.573 13.411 1.255 1.001 8.421z"
-                fill-rule="evenodd"
-                stroke-linejoin="round"
+                fillRule="evenodd"
+                strokeLinejoin="round"
             ></path>
             <path
                 fill="none"
                 stroke="#4286c5"
                 d="m1 44.247 37.23 32.242 29.756-16.317v-54.6l-55.165-4.55-11.82 6.826z"
-                stroke-width="2"
+                strokeWidth="2"
             ></path>
             <path
                 fill="#fff"
                 stroke="#a4c4e3"
                 d="M84.77 13.794 53.747 31.712l56.04 39.295L122 63.955z"
-                fill-rule="evenodd"
-                stroke-width="1.011"
+                fillRule="evenodd"
+                strokeWidth="1.011"
             ></path>
             <path
                 fill="#e6e6e6"
                 stroke="#a4c4e3"
                 d="M53.747 31.712v53.739l55.847 21.494.194-35.938z"
-                fill-rule="evenodd"
+                fillRule="evenodd"
             ></path>
             <path
                 fill="#ccc"
                 stroke="#a4c4e3"
                 d="M109.788 71.007 122 63.955v35.823l-12.406 7.168z"
-                fill-rule="evenodd"
+                fillRule="evenodd"
             ></path>
             <path
                 fill="none"
                 stroke="#4286c5"
                 d="M84.77 13.794 53.747 31.712v53.739l55.847 21.494L122 99.778V63.955z"
-                stroke-width="2"
+                strokeWidth="2"
             ></path>
             <path
                 fill="#4286c5"

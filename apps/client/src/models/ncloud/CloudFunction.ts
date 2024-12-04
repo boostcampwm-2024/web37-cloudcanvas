@@ -13,7 +13,7 @@ export const CloudFunctionNode: Node & {
     type: 'cloud-function',
     size: {
         '2d': { width: 90, height: 90 },
-        '3d': { width: 96, height: 113.438, depth: 58, offset: 12.5 },
+        '3d': { width: 96, height: 113.438, offset: 12.5 },
     },
     properties: {
         ...Networks,

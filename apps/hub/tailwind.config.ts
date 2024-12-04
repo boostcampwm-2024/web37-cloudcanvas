@@ -9,6 +9,9 @@ export default {
     ],
     theme: {
         extend: {
+            fontFamily: {
+                gamjaFlower: ['var(--font-gamja-flower)', 'cursive'],
+            },
             colors: {
                 background: 'var(--background)',
                 foreground: 'var(--foreground)',

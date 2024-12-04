@@ -3,9 +3,9 @@ import { Node } from '@types';
 import { Networks, NetworksProp } from './Networks';
 
 export interface LoadBalancerProp extends NetworksProp {
-    name?: string;
-    networkType?: string;
-    subnetNoList?: [];
+    name: string | null;
+    networkType: string | null;
+    subnetNoList: [] | null;
 }
 
 export const LoadBalancerNode: Node & {
@@ -15,13 +15,13 @@ export const LoadBalancerNode: Node & {
     type: 'load-balancer',
     size: {
         '2d': { width: 90, height: 90 },
-        '3d': { width: 97, height: 94, depth: 38, offset: 10 },
+        '3d': { width: 97, height: 94, offset: 10 },
     },
     properties: {
         ...Networks,
-        name: undefined,
-        networkType: undefined,
-        subnetNoList: undefined,
+        name: null,
+        networkType: null,
+        subnetNoList: null,
     },
 };
 

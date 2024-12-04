@@ -13,26 +13,27 @@ import { NCloudLaunchConfiguration } from '../model/NCloudLaunchConfiguration';
 import { NCloudMySQL } from '../model/NCloudMySQL';
 import { NCloudObjectStorageBucket } from '../model/NCloudObjectStorageBucket';
 import { NCloudRedis } from '../model/NCloudRedis';
+import { NCloudNKsCluster } from '../model/NCloudNKsCluster';
 
 export function parseToNCloudModel(resource: any): NCloudModel {
-    const { type, name, properties } = resource;
+    const { type, properties } = resource;
 
     switch (type.toLowerCase()) {
         case 'vpc':
             return new NCloudVPC({
-                name: name || 'vpc',
+                name: properties.name || 'vpc',
                 ipv4CidrBlock: properties.cidrBlock,
             });
 
         case 'networkacl':
             return new NCloudNetworkACL({
-                name: name || 'nacl',
+                name: properties.name || 'nacl',
                 vpcName: properties.vpcName,
             });
 
         case 'subnet':
             return new NCloudSubnet({
-                name: name || 'subnet',
+                name: properties.name || 'subnet',
                 subnet: properties.subnet,
                 zone: properties.zone,
                 subnetType: properties.subnetType,
@@ -44,7 +45,7 @@ export function parseToNCloudModel(resource: any): NCloudModel {
         case 'acg':
         case 'accesscontrolgroup':
             return new NCloudACG({
-                name: name || 'acg',
+                name: properties.name || 'acg',
                 description: properties.description,
                 vpcName: properties.vpcName,
             });
@@ -62,19 +63,19 @@ export function parseToNCloudModel(resource: any): NCloudModel {
 
         case 'loginkey':
             return new NCloudLoginKey({
-                name: name || 'login-key',
+                name: properties.name || 'login-key',
             });
 
         case 'networkinterface':
             return new NCloudNetworkInterface({
-                name: name || 'nic',
+                name: properties.name || 'nic',
                 subnetName: properties.subnetName,
                 acgName: properties.acgName,
             });
 
         case 'server':
             return new NCloudServer({
-                name: name || 'server',
+                name: properties.name || 'server',
                 serverImageNumber: properties.server_image_number,
                 serverSpecCode: properties.server_spec_code,
                 subnetName: properties.subnet,
@@ -82,14 +83,14 @@ export function parseToNCloudModel(resource: any): NCloudModel {
 
         case 'publicip':
             return new NCloudPublicIP({
-                name: name || 'public-ip',
+                name: properties.name || 'public-ip',
                 description: properties.description,
                 serverName: properties.serverName,
             });
 
         case 'loadbalancer':
             return new NCloudLoadBalancer({
-                name: name || 'load-balancer',
+                name: properties.name || 'load-balancer',
                 networkType: properties.networkType,
                 type: properties.type,
                 subnetName: properties.subnet,
@@ -98,12 +99,12 @@ export function parseToNCloudModel(resource: any): NCloudModel {
 
         case 'launchconfiguration':
             return new NCloudLaunchConfiguration({
-                name: name || 'launch-config',
+                name: properties.name || 'launch-config',
                 serverImageProductCode: properties.serverImageProductCode,
                 serverProductCode: properties.serverProductCode,
             });
 
-        case 'mysql':
+        case 'db-mysql':
             if (
                 !properties.serverNamePrefix ||
                 !properties.userName ||
@@ -116,7 +117,7 @@ export function parseToNCloudModel(resource: any): NCloudModel {
                 );
             }
             return new NCloudMySQL({
-                serviceName: name || 'mysql',
+                serviceName: properties.serviceName || 'mysql',
                 serverNamePrefix: properties.serverNamePrefix,
                 userName: properties.userName,
                 userPassword: properties.userPassword,
@@ -126,19 +127,35 @@ export function parseToNCloudModel(resource: any): NCloudModel {
                 vpc: properties.vpc,
             });
 
-        case 'objectstoragebucket':
+        case 'object-storage':
             return new NCloudObjectStorageBucket({
                 bucketName: properties.bucketName,
             });
 
         case 'redis':
             return new NCloudRedis({
-                serviceName: name || 'redis',
+                serviceName: properties.serviceName || 'redis',
                 serverNamePrefix: properties.serverNamePrefix,
                 vpcNo: properties.vpc,
                 subnetNo: properties.subnet,
                 configGroupNo: properties.configGroup,
                 mode: properties.mode,
+            });
+
+        case 'nkscluster':
+            return new NCloudNKsCluster({
+                name: name,
+                hypervisorCode: properties.hypervisorCode,
+                clusterType: properties.clusterType,
+                k8sVersion: properties.k8sVersion,
+                loginKeyName: properties.loginKeyName,
+                lbPrivateSubnetNo: properties.lbPrivateSubnet,
+                lbPublicSubnetNo: properties.lbPublicSubnet,
+                subnetNoList: properties.subnet,
+                vpcNo: properties.vpc,
+                subnetNo: properties.subnet,
+                publicNetwork: properties.publicNetwork,
+                zone: properties.zone,
             });
         default:
             throw new Error(`Unsupported resource type: ${type}`);

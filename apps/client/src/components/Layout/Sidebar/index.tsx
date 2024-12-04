@@ -9,7 +9,7 @@ import List from '@mui/material/List';
 
 import Service from '@components/Layout/Sidebar/Service';
 import SelectPlatform from '@components/Layout/Sidebar/SelectPlatform';
-import { NCLOUD_SERVICES } from '@constants';
+import { SIDEBAR_RESOURCES } from '@constants';
 
 const CLOUD_PLATFORMS = [
     {
@@ -55,7 +55,7 @@ export default () => {
                     overflow: 'auto',
                 }}
             >
-                {NCLOUD_SERVICES.map((service) => (
+                {SIDEBAR_RESOURCES.map((service) => (
                     <Service
                         key={service.title}
                         title={service.title}

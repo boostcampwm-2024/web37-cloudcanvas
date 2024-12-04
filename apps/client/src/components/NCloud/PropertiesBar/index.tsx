@@ -1,12 +1,18 @@
 import ServerProperties from '@components/NCloud/PropertiesBar/ServerProperties';
 import useNCloud from '@hooks/useNCloud';
 import { AppBar, Toolbar, Typography } from '@mui/material';
+import ObjectStorageProperties from './ObjectStorageProperties';
+import MySQLDBProperties from './MySQLDBProperties';
 
 const PropertiesFactory = (type: string) => {
     switch (type) {
         case 'server': {
             return <ServerProperties />;
         }
+        case 'object-storage':
+            return <ObjectStorageProperties />;
+        case 'db-mysql':
+            return <MySQLDBProperties />;
         default: {
             return (
                 <Typography
