@@ -1,6 +1,5 @@
 import { LoaderFunctionArgs } from 'react-router-dom';
 import { urls } from '.';
-import { undefinedReviver } from '@utils';
 
 export const rootLoader = async ({ params }: LoaderFunctionArgs) => {
     const loginResponse = await fetch(urls('login'), {
@@ -31,13 +30,7 @@ export const rootLoader = async ({ params }: LoaderFunctionArgs) => {
         });
     }
 
-    const text = await archiResponse.text();
-    let data;
-    try {
-        data = JSON.parse(text, undefinedReviver);
-    } catch (error) {
-        throw new Response('Invalid JSON response', { status: 500 });
-    }
+    const data = await archiResponse.json();
 
     return { data };
 };
