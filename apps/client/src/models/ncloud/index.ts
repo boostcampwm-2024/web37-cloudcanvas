@@ -1,3 +1,4 @@
+import { ImageBlock } from './ImageBlock';
 import { CloudFunctionNode } from './CloudFunction';
 import { ContainerRegistryNode } from './ContainerRegistry';
 import { LoadBalancerNode } from './LoadBalancer';
@@ -26,6 +27,8 @@ export const NcloudNodeFactory = (type: string) => {
             return ObjectStorageNode;
         case 'nat-gateway':
             return NatGatewayNode;
+        case 'image-block':
+            return ImageBlock;
         default: {
             throw new Error(`Unknown type: ${type}`);
         }

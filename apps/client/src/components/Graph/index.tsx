@@ -39,8 +39,6 @@ export default ({ children }: PropsWithChildren) => {
             return;
         }
 
-        const newWidth = viewBox.width * zoomFactor;
-        const newHeight = viewBox.height * zoomFactor;
         dispatch({
             type: 'SET_VIEWBOX',
             payload: {
@@ -50,8 +48,8 @@ export default ({ children }: PropsWithChildren) => {
                 y:
                     viewBox.y +
                     (cursorSvgPoint.y - viewBox.y) * (1 - zoomFactor),
-                width: newWidth,
-                height: newHeight,
+                width: viewBox.width * zoomFactor,
+                height: viewBox.height * zoomFactor,
             },
         });
     };

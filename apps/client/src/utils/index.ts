@@ -4,13 +4,11 @@ import {
     GRID_3D_WIDTH_SIZE,
 } from '@constants';
 import {
-    Bounds,
     ConnectorMap,
     Dimension,
     GridPoint,
     Node,
     Point,
-    Size,
     Size3D,
 } from '@types';
 
@@ -24,16 +22,6 @@ export const getSvgPoint = (svg: SVGSVGElement, point: Point) => {
     svgPoint.y = point.y;
     const screenCTM = svg.getScreenCTM();
     return svgPoint.matrixTransform(screenCTM!.inverse());
-};
-
-export const getScreenPoint = (svg: SVGSVGElement, point: Point): DOMPoint => {
-    const svgPoint = svg.createSVGPoint();
-    svgPoint.x = point.x;
-    svgPoint.y = point.y;
-
-    const screenCTM = svg.getScreenCTM();
-
-    return svgPoint.matrixTransform(screenCTM!);
 };
 
 export const gridToScreen3d = (gridPoint: GridPoint): Point => {
@@ -227,17 +215,6 @@ export const getDistanceToSegment = (
     return Math.sqrt(dx * dx + dy * dy);
 };
 
-const debounce = (func: (...args: any[]) => void, delay: number) => {
-    let timeout: ReturnType<typeof setTimeout> | null = null;
-
-    return (...args: any[]) => {
-        if (timeout) clearTimeout(timeout); // 이전 타이머 제거
-        timeout = setTimeout(() => {
-            func(...args); // 지정된 시간 후 함수 실행
-        }, delay);
-    };
-};
-
 export const findKeyByValue = (
     value: string,
     list: { [id: string]: string },
@@ -262,16 +239,17 @@ export const isEmpty = (something: any) => {
     return false;
 };
 
-export const undefinedReplacer = (_: string, value: any) => {
-    if (value === undefined) {
-        return { __undefined__: true };
-    }
-    return value;
-};
-
-export const undefinedReviver = (_: string, value: any) => {
-    if (value && typeof value === 'object' && value.__undefined__) {
-        return null;
-    }
-    return value;
+export const readFile = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+            if (typeof reader.result === 'string') {
+                resolve(reader.result);
+            } else {
+                reject('File reading failed');
+            }
+        };
+        reader.onerror = () => reject('File reading failed');
+        reader.readAsDataURL(file);
+    });
 };
