@@ -2,7 +2,6 @@ import { Ncloud, PriceApi, ApiKeyCredentials } from '@cloud-canvas/ncloud-sdk';
 import { Injectable } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { writeFile } from 'fs/promises';
 
 @Injectable()
 export class NcloudResourcesService {
