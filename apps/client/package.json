@@ -7,8 +7,7 @@
     "type": "module",
     "scripts": {
         "dev": "vite --mode development",
-        "build:prod": "tsc -b && vite build --mode production",
-        "build:dev": "tsc -b && vite build --mode development",
+        "build": "tsc -b && vite build --mode production",
         "clean": "rm -rf dist",
         "preview": "vite preview"
     },

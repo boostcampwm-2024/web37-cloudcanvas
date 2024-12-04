@@ -1,7 +1,8 @@
 model NcloudServerResource {
     id                   Int       @id @default(autoincrement())
     serverResourceTypeId Int       @map("server_resource_type_id")
-    serverSpecCode       String    @map("server_spec_code") @db.Char(50)
+    serverSpecCode       String    @map("server_spec_code") @db.VarChar(50)
+    productName          String    @map("product_name") @db.VarChar(200)
     hourCost             Float     @map("hour_cost")
     monthCost             Float     @map("month_cost")
     createdAt            DateTime  @default(now()) @map("created_at") @db.Timestamp(0)

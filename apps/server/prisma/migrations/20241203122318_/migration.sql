@@ -12,7 +12,8 @@ CREATE TABLE `import` (
 CREATE TABLE `ncloud_server_resource` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `server_resource_type_id` INTEGER NOT NULL,
-    `server_spec_code` CHAR(50) NOT NULL,
+    `server_spec_code` VARCHAR(50) NOT NULL,
+    `product_name` VARCHAR(200) NOT NULL,
     `hour_cost` DOUBLE NOT NULL,
     `month_cost` DOUBLE NOT NULL,
     `created_at` TIMESTAMP(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0),

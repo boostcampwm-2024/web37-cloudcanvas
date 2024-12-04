@@ -2,6 +2,7 @@ import { Ncloud, PriceApi, ApiKeyCredentials } from '@cloud-canvas/ncloud-sdk';
 import { Injectable } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { writeFile } from 'fs/promises';
 
 @Injectable()
 export class NcloudResourcesService {
@@ -23,11 +24,8 @@ export class NcloudResourcesService {
             Record<string, number | string>[]
         > = new Map();
         result.productPriceList.forEach((product) => {
-            if (
-                product.productItemKind.code === 'SVR' &&
-                product.serverProductCode &&
-                product.serverProductCode.endsWith('50')
-            ) {
+            if (product.serverProductCode) {
+                console.log(product);
                 if (!ncloudServerResourceMap.has(product.productType.codeName))
                     ncloudServerResourceMap.set(
                         product.productType.codeName,
@@ -36,14 +34,17 @@ export class NcloudResourcesService {
                 const {
                     serverProductCode,
                     priceList: [{ price: monthPrice }, { price: hourPrice }],
+                    productName,
                 }: {
                     serverProductCode: string;
                     priceList: { price: number }[];
+                    productName: string;
                 } = product;
                 ncloudServerResourceMap.get(product.productType.codeName).push({
                     serverProductCode: serverProductCode.toLowerCase(),
                     monthPrice,
                     hourPrice,
+                    productName,
                 });
             }
         });
@@ -69,7 +70,6 @@ export class NcloudResourcesService {
                                     type: ncloudServerResourceTypes[index].type,
                                 },
                             });
-
                         return ncloudServerResourceList.map(
                             (ncloudServerResource) => ({
                                 serverResourceTypeId: serverResourceTypeId?.id,
@@ -81,6 +81,8 @@ export class NcloudResourcesService {
                                 monthCost: parseFloat(
                                     '' + ncloudServerResource.monthPrice,
                                 ),
+                                productName:
+                                    ncloudServerResource.productName as string,
                             }),
                         );
                     },
@@ -88,12 +90,9 @@ export class NcloudResourcesService {
             );
 
             const flattenedResources = ncloudServerResources.flat();
-
             await tx.ncloudServerResource.createMany({
                 data: flattenedResources,
             });
-            console.log(await tx.ncloudServerResourceType.findMany({}));
-            console.log(await tx.ncloudServerResource.findMany({}));
         });
     }
 
