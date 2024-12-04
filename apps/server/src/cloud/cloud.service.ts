@@ -1,6 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import * as data from '../../node.json';
 
 @Injectable()
 export class CloudService {
