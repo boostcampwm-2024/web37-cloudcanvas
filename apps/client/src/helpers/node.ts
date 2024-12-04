@@ -57,7 +57,6 @@ export const adjustNodePointForDimension = (
 
     return result;
 };
-
 export const alignNodePoint = (
     node: Node,
     newPoint: Point,

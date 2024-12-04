@@ -6,6 +6,7 @@ import Graph from '@components/Graph';
 import GridBackground from '@components/GridBackground';
 import Group from '@components/Group';
 import Node from '@components/Node';
+import UserNode from '@components/Node/common/UserNode';
 import NodeActions from '@components/NodeActions';
 import { useEdgeContext } from '@contexts/EdgeContext';
 import { useGraphContext } from '@contexts/GraphConetxt';
