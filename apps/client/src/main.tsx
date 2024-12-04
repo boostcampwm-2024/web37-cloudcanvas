@@ -11,9 +11,10 @@ const router = createBrowserRouter([
     {
         element: <Root />,
         loader: rootLoader,
+        path: '/canvas',
         children: [
             {
-                path: '/',
+                index: true,
                 element: <App />,
             },
             {
