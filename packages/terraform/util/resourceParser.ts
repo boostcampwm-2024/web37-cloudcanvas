@@ -13,6 +13,7 @@ import { NCloudLaunchConfiguration } from '../model/NCloudLaunchConfiguration';
 import { NCloudMySQL } from '../model/NCloudMySQL';
 import { NCloudObjectStorageBucket } from '../model/NCloudObjectStorageBucket';
 import { NCloudRedis } from '../model/NCloudRedis';
+import { NCloudNKsCluster } from '../model/NCloudNKsCluster';
 
 export function parseToNCloudModel(resource: any): NCloudModel {
     const { type, properties } = resource;
@@ -139,6 +140,22 @@ export function parseToNCloudModel(resource: any): NCloudModel {
                 subnetNo: properties.subnet,
                 configGroupNo: properties.configGroup,
                 mode: properties.mode,
+            });
+
+        case 'nkscluster':
+            return new NCloudNKsCluster({
+                name: name,
+                hypervisorCode: properties.hypervisorCode,
+                clusterType: properties.clusterType,
+                k8sVersion: properties.k8sVersion,
+                loginKeyName: properties.loginKeyName,
+                lbPrivateSubnetNo: properties.lbPrivateSubnet,
+                lbPublicSubnetNo: properties.lbPublicSubnet,
+                subnetNoList: properties.subnet,
+                vpcNo: properties.vpc,
+                subnetNo: properties.subnet,
+                publicNetwork: properties.publicNetwork,
+                zone: properties.zone,
             });
         default:
             throw new Error(`Unsupported resource type: ${type}`);

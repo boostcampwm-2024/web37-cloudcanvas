@@ -10,6 +10,7 @@ import {
 
 export const processDependencies = (node: any): any[] => {
     if (
+
         !['server', 'loadbalancer', 'db-mysql', 'redis'].includes(
             node.type.toLowerCase(),
         )

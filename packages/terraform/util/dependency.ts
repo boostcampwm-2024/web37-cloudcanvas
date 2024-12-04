@@ -3,8 +3,8 @@ import { CloudCanvasNode } from '../interface/CloudCanvasNode';
 export const createVpcDependency = (properties: any): CloudCanvasNode => ({
     id: `vpc-${properties.vpc}`,
     type: 'VPC',
-    name: properties.vpc,
     properties: {
+        name: properties.vpc,
         cidrBlock: properties.vpcCidr || '172.16.0.0/16',
         region: properties.region,
     },
@@ -35,8 +35,8 @@ export const createSubnetDependency = (
         {
             id: `subnet-${properties.subnet}`,
             type: 'Subnet',
-            name: properties.subnet,
             properties: {
+                name: properties.subnet,
                 subnet: properties.subnetCidr || '172.16.10.0/24',
                 zone: properties.zone || getZoneByRegion(properties.region),
                 subnetType: properties.subnetType || 'PUBLIC',
@@ -57,8 +57,8 @@ export const createAcgDependencies = (
     {
         id: `acg-${properties.acg}`,
         type: 'ACG',
-        name: properties.acg,
         properties: {
+            name: properties.acg,
             description: `Security group for ${nodeName}`,
             vpcName: properties.vpc,
             region: properties.region,
@@ -67,8 +67,8 @@ export const createAcgDependencies = (
     {
         id: `acgrule-${properties.acg}`,
         type: 'ACGRule',
-        name: `${properties.acg}-rule`,
         properties: {
+            name: `${properties.acg}-rule`,
             acgName: properties.acg,
             protocol: 'TCP',
             ip_block: '0.0.0.0/0',
@@ -82,8 +82,8 @@ export const createAcgDependencies = (
 export const createNicDependency = (properties: any): CloudCanvasNode => ({
     id: `nic-${properties.nic}`,
     type: 'NetworkInterface',
-    name: properties.nic,
     properties: {
+        name: properties.nic,
         subnetName: properties.subnet,
         acgName: properties.acg,
         region: properties.region,
@@ -93,8 +93,8 @@ export const createNicDependency = (properties: any): CloudCanvasNode => ({
 export const createLoginKeyDependency = (properties: any): CloudCanvasNode => ({
     id: `loginkey-${properties.loginKey}`,
     type: 'LoginKey',
-    name: properties.loginKey,
     properties: {
+        name: properties.loginKey,
         region: properties.region,
     },
 });
@@ -102,8 +102,8 @@ export const createLoginKeyDependency = (properties: any): CloudCanvasNode => ({
 export const createRedisConfigGroup = (properties: any): CloudCanvasNode => ({
     id: `redisconfig-${properties.configGroup}`,
     type: 'RedisConfigGroup',
-    name: properties.configGroup,
     properties: {
+        name: properties.configGroup,
         redisVersion: properties.redisVersion,
         region: properties.region,
     },
