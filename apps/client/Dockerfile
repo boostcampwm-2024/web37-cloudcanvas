@@ -32,7 +32,7 @@ COPY . .
 ARG VITE_API_URL
 ENV VITE_API_URL=${VITE_API_URL}
 
-RUN npm install -g pnpm && pnpm install && pnpm build:prod
+RUN npm install -g pnpm && pnpm install && pnpm build
 
 FROM nginx:alpine AS production
 COPY --from=build /build/apps/client/dist /usr/share/nginx/html

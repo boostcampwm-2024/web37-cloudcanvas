@@ -10,12 +10,12 @@ services:
             retries: 3
             start_period: 20s
             timeout: 5s
-        logging:
-            driver: 'fluentd'
-            options:
-                fluentd-address: 'localhost:24224'
-                fluentd-async-connect: 'true'
-                tag: 'redis'
+        # logging:
+        #     driver: 'fluentd'
+        #     options:
+        #         fluentd-address: 'localhost:24224'
+        #         fluentd-async-connect: 'true'
+        #         tag: 'redis'
         networks:
             - cloud-canvas-network
             - cloud-canvas-database-network
@@ -46,12 +46,12 @@ services:
                 touch /var/log/mysql/general.log && \
                 tail -f /var/log/mysql/general.log & \
                 exec docker-entrypoint.sh mysqld
-        logging:
-            driver: 'fluentd'
-            options:
-                fluentd-address: 'localhost:24224'
-                fluentd-async-connect: 'true'
-                tag: 'mysql'
+        # logging:
+        #     driver: 'fluentd'
+        #     options:
+        #         fluentd-address: 'localhost:24224'
+        #         fluentd-async-connect: 'true'
+        #         tag: 'mysql'
         networks:
             - cloud-canvas-network
             - cloud-canvas-database-network
@@ -89,40 +89,40 @@ services:
             - cloud-canvas-network
         restart: unless-stopped
 
-    fluentd:
-        build: ./monitorin/logging/fluentd/
-        container_name: fluentd
-        volumes:
-            - ./monitoring/logging/fluentd/conf/fluent.conf:/fluentd/etc/fluent.conf
-        ports:
-            - '24224:24224'
-            - '24224:24224/udp'
-        healthcheck:
-            test: ['CMD', 'curl', '-f', 'http://localhost:24224/api/health']
-            interval: 30s
-            retries: 3
-            start_period: 10s
-            timeout: 10s
-        networks:
-            - cloud-canvas-network
+    # fluentd:
+    #     build: ./monitorin/logging/fluentd/
+    #     container_name: fluentd
+    #     volumes:
+    #         - ./monitoring/logging/fluentd/conf/fluent.conf:/fluentd/etc/fluent.conf
+    #     ports:
+    #         - '24224:24224'
+    #         - '24224:24224/udp'
+    #     healthcheck:
+    #         test: ['CMD', 'curl', '-f', 'http://localhost:24224/api/health']
+    #         interval: 30s
+    #         retries: 3
+    #         start_period: 10s
+    #         timeout: 10s
+    #     networks:
+    #         - cloud-canvas-network
 
-    elasticsearch:
-        image: docker.elastic.co/elasticsearch/elasticsearch:7.17.0
-        container_name: elasticsearch
-        environment:
-            - 'discovery.type=single-node'
-        ports:
-            - '9200:9200'
-        networks:
-            - cloud-canvas-network
+    # elasticsearch:
+    #     image: docker.elastic.co/elasticsearch/elasticsearch:7.17.0
+    #     container_name: elasticsearch
+    #     environment:
+    #         - 'discovery.type=single-node'
+    #     ports:
+    #         - '9200:9200'
+    #     networks:
+    #         - cloud-canvas-network
 
-    kibana:
-        image: docker.elastic.co/kibana/kibana:7.13.1
-        container_name: kibana
-        ports:
-            - '5601:5601'
-        networks:
-            - cloud-canvas-network
+    # kibana:
+    #     image: docker.elastic.co/kibana/kibana:7.13.1
+    #     container_name: kibana
+    #     ports:
+    #         - '5601:5601'
+    #     networks:
+    #         - cloud-canvas-network
 
 networks:
     cloud-canvas-network:
