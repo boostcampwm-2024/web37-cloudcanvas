@@ -131,9 +131,15 @@ https://github.com/user-attachments/assets/a4dd50a2-f058-4055-b4c5-fac06b352b55
 
 ## **아키텍처** 🌐
 
-### **인프라 설계**
+### **테라폼 모듈을 활용한 인프라 배포**
+
+![image](https://github.com/user-attachments/assets/ee335fdb-b671-49d8-a376-bc1f98305f2a)
+
+### **테라폼 워크플로우 중앙화**
 
 ![image](https://github.com/user-attachments/assets/e8bd555e-ae84-4989-a520-800a61b3da54)
+
+### **인프라 설계**
 
 ![image](https://github.com/user-attachments/assets/b18b1048-5fe8-43ee-a33f-8fbe2b38e873)
 
