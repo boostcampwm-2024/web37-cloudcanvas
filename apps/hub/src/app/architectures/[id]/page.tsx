@@ -39,6 +39,7 @@ export default function ArchitectureDetailPage() {
     const {
         title,
         author: { name: author },
+        architecture,
         createdAt,
         cost,
         tags,
@@ -76,7 +77,7 @@ export default function ArchitectureDetailPage() {
     };
 
     const handleImport = async () => {
-        await fetch(
+        const res = await fetch(
             `${process.env.BACK_URL}/public-architectures/${params.id}/imports`,
             {
                 method: 'POST',
@@ -87,7 +88,13 @@ export default function ArchitectureDetailPage() {
             ...data!,
             _count: { ...data!._count, imports: data!._count.imports + 1 },
         });
-        alert('Imported!');
+        const shouldMove = confirm(
+            '저장되었습니다. 캔버스로 이동하시겠습니까?',
+        );
+        if (shouldMove) {
+            const privateArchitecutre = await res.json();
+            location.href = `/canvas/${privateArchitecutre.id}`;
+        }
     };
 
     return (
@@ -144,7 +151,14 @@ export default function ArchitectureDetailPage() {
                 </div>
                 <hr />
             </header>
-            <ArchitectureImageExample />
+            {architecture?.svg ? (
+                <div
+                    className="w-[48rem]"
+                    dangerouslySetInnerHTML={{ __html: `${architecture.svg}` }}
+                ></div>
+            ) : (
+                <ArchitectureImageExample />
+            )}
         </div>
     );
 }
