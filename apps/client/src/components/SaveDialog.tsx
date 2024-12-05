@@ -12,6 +12,8 @@ import TextField from '@mui/material/TextField';
 import { useNavigate, useParams } from 'react-router-dom';
 import { urls } from '../apis';
 import { useCloudGraph } from './CloudGraphProvider';
+import { useDimensionContext } from '@contexts/DimensionContext';
+import useGraph from '@hooks/useGraph';
 type Props = {
     open: boolean;
     onClose: () => void;
@@ -27,7 +29,9 @@ export default ({ open, onClose }: Props) => {
     const {
         state: { edges },
     } = useEdgeContext();
+    const { updatePointForDimension } = useGraph();
     const { data: graphData, setData: setGraphData } = useCloudGraph();
+    const { dimension } = useDimensionContext();
 
     const navigate = useNavigate();
     const params = useParams();
@@ -47,12 +51,22 @@ export default ({ open, onClose }: Props) => {
 
         const title = (e.target as any).title.value;
 
+        let updatedNodes = nodes;
+        let updatedEdges = edges;
+        // 서버에 저장시 2d로 변환
+        if (dimension === '3d') {
+            const { updatedNodes: _updatedNodes, updatedEdges: _updatedEdges } =
+                updatePointForDimension(nodes, edges, '2d');
+
+            updatedNodes = _updatedNodes;
+            updatedEdges = _updatedEdges;
+        }
         const resp = await saveArchitecture({
             cost: 0,
             architecture: {
-                nodes,
+                nodes: updatedNodes,
+                edges: updatedEdges,
                 groups,
-                edges,
             },
             title,
         });
