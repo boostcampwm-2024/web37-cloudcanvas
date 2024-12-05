@@ -19,7 +19,7 @@ export const NetworksRequiredFields = {
     vpc: true,
 };
 
-export const RegionGroup: Group = {
+export const Region: Group = {
     ...GraphGroup,
     type: 'region',
     properties: {
@@ -27,7 +27,7 @@ export const RegionGroup: Group = {
     },
 };
 
-export const VpcGroup: Group = {
+export const Vpc: Group = {
     ...GraphGroup,
     type: 'vpc',
     properties: {
@@ -35,7 +35,7 @@ export const VpcGroup: Group = {
     },
 };
 
-export const SubnetGroup: Group = {
+export const Subnet: Group = {
     ...GraphGroup,
     type: 'subnet',
     properties: {

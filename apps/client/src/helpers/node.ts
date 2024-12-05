@@ -18,7 +18,7 @@ export const getNodeOffsetForDimension = (
     nodeSize: Size & Size3D,
     baseSize: Size,
 ) => {
-    if (nodeSize.width % 128 === 0 && nodeSize.height % 111 === 0) {
+    if (nodeSize.width % 128 === 0 && nodeSize.height % 74 === 0) {
         return {
             x: 0,
             y: 0,

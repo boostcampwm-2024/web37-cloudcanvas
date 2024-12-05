@@ -1,9 +1,13 @@
 import { useDimensionContext } from '@contexts/DimensionContext';
+import { useColorScheme } from '@mui/material';
 import { Node } from '@types';
+import { calcIsoMatrixPoint } from '@utils';
 
 type Props = Partial<Node>;
 
 const Node3D = ({ properties }: Props) => {
+    const { mode } = useColorScheme();
+    const matrix = calcIsoMatrixPoint({ x: 0, y: 0 });
     return (
         <>
             <svg
@@ -25,6 +29,21 @@ const Node3D = ({ properties }: Props) => {
                     fill="#000000"
                     d="M128 37v37l-64 37L0 74V37L64 0l64 37ZM2.054 38.185v34.63L64 108.627l61.946-35.812v-34.63L64 2.373 2.054 38.185Z"
                 ></path>
+            </svg>
+            <svg x="0" y="0" overflow="visible">
+                <text
+                    x="0"
+                    y="0"
+                    transform={matrix.translate(96, -42).toString()}
+                    fontFamily="Noto Sans"
+                    textAnchor="middle"
+                    fontWeight="normal"
+                    fontSize="24pt"
+                    fill={mode === 'dark' ? '#ffffff' : '#000000'}
+                    style={{ userSelect: 'none' }}
+                >
+                    {properties?.name?.toUpperCase() ?? ''}
+                </text>
             </svg>
             <svg x="49" y="14" width="80" height="36" overflow="visible">
                 <rect

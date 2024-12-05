@@ -1,34 +1,37 @@
+import { CloudFunction } from './CloudFunction';
+import { ContainerRegistry } from './ContainerRegistry';
 import { ImageBlock } from './ImageBlock';
-import { CloudFunctionNode } from './CloudFunction';
-import { ContainerRegistryNode } from './ContainerRegistry';
-import { LoadBalancerNode } from './LoadBalancer';
-import { MySQLDBNode, MySQLDBRequiredFields } from './MySQLDB';
-import { NatGatewayNode } from './NatGateway';
-import { RegionGroup, SubnetGroup, VpcGroup } from './Networks';
-import {
-    ObjectStorageNode,
-    ObjectStorageRequiredFields,
-} from './ObjectStorage';
-import { ServerNode, ServerRequiredFields } from './Server';
+import { LoadBalancer } from './LoadBalancer';
+import { MySQLDB, MySQLDBRequiredFields } from './MySQLDB';
+import { NatGateway } from './NatGateway';
+import { Region, Subnet, Vpc } from './Networks';
+import { ObjectStorage, ObjectStorageRequiredFields } from './ObjectStorage';
+import { RedisDB } from './RedisDB';
+import { Server, ServerRequiredFields } from './Server';
+import { User } from './User';
 
 export const NcloudNodeFactory = (type: string) => {
     switch (type) {
         case 'server':
-            return ServerNode;
+            return Server;
         case 'cloud-function':
-            return CloudFunctionNode;
+            return CloudFunction;
         case 'db-mysql':
-            return MySQLDBNode;
+            return MySQLDB;
+        case 'db-redis':
+            return RedisDB;
         case 'load-balancer':
-            return LoadBalancerNode;
+            return LoadBalancer;
         case 'container-registry':
-            return ContainerRegistryNode;
+            return ContainerRegistry;
         case 'object-storage':
-            return ObjectStorageNode;
+            return ObjectStorage;
         case 'nat-gateway':
-            return NatGatewayNode;
+            return NatGateway;
         case 'image-block':
             return ImageBlock;
+        case 'user':
+            return User;
         default: {
             throw new Error(`Unknown type: ${type}`);
         }
@@ -38,11 +41,11 @@ export const NcloudNodeFactory = (type: string) => {
 export const NcloudGroupFactory = (type: string) => {
     switch (type) {
         case 'region':
-            return RegionGroup;
+            return Region;
         case 'vpc':
-            return VpcGroup;
+            return Vpc;
         case 'subnet':
-            return SubnetGroup;
+            return Subnet;
 
         default: {
             throw new Error(`Unknown type: ${type}`);

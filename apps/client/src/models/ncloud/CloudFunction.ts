@@ -6,7 +6,7 @@ export interface CloudFunctionProp extends NetworksProp {
     //TODO:
 }
 
-export const CloudFunctionNode: Node & {
+export const CloudFunction: Node & {
     properties: CloudFunctionProp;
 } = {
     ...GraphNode,
