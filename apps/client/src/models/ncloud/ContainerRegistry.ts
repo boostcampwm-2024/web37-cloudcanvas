@@ -6,14 +6,14 @@ export interface ContainerRegistryProp extends NetworksProp {
     //TODO:
 }
 
-export const ContainerRegistryNode: Node & {
+export const ContainerRegistry: Node & {
     properties: ContainerRegistryProp;
 } = {
     ...GraphNode,
     type: 'container-registry',
     size: {
         '2d': { width: 360, height: 360 },
-        '3d': { width: 512, height: 333, offset: 0 },
+        '3d': { width: 512, height: 296, offset: 37 },
     },
     properties: {
         ...Networks,

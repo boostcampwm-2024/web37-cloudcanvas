@@ -13,6 +13,9 @@ import { useGroupContext } from '@contexts/GroupContext';
 import { useNodeContext } from '@contexts/NodeContext';
 import useFetch from '@hooks/useFetch';
 import { urls } from '../apis';
+import { useSvgContext } from '@contexts/SvgContext';
+import { calculateNodeBoundingBox } from '@helpers/node';
+import { useDimensionContext } from '@contexts/DimensionContext';
 type Props = {
     open: boolean;
     onClose: () => void;
@@ -28,6 +31,8 @@ export default ({ open, onClose }: Props) => {
     const {
         state: { edges },
     } = useEdgeContext();
+    const { svgRef } = useSvgContext();
+    const { dimension } = useDimensionContext();
 
     const [tags, setTags] = useState<{ label: string; value: string }[]>([]);
 
@@ -46,8 +51,31 @@ export default ({ open, onClose }: Props) => {
         const formData = new FormData(event.currentTarget);
         const formJson = Object.fromEntries((formData as any).entries());
         const title = formJson.title;
+        if (!title) {
+            alert('Please enter title');
+            return;
+        }
         const cloudTags = tags.map((tag) => tag.value);
 
+        if (svgRef.current === null) {
+            console.error('svg ref is null');
+            return;
+        }
+
+        const allNodeBoundsBox = calculateNodeBoundingBox(
+            Object.values(nodes),
+            dimension,
+        );
+        const padding = 90 * 4;
+
+        const viewBox = `${allNodeBoundsBox.minX - padding} ${
+            allNodeBoundsBox.minY - padding
+        } ${allNodeBoundsBox.width + padding * 2} ${
+            allNodeBoundsBox.height + padding * 2
+        }`;
+
+        const svgClone = svgRef.current.cloneNode(true) as SVGSVGElement;
+        svgClone.setAttribute('viewBox', viewBox);
         await shareArchitecture({
             cost: 0,
             tags: cloudTags,
@@ -55,6 +83,7 @@ export default ({ open, onClose }: Props) => {
                 nodes,
                 groups,
                 edges,
+                svg: svgClone.outerHTML,
             },
             title,
         });

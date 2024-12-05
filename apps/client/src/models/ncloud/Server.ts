@@ -8,7 +8,7 @@ export interface ServerProp extends NetworksProp {
     server_spec_code: string | null;
 }
 
-export const ServerNode: Node & {
+export const Server: Node & {
     properties: ServerProp;
 } = {
     ...GraphNode,

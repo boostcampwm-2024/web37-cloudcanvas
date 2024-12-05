@@ -2,6 +2,7 @@ import { urls } from '@/src/apis';
 import { getPropertyFilters } from '@/src/models/ncloud';
 import { transformObject, validateObject } from '@/src/models/ncloud/utils';
 import CodeDrawer from '@components/CodeDrawer';
+import SaveDialog from '@components/SaveDialog';
 import ShareDialog from '@components/ShareDialog';
 import { useDimensionContext } from '@contexts/DimensionContext';
 import { useEdgeContext } from '@contexts/EdgeContext';
@@ -11,7 +12,7 @@ import useFetch from '@hooks/useFetch';
 import useNCloud from '@hooks/useNCloud';
 import { Button, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { TerraformConverter } from 'terraform/converter/TerraformConverter';
 
 const CURRENT_ALLOWED_RESOURCE_TYPES = ['server', 'object-storage', 'db-mysql'];
@@ -30,16 +31,15 @@ export default () => {
     const { dimension, changeDimension } = useDimensionContext();
     const [openDrawer, setOpenDrawer] = useState(false);
     const [terraformCode, setTerraformCode] = useState('');
-    const [open, setOpen] = useState(false);
-    const navigate = useNavigate();
+    const [openShare, setOpenShare] = useState(false);
+    const [openSave, setOpenSave] = useState(false);
     const params = useParams();
 
-    const handleOpenShareDialog = () => {
-        setOpen(true);
-    };
-    const handleCloseShareDialog = () => {
-        setOpen(false);
-    };
+    const handleOpenShareDialog = () => setOpenShare(true);
+    const handleCloseShareDialog = () => setOpenShare(false);
+
+    const handleOpenSaveDialog = () => setOpenSave(true);
+    const handleCloseSaveDialog = () => setOpenSave(false);
 
     const { execute: saveArchitecture } = useFetch(
         urls('privateArchi', params?.id ?? ''),
@@ -68,6 +68,7 @@ export default () => {
 
         return validResult;
     };
+
     const handleConvertTerraform = () => {
         let resources = selectedResource
             ? [
@@ -103,25 +104,10 @@ export default () => {
         setOpenDrawer(true);
     };
 
-    const handleSave = async () => {
-        const resp = await saveArchitecture({
-            cost: 0,
-            architecture: {
-                nodes,
-                groups,
-                edges,
-            },
-            title: 'Test',
-        });
-        if (resp.id) {
-            navigate(`${resp.id}`);
-        }
-    };
-
     return (
         <>
             <Button onClick={handleOpenShareDialog}>Share</Button>
-            <Button onClick={handleSave}>Save</Button>
+            <Button onClick={handleOpenSaveDialog}>Save</Button>
             <Button
                 className="graph-ignore-select"
                 onClick={handleConvertTerraform}
@@ -147,7 +133,8 @@ export default () => {
                 open={openDrawer}
                 onClose={() => setOpenDrawer(false)}
             />
-            <ShareDialog open={open} onClose={handleCloseShareDialog} />
+            <ShareDialog open={openShare} onClose={handleCloseShareDialog} />
+            <SaveDialog open={openSave} onClose={handleCloseSaveDialog} />
         </>
     );
 };

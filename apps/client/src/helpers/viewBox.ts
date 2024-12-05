@@ -7,7 +7,10 @@ export const calcViewBoxBounds = (
     viewBox: ViewBox,
     dimension: Dimension,
 ) => {
-    const allNodeBounds = calculateNodeBoundingBox(nodes, dimension);
+    const allNodeBounds = calculateNodeBoundingBox(
+        Object.values(nodes),
+        dimension,
+    );
     const viewBoxCenter = {
         x: viewBox.x + viewBox.width / 2,
         y: viewBox.y + viewBox.height / 2,
@@ -22,14 +25,13 @@ export const calcViewBoxBounds = (
         y: viewBoxCenter.y - allNodeCenter.y,
     };
 
-    const padding = GRID_2D_SIZE * 8;
     let newWidth =
         viewBox.width < allNodeBounds.width
-            ? allNodeBounds.width + padding
+            ? allNodeBounds.width
             : viewBox.width;
     let newHeight =
         viewBox.height < allNodeBounds.height
-            ? allNodeBounds.height + padding
+            ? allNodeBounds.height
             : viewBox.height;
 
     return {

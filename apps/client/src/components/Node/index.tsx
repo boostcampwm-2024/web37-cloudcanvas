@@ -1,5 +1,5 @@
 import CloudFunctionNode from '@components/Node/ncloud/CloudFunctionNode';
-import ContainerRegistryNode from '@components/Node/ncloud/ContainerRegistry';
+import ContainerRegistryNode from '@components/Node/ncloud/ContainerRegistryNode';
 import MySQLDBNode from '@components/Node/ncloud/MySQLDBNode';
 import ObjectStorageNode from '@components/Node/ncloud/ObjectStorageNode';
 import ServerNode from '@components/Node/ncloud/ServerNode';
@@ -8,8 +8,10 @@ import useGraph from '@hooks/useGraph';
 import { Node, Point } from '@types';
 import { useEffect } from 'react';
 import ImageBlockNode from './common/ImageBlockNode';
-import LoadBalancerNode from './ncloud/LoadBalancer';
-import NatGatewayNode from './ncloud/NatGateway';
+import UserNode from './common/UserNode';
+import LoadBalancerNode from './ncloud/LoadBalancerNode';
+import NatGatewayNode from './ncloud/NatGatewayNode';
+import RedisDBNode from './ncloud/RedisDBNode';
 
 const nodeFactory = (node: Node) => {
     switch (node.type) {
@@ -21,6 +23,8 @@ const nodeFactory = (node: Node) => {
             return <ObjectStorageNode {...node} />;
         case 'db-mysql':
             return <MySQLDBNode {...node} />;
+        case 'db-redis':
+            return <RedisDBNode {...node} />;
         case 'load-balancer':
             return <LoadBalancerNode {...node} />;
         case 'container-registry':
@@ -28,7 +32,9 @@ const nodeFactory = (node: Node) => {
         case 'nat-gateway':
             return <NatGatewayNode {...node} />;
         case 'image-block':
-            return <ImageBlockNode />;
+            return <ImageBlockNode {...node} />;
+        case 'user':
+            return <UserNode />;
         default:
             null;
     }

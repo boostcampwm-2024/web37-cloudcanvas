@@ -3,18 +3,7 @@ import { Node } from '@types';
 
 type Props = Partial<Node>;
 
-const convertToIsoMatrix = (x: number, y: number) => {
-    const isoMatrix = new DOMMatrix()
-        .rotate(30)
-        .skewX(-30)
-        .scale(1, 0.8602)
-        .translate(x, y);
-
-    return isoMatrix; // 결과 행렬 반환
-};
 const Node3D = ({ properties }: Props) => {
-    const matrix = convertToIsoMatrix(0, 0);
-
     return (
         <svg width="123" height="108.05">
             <path

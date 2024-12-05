@@ -3,7 +3,7 @@ import { Node } from '@types';
 import { Networks, NetworksProp } from './Networks';
 import validator from 'validator';
 
-export type MYSQLDBProp = {
+export type ReidsDBProps = {
     serverName: string | null;
     serverNamePrefix: string | null;
     userName: string | null;
@@ -13,14 +13,14 @@ export type MYSQLDBProp = {
     serviceName: string | null;
 };
 
-export const MySQLDB: Node & {
-    properties: MYSQLDBProp & NetworksProp;
+export const RedisDB: Node & {
+    properties: ReidsDBProps & NetworksProp;
 } = {
     ...GraphNode,
-    type: 'db-mysql',
+    type: 'db-redis',
     size: {
         '2d': { width: 90, height: 90 },
-        '3d': { width: 128, height: 137.5, offset: 0 },
+        '3d': { width: 128, height: 147.802, offset: 0 },
     },
     properties: {
         ...Networks,
@@ -34,7 +34,7 @@ export const MySQLDB: Node & {
     },
 };
 
-export const MySQLDBRequiredFields = {
+export const RedisDBRequiredFields = {
     serviceName: true,
     serverName: true,
     serverNamePrefix: true,
@@ -47,10 +47,10 @@ export const MySQLDBRequiredFields = {
     region: true,
 };
 
-export type ValidationErrors = Partial<Record<keyof MYSQLDBProp, string>>;
+export type ValidationErrors = Partial<Record<keyof ReidsDBProps, string>>;
 
-export const validateMySQLDB = (
-    json: Partial<MYSQLDBProp>,
+export const validateRedisDB = (
+    json: Partial<ReidsDBProps>,
 ): ValidationErrors => {
     const errors: ValidationErrors = {};
 

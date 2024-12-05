@@ -1,4 +1,3 @@
-import { getClosestSegEdgeIdx } from '@helpers/edge';
 import { Edge, Point } from '@types';
 
 export type EdgeState = {
@@ -73,11 +72,12 @@ export const edgeReducer = (
             };
         }
         case 'REMOVE_EDGES': {
-            const removedEdge = action.payload;
+            const removedEdges = action.payload;
             const remainingEdges = Object.values(state.edges).reduce(
                 (acc, edge) => {
-                    if (removedEdge.includes(edge.id)) return acc;
+                    if (removedEdges.includes(edge.id)) return acc;
                     return {
+                        ...acc,
                         [edge.id]: {
                             ...edge,
                         },
@@ -85,6 +85,7 @@ export const edgeReducer = (
                 },
                 {},
             );
+
             return {
                 ...state,
                 edges: {

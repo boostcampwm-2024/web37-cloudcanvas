@@ -1,7 +1,9 @@
 import { useDimensionContext } from '@contexts/DimensionContext';
-import { useColorScheme, useTheme } from '@mui/material';
+import useGraph from '@hooks/useGraph';
+import { useTheme } from '@mui/material';
+import { Node } from '@types';
 import { calcIsoMatrixPoint, readFile } from '@utils';
-import { DragEvent, useEffect, useState } from 'react';
+import { DragEvent, useState } from 'react';
 
 type Props = {
     isInnerDropZone: boolean;
@@ -109,10 +111,10 @@ const ImageBlock2D = ({
     );
 };
 
-export default () => {
+export default ({ id, properties }: Pick<Node, 'id' | 'properties'>) => {
     const { dimension } = useDimensionContext();
-    const [imgSrc, setImgSrc] = useState<string>('assets/upload.svg');
     const [isInnerDropZone, setIsInnerDropZone] = useState(false);
+    const { updateNode } = useGraph();
 
     const handleDrop = async (e: any) => {
         e.preventDefault();
@@ -120,7 +122,7 @@ export default () => {
         if (files && files[0]) {
             try {
                 const src = await readFile(files[0]);
-                setImgSrc(src);
+                updateNode(id, { properties: { imgSrc: src } });
             } catch (error) {
                 console.error(error);
             }
@@ -140,7 +142,7 @@ export default () => {
     return dimension === '2d' ? (
         <ImageBlock2D
             isInnerDropZone={isInnerDropZone}
-            imgSrc={imgSrc}
+            imgSrc={properties.imgSrc}
             onDrop={handleDrop}
             onDragOver={handleDragOver}
             onDragLeave={handleDragLeave}
@@ -148,7 +150,7 @@ export default () => {
     ) : (
         <ImageBlock3D
             isInnerDropZone={isInnerDropZone}
-            imgSrc={imgSrc}
+            imgSrc={properties.imgSrc}
             onDrop={handleDrop}
             onDragOver={handleDragOver}
             onDragLeave={handleDragLeave}

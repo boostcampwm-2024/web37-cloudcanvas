@@ -6,7 +6,7 @@ export interface NatGatewayProp extends NetworksProp {
     //TODO:
 }
 
-export const NatGatewayNode: Node = {
+export const NatGateway: Node = {
     ...GraphNode,
     type: 'nat-gateway',
     size: {

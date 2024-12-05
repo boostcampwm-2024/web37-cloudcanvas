@@ -112,10 +112,11 @@ export default ({}: Props) => {
                         sx={{
                             minWidth: 300,
                         }}
+                        component="form"
+                        onSubmit={(e) => e.preventDefault()}
                     >
                         <InputLabel>{getLabel(prop)}</InputLabel>
                         <Input
-                            id={prop}
                             value={
                                 properties[prop as keyof typeof properties] ??
                                 ''
@@ -146,10 +147,11 @@ export default ({}: Props) => {
                         sx={{
                             minWidth: 300,
                         }}
+                        component="form"
+                        onSubmit={(e) => e.preventDefault()}
                     >
                         <InputLabel>{getLabel(prop)}</InputLabel>
                         <Input
-                            id={prop}
                             value={
                                 properties[prop as keyof typeof properties] ??
                                 ''
