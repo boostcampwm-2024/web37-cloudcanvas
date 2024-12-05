@@ -32,7 +32,7 @@ const nodeFactory = (node: Node) => {
         case 'nat-gateway':
             return <NatGatewayNode {...node} />;
         case 'image-block':
-            return <ImageBlockNode />;
+            return <ImageBlockNode {...node} />;
         case 'user':
             return <UserNode />;
         default:

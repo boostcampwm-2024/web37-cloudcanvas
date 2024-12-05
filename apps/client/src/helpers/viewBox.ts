@@ -25,14 +25,13 @@ export const calcViewBoxBounds = (
         y: viewBoxCenter.y - allNodeCenter.y,
     };
 
-    const padding = GRID_2D_SIZE * 8;
     let newWidth =
         viewBox.width < allNodeBounds.width
-            ? allNodeBounds.width + padding
+            ? allNodeBounds.width
             : viewBox.width;
     let newHeight =
         viewBox.height < allNodeBounds.height
-            ? allNodeBounds.height + padding
+            ? allNodeBounds.height
             : viewBox.height;
 
     return {
