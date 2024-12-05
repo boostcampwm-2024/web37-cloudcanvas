@@ -1,20 +1,15 @@
-import RegionGroup from '@components/Group/ncloud/RegionGroup';
-import SubnetGroup from '@components/Group/ncloud/SubnetGroup';
-import VPCGroup from '@components/Group/ncloud/VPCGroup';
 import useDrag from '@hooks/useDrag';
 import { Bounds, Group, Point } from '@types';
 import { useEffect } from 'react';
+import Rect3D from './ncloud/Rect3D';
 
 const GroupFacctory = (group: Group & { bounds: Bounds }) => {
     switch (group.type) {
         case 'region':
-            return <RegionGroup {...group} />;
-        case 'vpc':
-            return <VPCGroup {...group} />;
         case 'subnet':
-            return <SubnetGroup {...group} />;
+        case 'vpc':
         case 'security-group':
-            return <RegionGroup {...group} />;
+            return <Rect3D {...group} />;
     }
 };
 
