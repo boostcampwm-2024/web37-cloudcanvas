@@ -1,4 +1,3 @@
-import { GRID_2D_SIZE } from '@constants';
 import { useDimensionContext } from '@contexts/DimensionContext';
 import { useEdgeContext } from '@contexts/EdgeContext';
 import { useGraphContext } from '@contexts/GraphConetxt';
@@ -11,11 +10,7 @@ import {
     updateNearestConnectorPair,
 } from '@helpers/edge';
 import { computeBounds } from '@helpers/group';
-import {
-    adjustNodePointForDimension,
-    alignNodePoint,
-    calculateNodeBoundingBox,
-} from '@helpers/node';
+import { adjustNodePointForDimension, alignNodePoint } from '@helpers/node';
 import { calcViewBoxBounds } from '@helpers/viewBox';
 import useSelection from '@hooks/useSelection';
 import { Connection, Dimension, Edge, Group, Node, Point } from '@types';

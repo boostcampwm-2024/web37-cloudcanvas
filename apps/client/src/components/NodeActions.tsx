@@ -34,7 +34,7 @@ export default ({
     const handleClickActions = (e: React.MouseEvent, type: string) => {
         switch (type) {
             case 'edge': {
-                openConnection(e, 'right', node.connectors.right);
+                openConnection(e, 'center', node.connectors.center);
                 return;
             }
             case 'remove': {

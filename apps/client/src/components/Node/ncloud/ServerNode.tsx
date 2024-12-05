@@ -73,6 +73,7 @@ const Node3D = ({ properties }: Props) => {
 };
 
 const Node2D = ({ properties }: Props) => {
+    const { mode } = useColorScheme();
     return (
         <>
             <svg width="90" height="90">
@@ -89,6 +90,20 @@ const Node2D = ({ properties }: Props) => {
                     d="M13.265 13.265h63.47v63.47h-63.47z"
                     opacity=".05"
                 ></path>
+            </svg>
+            <svg overflow="visible">
+                <text
+                    x={45}
+                    y={-10}
+                    fontFamily="Noto Sans"
+                    textAnchor="middle"
+                    fontWeight="normal"
+                    fontSize="24pt"
+                    fill={mode === 'dark' ? '#ffffff' : '#000000'}
+                    style={{ userSelect: 'none' }}
+                >
+                    {properties?.name?.toUpperCase() ?? ''}
+                </text>
             </svg>
             <svg x="18" y="27" width="54" height="36">
                 <text
