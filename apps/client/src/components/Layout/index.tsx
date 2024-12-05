@@ -4,6 +4,7 @@ import { Box } from '@mui/material';
 import { Outlet } from 'react-router-dom';
 import Header from './Header';
 import Sidebar from './Sidebar';
+import KeyMap from '@components/Keymap';
 
 export default () => {
     return (
@@ -28,6 +29,7 @@ export default () => {
                 </Box>
             </Box>
 
+            <KeyMap />
             <NetworksBar />
             <PropertiesBar />
         </>
