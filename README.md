@@ -1,5 +1,5 @@
 <p align="middle" >
-<img src="https://github.com/user-attachments/assets/86793107-9566-45ea-949a-36699f98b48b">
+<img src="https://github.com/user-attachments/assets/907f345d-33f3-4c33-937d-f112f057a91b">
 </p>
 
 <h2 align="center">🎨 Cloud Canvas 🎨</h2>
