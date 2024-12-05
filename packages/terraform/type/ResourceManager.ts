@@ -2,10 +2,7 @@ import { NCloudModel } from '../interface/NCloudModel';
 
 export class ResourceManager {
     private resources: Array<{ resource: NCloudModel; region?: string }>;
-    private resourceMap: Map<
-        string | undefined,
-        { resource: NCloudModel; region?: string }
-    >;
+    private resourceNameMap: Map<string, Set<string | undefined>>;
     private readonly nameMap: Map<string, string>;
     private readonly regionMap: Map<string, Set<string>>;
 
@@ -13,13 +10,25 @@ export class ResourceManager {
         this.resources = [];
         this.nameMap = new Map();
         this.regionMap = new Map();
-        this.resourceMap = new Map();
+        this.resourceNameMap = new Map();
     }
 
     addResource(resource: NCloudModel, region?: string): void {
-        if (!this.resourceMap.has(resource.name)) {
-            this.resources.push({ resource, region });
+        if (!this.resourceNameMap.has(resource.serviceType)) {
+            this.resourceNameMap.set(resource.serviceType, new Set());
         }
+        const namesSet = this.resourceNameMap.get(resource.serviceType)!;
+
+        if (namesSet.has(resource.name)) {
+            console.warn(
+                `Resource ${resource.serviceType} with name ${resource.name} already exists. Skipping...`,
+            );
+            return;
+        }
+
+        this.resources.push({ resource, region });
+        namesSet.add(resource.name);
+
         if (resource.name) {
             this.nameMap.set(resource.serviceType, resource.name);
         }
@@ -30,7 +39,6 @@ export class ResourceManager {
             }
             this.regionMap.get(resource.serviceType)?.add(region);
         }
-        this.resourceMap.set(resource.name, { resource, region });
     }
 
     getResources(): Array<{ resource: NCloudModel; region?: string }> {
