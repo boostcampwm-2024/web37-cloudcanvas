@@ -38,7 +38,7 @@ export const ArchitectureItem = ({
                     ))}
                 </div>
             </div>
-            <div className="w-52">₩ {cost}</div>
+            <div className="w-52">₩ {Math.floor(cost).toLocaleString()}</div>
             <div className="w-40">{stars}</div>
             <div className="w-40">{imports}</div>
         </li>

@@ -83,6 +83,7 @@ export default ({
                             variant="text"
                             disabled={disabled}
                             disableRipple
+                            sx={{ whiteSpace: 'nowrap' }}
                         >
                             {subnet ? subnet.value : <AddCircleOutlineIcon />}
                         </Button>

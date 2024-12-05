@@ -1,4 +1,3 @@
-import { GRID_2D_SIZE } from '@constants';
 import { useDimensionContext } from '@contexts/DimensionContext';
 import { useEdgeContext } from '@contexts/EdgeContext';
 import { useGraphContext } from '@contexts/GraphConetxt';
@@ -11,11 +10,7 @@ import {
     updateNearestConnectorPair,
 } from '@helpers/edge';
 import { computeBounds } from '@helpers/group';
-import {
-    adjustNodePointForDimension,
-    alignNodePoint,
-    calculateNodeBoundingBox,
-} from '@helpers/node';
+import { adjustNodePointForDimension, alignNodePoint } from '@helpers/node';
 import { calcViewBoxBounds } from '@helpers/viewBox';
 import useSelection from '@hooks/useSelection';
 import { Connection, Dimension, Edge, Group, Node, Point } from '@types';
@@ -26,6 +21,10 @@ import {
     convert3dTo2dPoint,
     getConnectorPoints,
     getSvgPoint,
+    gridToScreen2d,
+    gridToScreen3d,
+    screenToGrid2d,
+    screenToGrid3d,
 } from '@utils';
 import { nanoid } from 'nanoid';
 
@@ -126,9 +125,15 @@ export default () => {
         clearSelection();
     };
 
-    //TODO: Refactoring필요
-    const updateNodePointForDimension = (dimension: Dimension) => {
-        //INFO: update node
+    const updatePointForDimension = (
+        nodes: Record<string, Node>,
+        edges: Record<string, Edge>,
+        dimension: Dimension,
+    ): {
+        updatedNodes: Record<string, Node>;
+        updatedEdges: Record<string, Edge>;
+    } => {
+        // INFO: Update nodes
         const updatedNodes: Record<string, Node> = Object.entries(nodes).reduce(
             (acc, [id, node]) => {
                 const adjustedPoint = adjustNodePointForDimension(
@@ -154,22 +159,96 @@ export default () => {
             {},
         );
 
-        //INFO:update edge
-        let updatedEdges = Object.entries(edges).reduce((acc, [id, edge]) => {
-            const adjustedBendingPoints = edge.bendingPoints.map((point) =>
-                dimension === '2d'
-                    ? convert3dTo2dPoint(point)
-                    : convert2dTo3dPoint(point),
-            );
+        // INFO: Update edges
+        const updatedEdges: Record<string, Edge> = Object.entries(edges).reduce(
+            (acc, [id, edge]) => {
+                const adjustedBendingPoints = edge.bendingPoints.map(
+                    (point) => {
+                        if (dimension === '3d') {
+                            const grid = screenToGrid2d(point);
+                            return gridToScreen3d({
+                                col: grid.col + 1,
+                                row: grid.row,
+                            });
+                        } else {
+                            const grid = screenToGrid3d(point);
+                            return gridToScreen2d({
+                                col: grid.col - 1,
+                                row: grid.row,
+                            });
+                        }
+                    },
+                );
 
-            return {
-                ...acc,
-                [id]: {
-                    ...edge,
-                    bendingPoints: adjustedBendingPoints,
-                },
-            };
-        }, {});
+                return {
+                    ...acc,
+                    [id]: {
+                        ...edge,
+                        bendingPoints: adjustedBendingPoints,
+                    },
+                };
+            },
+            {},
+        );
+
+        // Return the updated nodes and edges
+        return { updatedNodes, updatedEdges };
+    };
+
+    //TODO: Refactoring필요
+    const updateNodePointForDimension = (dimension: Dimension) => {
+        //INFO: update node
+        // const updatedNodes: Record<string, Node> = Object.entries(nodes).reduce(
+        //     (acc, [id, node]) => {
+        //         const adjustedPoint = adjustNodePointForDimension(
+        //             node.point,
+        //             node.size['3d'],
+        //             dimension,
+        //         );
+        //
+        //         const connectors = getConnectorPoints(
+        //             { ...node, point: adjustedPoint },
+        //             dimension,
+        //         );
+        //
+        //         return {
+        //             ...acc,
+        //             [id]: {
+        //                 ...node,
+        //                 point: adjustedPoint,
+        //                 connectors,
+        //             },
+        //         };
+        //     },
+        //     {},
+        // );
+        //
+        // //INFO:update edge
+        // let updatedEdges = Object.entries(edges).reduce((acc, [id, edge]) => {
+        //     const adjustedBendingPoints = edge.bendingPoints.map((point) => {
+        //         if (dimension === '3d') {
+        //             const grid = screenToGrid2d(point);
+        //             return gridToScreen3d({ col: grid.col + 1, row: grid.row });
+        //         } else {
+        //             const grid = screenToGrid3d(point);
+        //             return gridToScreen2d({ col: grid.col - 1, row: grid.row });
+        //         }
+        //     });
+        //
+        //     return {
+        //         ...acc,
+        //         [id]: {
+        //             ...edge,
+        //             bendingPoints: adjustedBendingPoints,
+        //         },
+        //     };
+        // }, {});
+
+        const { updatedNodes, updatedEdges } = updatePointForDimension(
+            nodes,
+            edges,
+            dimension,
+        );
 
         //INFO: update ViewBox
         if (Object.keys(updatedNodes).length === 0 || !svgRef.current) return;
@@ -454,6 +533,7 @@ export default () => {
         addEdge,
         removeEdge,
         splitEdge,
+        updatePointForDimension,
         updateNodePointForDimension,
         moveBendingPointer,
         addGroup,

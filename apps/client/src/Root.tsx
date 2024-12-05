@@ -6,7 +6,7 @@ function Root() {
     const loader = useLoaderData();
 
     return (
-        <CloudGraphProvider initialData={loader?.data.architecture}>
+        <CloudGraphProvider initialData={loader?.data}>
             <Layout />
         </CloudGraphProvider>
     );

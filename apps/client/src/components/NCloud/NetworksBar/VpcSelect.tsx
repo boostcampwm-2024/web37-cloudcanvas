@@ -88,6 +88,7 @@ export default ({
                             type="submit"
                             disabled={disabled}
                             disableRipple
+                            sx={{ whiteSpace: 'nowrap' }}
                         >
                             {vpc ? vpc.value : <AddCircleOutlineIcon />}
                         </Button>

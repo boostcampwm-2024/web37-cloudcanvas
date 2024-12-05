@@ -6,7 +6,7 @@ export interface ObjectStorageProp extends NetworksProp {
     bucketName: string | null;
 }
 
-export const ObjectStorageNode: Node & {
+export const ObjectStorage: Node & {
     properties: ObjectStorageProp;
 } = {
     ...GraphNode,

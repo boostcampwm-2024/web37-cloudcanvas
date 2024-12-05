@@ -11,6 +11,7 @@ export const SIDEBAR_RESOURCES = [
         title: 'Common',
         items: [
             { title: 'Image Block', desc: 'Image Block', type: 'image-block' },
+            { title: 'User', desc: 'User', type: 'user' },
         ],
     },
     {
@@ -61,11 +62,11 @@ export const SIDEBAR_RESOURCES = [
                 desc: 'Managed MySQL database',
                 type: 'db-mysql',
             },
-            // {
-            //     title: 'DB for Redis',
-            //     desc: 'Managed Redis database',
-            //     type: 'db-redis',
-            // },
+            {
+                title: 'DB for Redis',
+                desc: 'Managed Redis database',
+                type: 'db-redis',
+            },
             // {
             //     title: 'DB for MSSQL',
             //     desc: 'Managed MSSQL database',

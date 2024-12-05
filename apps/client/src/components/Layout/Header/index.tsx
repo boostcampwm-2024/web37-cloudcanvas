@@ -1,8 +1,7 @@
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
-import { styled } from '@mui/material/styles';
+import { styled, useColorScheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
-import { useLocation, useNavigate } from 'react-router-dom';
 import ActionsButtons from './ActionsButtons';
 import UtilityButtons from './UtilityButtons';
 
@@ -15,13 +14,22 @@ const StyledBox = styled(Box)(({ theme }) => ({
 }));
 
 export default () => {
+    const { mode } = useColorScheme();
     return (
         <>
             <StyledBox>
                 <Stack>
-                    <Typography variant="h6" textTransform="uppercase">
-                        Cloud Canvas
-                    </Typography>
+                    <a
+                        href="https://cloudcanvas.kro.kr"
+                        style={{
+                            color: mode === 'light' ? 'black' : 'white',
+                            textDecoration: 'none',
+                        }}
+                    >
+                        <Typography variant="h6" textTransform="uppercase">
+                            Cloud Canvas
+                        </Typography>
+                    </a>
                 </Stack>
                 <Stack direction="row" spacing={1} alignItems="center">
                     <ActionsButtons />
