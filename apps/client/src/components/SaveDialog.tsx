@@ -78,7 +78,7 @@ export default ({ open, onClose }: Props) => {
             <DialogTitle>Save</DialogTitle>
             <DialogContent
                 sx={{
-                    minWidth: '600px',
+                    minWidth: '300px',
                 }}
             >
                 <Stack spacing={2}>
@@ -87,7 +87,7 @@ export default ({ open, onClose }: Props) => {
                         <TextField
                             margin="dense"
                             defaultValue={
-                                graphData.title ? graphData.title : ''
+                                graphData?.title ? graphData.title : ''
                             }
                             id="title"
                             name="title"
