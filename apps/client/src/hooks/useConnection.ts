@@ -80,12 +80,12 @@ export default ({ updateEdgeFn }: Props) => {
             };
         });
 
-        if (target.id) {
-            targetRef.current = {
-                ...target,
-                point: newPoint,
-            };
-        }
+        targetRef.current = target.id
+            ? {
+                  ...target,
+                  point: newPoint,
+              }
+            : null;
     };
 
     const closeConnection = () => {

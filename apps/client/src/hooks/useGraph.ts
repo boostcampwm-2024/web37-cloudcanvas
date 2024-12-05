@@ -21,6 +21,10 @@ import {
     convert3dTo2dPoint,
     getConnectorPoints,
     getSvgPoint,
+    gridToScreen2d,
+    gridToScreen3d,
+    screenToGrid2d,
+    screenToGrid3d,
 } from '@utils';
 import { nanoid } from 'nanoid';
 
@@ -151,11 +155,15 @@ export default () => {
 
         //INFO:update edge
         let updatedEdges = Object.entries(edges).reduce((acc, [id, edge]) => {
-            const adjustedBendingPoints = edge.bendingPoints.map((point) =>
-                dimension === '2d'
-                    ? convert3dTo2dPoint(point)
-                    : convert2dTo3dPoint(point),
-            );
+            const adjustedBendingPoints = edge.bendingPoints.map((point) => {
+                if (dimension === '3d') {
+                    const grid = screenToGrid2d(point);
+                    return gridToScreen3d({ col: grid.col + 1, row: grid.row });
+                } else {
+                    const grid = screenToGrid3d(point);
+                    return gridToScreen2d({ col: grid.col - 1, row: grid.row });
+                }
+            });
 
             return {
                 ...acc,

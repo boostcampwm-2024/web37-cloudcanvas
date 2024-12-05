@@ -135,7 +135,6 @@ export default ({ id, properties }: Pick<Node, 'id' | 'properties'>) => {
         setIsInnerDropZone(true);
     };
 
-    console.log(properties.imgSrc);
     const handleDragLeave = (e: DragEvent) => {
         e.preventDefault();
         setIsInnerDropZone(false);

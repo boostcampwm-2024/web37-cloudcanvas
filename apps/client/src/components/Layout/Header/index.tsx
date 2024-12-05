@@ -20,7 +20,7 @@ export default () => {
             <StyledBox>
                 <Stack>
                     <a
-                        href="http://localhost:5000"
+                        href="https://cloudcanvas.kro.kr"
                         style={{
                             color: mode === 'light' ? 'black' : 'white',
                             textDecoration: 'none',
