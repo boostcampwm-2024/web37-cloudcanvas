@@ -14,6 +14,7 @@ WORKDIR /app
 RUN mkdir -p /app/server
 COPY --from=build /build/.next/standalone/ ./standalone/
 COPY --from=build /build/.next/static/ ./standalone/.next/static
+COPY --from=build /build/public/ ./standalone/public
 
 ENV BACK_URL=https://api.cloudcanvas.kro.kr
 ENTRYPOINT ["sh", "-c", "node standalone/server.js"]
