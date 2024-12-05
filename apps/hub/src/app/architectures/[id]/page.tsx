@@ -133,7 +133,7 @@ export default function ArchitectureDetailPage() {
                 <div className="flex gap-4 justify-end items-center">
                     <div className="mr-2">
                         <span className="font-black text-xl text-emerald-600">
-                            ₩{Math.floor(cost)}
+                            ₩{Math.floor(cost).toLocaleString()}
                         </span>
                         <span> / month</span>
                     </div>

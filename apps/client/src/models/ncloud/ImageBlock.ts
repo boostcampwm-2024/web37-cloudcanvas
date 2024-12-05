@@ -11,6 +11,6 @@ export const ImageBlock: Node = {
     },
     properties: {
         ...Networks,
-        imgSrc: '/assets/upload.svg',
+        imgSrc: '/upload.svg',
     },
 };
