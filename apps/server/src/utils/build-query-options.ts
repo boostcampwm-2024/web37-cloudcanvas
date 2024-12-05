@@ -14,13 +14,15 @@ export const buildSortOptions = ({ sort, order }: QueryParamsDto) => {
                 title: order,
             },
         };
-    } else if (sort === 'cost') {
+    }
+    if (sort === 'cost') {
         return {
             orderBy: {
                 cost: order,
             },
         };
-    } else if (sort === 'stars' || sort === 'imports') {
+    }
+    if (sort === 'stars' || sort === 'imports') {
         return {
             orderBy: {
                 [sort]: {
@@ -29,6 +31,11 @@ export const buildSortOptions = ({ sort, order }: QueryParamsDto) => {
             },
         };
     }
+    return {
+        orderBy: {
+            createdAt: 'desc',
+        },
+    };
 };
 
 export const buildFilterOptions = ({

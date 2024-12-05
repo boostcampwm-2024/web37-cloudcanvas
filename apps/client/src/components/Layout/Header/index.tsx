@@ -19,9 +19,17 @@ export default () => {
         <>
             <StyledBox>
                 <Stack>
-                    <Typography variant="h6" textTransform="uppercase">
-                        Cloud Canvas
-                    </Typography>
+                    <a
+                        href="https://cloudcanvas.kro.kr"
+                        style={{
+                            color: themeMode === 'light' ? 'black' : 'white',
+                            textDecoration: 'none',
+                        }}
+                    >
+                        <Typography variant="h6" textTransform="uppercase">
+                            Cloud Canvas
+                        </Typography>
+                    </a>
                 </Stack>
                 <Stack direction="row" spacing={1} alignItems="center">
                     <ActionsButtons />
