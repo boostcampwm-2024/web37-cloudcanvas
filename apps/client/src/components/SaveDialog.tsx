@@ -11,6 +11,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
 import { useNavigate, useParams } from 'react-router-dom';
 import { urls } from '../apis';
+import { useCloudGraph } from './CloudGraphProvider';
 type Props = {
     open: boolean;
     onClose: () => void;
@@ -26,6 +27,7 @@ export default ({ open, onClose }: Props) => {
     const {
         state: { edges },
     } = useEdgeContext();
+    const { data: graphData, setData: setGraphData } = useCloudGraph();
 
     const navigate = useNavigate();
     const params = useParams();
@@ -42,6 +44,7 @@ export default ({ open, onClose }: Props) => {
 
     const handleSubmit = async (e: React.FormEvent<HTMLInputElement>) => {
         e.preventDefault();
+
         const title = (e.target as any).title.value;
 
         const resp = await saveArchitecture({
@@ -53,9 +56,14 @@ export default ({ open, onClose }: Props) => {
             },
             title,
         });
-        if (resp.id) {
+        if (resp?.id) {
             navigate(`${resp.id}`);
         }
+
+        setGraphData((prev: any) => ({
+            ...prev,
+            title,
+        }));
         onClose();
     };
     return (
@@ -78,9 +86,12 @@ export default ({ open, onClose }: Props) => {
                         <label>Title</label>
                         <TextField
                             margin="dense"
+                            defaultValue={
+                                graphData.title ? graphData.title : ''
+                            }
                             id="title"
                             name="title"
-                            required
+                            required={true}
                             variant="outlined"
                             type="text"
                             fullWidth
