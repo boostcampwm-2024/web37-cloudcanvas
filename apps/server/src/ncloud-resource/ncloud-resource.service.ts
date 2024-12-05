@@ -1,12 +1,16 @@
 import { Ncloud, PriceApi, ApiKeyCredentials } from '@cloud-canvas/ncloud-sdk';
+import { InjectRedis } from '@nestjs-modules/ioredis';
 import { Injectable } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
+import Redis from 'ioredis';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { writeFile } from 'fs/promises';
 
 @Injectable()
 export class NcloudResourcesService {
-    constructor(private readonly prisma: PrismaService) {}
+    constructor(
+        private readonly prisma: PrismaService,
+        @InjectRedis() private readonly redis: Redis,
+    ) {}
 
     @Cron(CronExpression.EVERY_DAY_AT_3AM, {
         name: 'Insert Ncloud Resource Cron Job',
@@ -93,6 +97,10 @@ export class NcloudResourcesService {
             await tx.ncloudServerResource.createMany({
                 data: flattenedResources,
             });
+            await this.redis.set(
+                'cloudResource',
+                JSON.stringify(flattenedResources),
+            );
         });
     }
 

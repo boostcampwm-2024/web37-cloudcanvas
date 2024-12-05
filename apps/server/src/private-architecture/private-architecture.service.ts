@@ -8,23 +8,27 @@ import { RemoveArchitectureDto } from './dto/remove-architecture.dto';
 import { RemoveVersionDto } from './dto/remove-version.dto';
 import { SaveArchitectureDto } from './dto/save-architecture.dto';
 import { SaveVersionDto } from './dto/save-version.dto';
+import { CloudService } from 'src/cloud/cloud.service';
 
 @Injectable()
 export class PrivateArchitectureService {
-    constructor(private readonly prisma: PrismaService) {}
+    constructor(
+        private readonly prisma: PrismaService,
+        private readonly cloud: CloudService,
+    ) {}
 
-    saveArchitecture({
+    async saveArchitecture({
         title,
         userId: authorId,
         architecture,
-        cost,
     }: SaveArchitectureDto) {
+        const cost = await this.cloud.calculatePrice(architecture?.nodes);
         return this.prisma.privateArchitecture.create({
             data: {
                 title,
                 authorId,
                 architecture,
-                cost,
+                cost: cost.totalMonthPrice,
             },
         });
     }
@@ -53,9 +57,9 @@ export class PrivateArchitectureService {
         userId: authorId,
         title,
         architecture,
-        cost,
     }: ModifyArchitectureDto) {
         const isAuthor = await this.isArchitectureAuthor(id, authorId);
+        const cost = await this.cloud.calculatePrice(architecture?.nodes);
         if (!isAuthor) throw new ForbiddenException();
         return this.prisma.privateArchitecture.update({
             where: {
@@ -65,7 +69,7 @@ export class PrivateArchitectureService {
             data: {
                 title,
                 architecture,
-                cost,
+                cost: cost.totalMonthPrice,
             },
         });
     }
@@ -108,16 +112,16 @@ export class PrivateArchitectureService {
         userId: authorId,
         title,
         architecture,
-        cost,
     }: SaveVersionDto) {
         const isAuthor = await this.isArchitectureAuthor(id, authorId);
+        const cost = await this.cloud.calculatePrice(architecture?.nodes);
         if (!isAuthor) throw new ForbiddenException();
         return this.prisma.version.create({
             data: {
                 privateArchitectureId: id,
                 title,
                 architecture,
-                cost,
+                cost: cost.totalMonthPrice,
             },
         });
     }
