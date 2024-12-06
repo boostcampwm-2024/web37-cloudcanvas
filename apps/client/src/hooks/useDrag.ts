@@ -30,6 +30,8 @@ export default ({ initialPoint, updateFn }: Props) => {
             y: curSvgPoint.y - startDragPoint.y,
         };
 
+        if (Math.abs(offset.x) <= 22.5 && Math.abs(offset.y) <= 22.5) return;
+
         updateFn({
             x: initialPoint.x + offset.x,
             y: initialPoint.y + offset.y,
