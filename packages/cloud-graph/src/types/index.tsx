@@ -12,6 +12,13 @@ export type GridPosition = {
     col: number;
 };
 
+export type ViewBox = {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+};
+
 export type Node = {
     id: string;
     position: GridPosition;

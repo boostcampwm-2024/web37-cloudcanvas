@@ -1,79 +1,58 @@
-import { TRANSFORM_MATIRX } from '@/constants';
+import { GRID_HEIGHT_3D, GRID_SIZE_2D, GRID_WIDTH_3D } from '@/constants';
 import useSvgStore from '@/store/useSvgStore';
 
-type GridProps = {
-    points: string;
-    transform?: string;
-};
-
-const MinorGrid = ({ points, transform }: GridProps) => (
-    <g>
-        <pattern
-            id="gridPatternMinor"
-            x="0"
-            y="0"
-            width="90"
-            height="90"
-            patternUnits="userSpaceOnUse"
-        >
-            <path
-                d="M -45 45 L 135 45"
-                stroke="#eeeeee"
-                stroke-width="1"
-            ></path>
-            <path
-                d="M 45 -45 L 45 135"
-                stroke="#eeeeee"
-                stroke-width="1"
-            ></path>
-        </pattern>
-        <polygon
-            points={points}
-            transform={transform}
-            fill="url(#gridPatternMinor)"
-        ></polygon>
-    </g>
-);
-const MajorGrid = ({ points, transform }: GridProps) => (
-    <g>
-        <pattern
-            id="gridPatternMajor"
-            x="0"
-            y="0"
-            width="90"
-            height="90"
-            patternUnits="userSpaceOnUse"
-        >
-            <path
-                d="M 0 0 L 90 0 90 90 0 90 z"
-                stroke="#54626f"
-                stroke-width="1"
-                fill="none"
-            ></path>
-        </pattern>
-        <polygon
-            points={points}
-            transform={transform}
-            fill="url(#gridPatternMajor)"
-        ></polygon>
-    </g>
-);
-
 function GridBackground() {
+    const dimension = useSvgStore((state) => state.dimension);
     const viewBox = useSvgStore((state) => state.viewBox);
 
-    const padding = 2;
-    const points = `
-${viewBox.x - viewBox.width * padding} ${viewBox.y - viewBox.height * padding},
-${viewBox.x + viewBox.width * padding} ${viewBox.y - viewBox.height * padding},
-${viewBox.x + viewBox.width * padding} ${viewBox.y + viewBox.height * padding},
-${viewBox.x - viewBox.width * padding} ${viewBox.y + viewBox.height * padding}
-`;
-    const transform = TRANSFORM_MATIRX;
+    if (!dimension) return null;
+
+    const gridConfig =
+        dimension === '2d'
+            ? {
+                  width: GRID_SIZE_2D,
+                  height: GRID_SIZE_2D,
+                  subPath: `M 0 ${GRID_SIZE_2D / 2} h ${GRID_SIZE_2D} M ${GRID_SIZE_2D / 2} 0 v ${GRID_SIZE_2D}`,
+                  mainPath: `M 0 0 h ${GRID_SIZE_2D} v ${GRID_SIZE_2D} h ${-GRID_SIZE_2D} v ${-GRID_SIZE_2D}`,
+              }
+            : {
+                  width: GRID_WIDTH_3D,
+                  height: GRID_HEIGHT_3D,
+                  subPath: `M ${GRID_WIDTH_3D / 2} 0 l ${GRID_WIDTH_3D / 2} ${GRID_HEIGHT_3D / 2} l ${-GRID_WIDTH_3D / 2} ${GRID_HEIGHT_3D / 2} l ${-GRID_WIDTH_3D / 2} ${-GRID_HEIGHT_3D / 2}  z`,
+                  mainPath: `M 0 0 l ${GRID_WIDTH_3D} ${GRID_HEIGHT_3D} M ${GRID_WIDTH_3D} 0 l ${-GRID_WIDTH_3D} ${GRID_HEIGHT_3D}`,
+              };
+
     return (
         <>
-            <MinorGrid points={points} transform={transform} />
-            <MajorGrid points={points} transform={transform} />
+            <defs>
+                <pattern
+                    id="grid"
+                    width={gridConfig.width}
+                    height={gridConfig.height}
+                    patternUnits="userSpaceOnUse"
+                >
+                    <path
+                        id="grid-sub"
+                        d={gridConfig.subPath}
+                        fill="none"
+                        stroke="#bbb"
+                        strokeDasharray={4}
+                    />
+                    <path
+                        id="grid-main"
+                        d={gridConfig.mainPath}
+                        fill="none"
+                        stroke="black"
+                    />
+                </pattern>
+            </defs>
+            <rect
+                x={viewBox.x}
+                y={viewBox.y}
+                width={viewBox.width}
+                height={viewBox.height}
+                fill="url(#grid)"
+            />
         </>
     );
 }
