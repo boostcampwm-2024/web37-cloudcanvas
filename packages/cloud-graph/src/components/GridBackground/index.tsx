@@ -1,11 +1,13 @@
 import { GRID_HEIGHT_3D, GRID_SIZE_2D, GRID_WIDTH_3D } from '@/constants';
-import useSvgStore from '@/store/useSvgStore';
+import { Dimension, ViewBox } from '@/types';
 
-function GridBackground() {
-    const dimension = useSvgStore((state) => state.dimension);
-    const viewBox = useSvgStore((state) => state.viewBox);
+type GridBackgroundProps = {
+    viewBox: ViewBox;
+    dimension: Dimension;
+};
 
-    if (!dimension) return null;
+function GridBackground(props: GridBackgroundProps) {
+    const { viewBox, dimension } = props;
 
     const gridConfig =
         dimension === '2d'
@@ -23,7 +25,7 @@ function GridBackground() {
               };
 
     return (
-        <>
+        <g>
             <defs>
                 <pattern
                     id="grid"
@@ -53,7 +55,7 @@ function GridBackground() {
                 height={viewBox.height}
                 fill="url(#grid)"
             />
-        </>
+        </g>
     );
 }
 
