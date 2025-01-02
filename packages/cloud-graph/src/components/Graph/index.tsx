@@ -1,6 +1,6 @@
 import { MAX_SCALE, MIN_SCALE, SCALE_STEP } from '@/constants';
 import useSvgStore from '@/store/useSvgStore';
-import { ScreenPosition } from '@/types';
+import { ScreenPoint } from '@/types';
 import { PropsWithChildren, useRef, useState } from 'react';
 
 function Graph({ children }: PropsWithChildren) {
@@ -16,7 +16,7 @@ function Graph({ children }: PropsWithChildren) {
         scale: 1,
     });
     const [isDragging, setDragging] = useState(false);
-    const [dragStart, setDragStart] = useState<ScreenPosition>({ x: 0, y: 0 });
+    const [dragStart, setDragStart] = useState<ScreenPoint>({ x: 0, y: 0 });
 
     const updateViewBox = ({ x, y, scale }: typeof transform.current) => {
         const { clientWidth, clientHeight } = svgRef.current!;

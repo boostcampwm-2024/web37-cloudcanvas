@@ -2,12 +2,12 @@ import { ReactNode } from 'react';
 
 export type Dimension = '2d' | '3d';
 
-export type ScreenPosition = {
+export type ScreenPoint = {
     x: number;
     y: number;
 };
 
-export type GridPosition = {
+export type GridPoint = {
     row: number;
     col: number;
 };
@@ -21,7 +21,7 @@ export type ViewBox = {
 
 export type Node = {
     id: string;
-    position: GridPosition;
+    point: GridPoint;
     size: {
         cols: number;
         rows: number;
@@ -50,5 +50,5 @@ export type Group = {
 };
 
 export type Connection = {
-    position: GridPosition;
+    point: GridPoint;
 };
