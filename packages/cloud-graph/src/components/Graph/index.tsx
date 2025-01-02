@@ -1,82 +1,34 @@
-import { MAX_SCALE, MIN_SCALE, SCALE_STEP } from '@/constants';
+import useZoomPan from '@/hooks/useZoomPan';
 import useSvgStore from '@/store/useSvgStore';
-import { ScreenPoint } from '@/types';
-import { PropsWithChildren, useRef, useState } from 'react';
+import { PropsWithChildren, useRef } from 'react';
 
 function Graph({ children }: PropsWithChildren) {
-    const { viewBox, svgRef, setViewBox } = useSvgStore();
-
-    const transform = useRef<{
-        x: number;
-        y: number;
-        scale: number;
-    }>({
-        x: 0,
-        y: 0,
-        scale: 1,
+    const { viewBox, setViewBox } = useSvgStore();
+    const svgRef = useRef<SVGSVGElement>(null);
+    const { zoom, startPan, movePan, stopPan } = useZoomPan({
+        svgRef,
+        viewBox,
+        setViewBox,
     });
-    const [isDragging, setDragging] = useState(false);
-    const [dragStart, setDragStart] = useState<ScreenPoint>({ x: 0, y: 0 });
-
-    const updateViewBox = ({ x, y, scale }: typeof transform.current) => {
-        const { clientWidth, clientHeight } = svgRef.current!;
-
-        setViewBox({
-            x: -x / scale,
-            y: -y / scale,
-            width: clientWidth / scale,
-            height: clientHeight / scale,
-        });
-        transform.current = {
-            x,
-            y,
-            scale,
-        };
-    };
 
     const handleMouseDown = (e: React.MouseEvent<SVGSVGElement>) => {
-        svgRef.current?.style.setProperty('cursor', 'grabbing');
-        setDragging(true);
-        setDragStart({
-            x: e.clientX - transform.current.x,
-            y: e.clientY - transform.current.y,
-        });
+        const { clientX, clientY } = e;
+        startPan({ x: clientX, y: clientY });
     };
 
     const handleMouseMove = (e: React.MouseEvent<SVGSVGElement>) => {
-        if (!isDragging) return;
-
-        updateViewBox({
-            x: e.clientX - dragStart.x,
-            y: e.clientY - dragStart.y,
-            scale: transform.current.scale,
-        });
+        const { clientX, clientY } = e;
+        movePan({ x: clientX, y: clientY });
     };
 
     const handleMouseUp = () => {
-        svgRef.current?.style.setProperty('cursor', 'default');
-        setDragging(false);
+        stopPan();
     };
 
     const handleWheel = (e: React.WheelEvent<SVGSVGElement>) => {
-        if (!svgRef.current) return;
-
-        const { x, y, scale } = transform.current;
-
-        const scaleFactor = e.deltaY > 0 ? 1 - SCALE_STEP : 1 + SCALE_STEP;
-        const newScale = scale * scaleFactor;
-        if (newScale < MIN_SCALE || newScale > MAX_SCALE) return;
-
-        const { clientLeft, clientTop } = svgRef.current!;
-        const offsetX = e.clientX - clientLeft;
-        const offsetY = e.clientY - clientTop;
-
-        const newX = offsetX - (offsetX - x) * scaleFactor;
-        const newY = offsetY - (offsetY - y) * scaleFactor;
-
-        updateViewBox({ x: newX, y: newY, scale: newScale });
+        const { deltaY, clientX, clientY } = e;
+        zoom(deltaY, { x: clientX, y: clientY });
     };
-
     return (
         <svg
             ref={svgRef}
