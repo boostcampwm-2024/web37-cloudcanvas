@@ -25,7 +25,21 @@ const node2 = {
     size: { cols: 1, rows: 1 },
     Component: lazy(() => import('@/components/Node/common/Rect')),
 };
-const nodes = [node1, node2];
+const server = {
+    id: 'server1',
+    point: { col: 1, row: 1 },
+    size: { cols: 1, rows: 1 },
+    Component: lazy(() => import('@/components/Node/common/Box')),
+};
+
+const storage = {
+    id: 'storage1',
+    point: { col: 1, row: 2 },
+    size: { cols: 1, rows: 1 },
+    Component: lazy(() => import('@/components/Node/cloud/Storage')),
+};
+
+const nodes = [node1, node2, server, storage];
 
 const useGraphStore = create<GraphStoreState & GraphStoreAction>((set) => ({
     selectedId: null,
