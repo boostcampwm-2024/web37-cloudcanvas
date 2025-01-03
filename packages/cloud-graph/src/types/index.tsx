@@ -1,5 +1,3 @@
-import { ReactNode } from 'react';
-
 export type Dimension = '2d' | '3d';
 
 export type ScreenPoint = {
@@ -26,7 +24,8 @@ export type Node = {
         cols: number;
         rows: number;
     };
-    svg: ReactNode;
+    //eslint-disable-next-line  @typescript-eslint/no-explicit-any
+    Component: React.FC<any>;
 };
 
 export type Edge = {

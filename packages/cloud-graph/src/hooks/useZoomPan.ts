@@ -9,6 +9,7 @@ type UseZoomPanProps = {
     setViewBox: (viewBox: ViewBox) => void;
 };
 
+//TODO: Re-Rendering시 currentZoom 동기화 해줘야함
 const useZoomPan = ({ svgRef, viewBox, setViewBox }: UseZoomPanProps) => {
     const currentZoomRef = useRef(1);
     const isPanning = useRef(false);

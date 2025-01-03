@@ -1,26 +1,18 @@
 import { Dimension, ViewBox } from '@/types';
 import { create } from 'zustand';
 
-type SvgStore = {
+type SvgStoreState = {
     viewBox: ViewBox;
-    setViewBox: ({
-        x,
-        y,
-        width,
-        height,
-    }: {
-        x: number;
-        y: number;
-        width: number;
-        height: number;
-    }) => void;
     dimension: Dimension;
-    toggleDimension: () => void;
-    svgRef: React.RefObject<SVGSVGElement>;
-    setSvgRef: (ref: React.RefObject<SVGSVGElement>) => void;
 };
 
-const useSvgStore = create<SvgStore>((set) => ({
+type SvgStoreAction = {
+    setViewBox: ({ x, y, width, height }: ViewBox) => void;
+    toggleDimension: () => void;
+};
+
+const useSvgStore = create<SvgStoreState & SvgStoreAction>((set) => ({
+    dimension: '3d',
     viewBox: {
         x: 0,
         y: 0,
@@ -29,13 +21,10 @@ const useSvgStore = create<SvgStore>((set) => ({
     },
     setViewBox: ({ x, y, width, height }) =>
         set(() => ({ viewBox: { x, y, width, height } })),
-    dimension: '2d',
     toggleDimension: () =>
         set((state) => ({
             dimension: state.dimension === '2d' ? '3d' : '2d',
         })),
-    svgRef: { current: null },
-    setSvgRef: (ref) => set(() => ({ svgRef: ref })),
 }));
 
 export default useSvgStore;
