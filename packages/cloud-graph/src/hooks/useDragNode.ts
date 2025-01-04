@@ -21,6 +21,7 @@ const useDragSelection = (props: UseDragSelectionProps) => {
 
         draggedNodeId.current = nodeId;
         startScreenPoint.current = getSvgPoint(svgRef.current, point);
+        svgRef.current.style.cursor = 'grabbing';
     };
 
     const dragNode = (point: ScreenPoint) => {
@@ -55,6 +56,7 @@ const useDragSelection = (props: UseDragSelectionProps) => {
     const stopDragNode = () => {
         draggedNodeId.current = null;
         startScreenPoint.current = null;
+        svgRef.current?.style.removeProperty('cursor');
     };
 
     return {
