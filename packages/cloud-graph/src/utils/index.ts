@@ -1,7 +1,7 @@
 import { GRID_HEIGHT_3D, GRID_SIZE_2D, GRID_WIDTH_3D } from '@/constants';
 import { Dimension, GridPoint, ScreenPoint } from '@/types';
 
-export const gridToScreen3d = (point: GridPoint) => {
+const gridToScreen3d = (point: GridPoint) => {
     const { col, row } = point;
 
     const x = (col - row) * (GRID_WIDTH_3D / 2);
@@ -10,7 +10,7 @@ export const gridToScreen3d = (point: GridPoint) => {
     return { x, y };
 };
 
-export const screenToGrid3d = (point: ScreenPoint) => {
+const screenToGrid3d = (point: ScreenPoint) => {
     const { x, y } = point;
 
     const GRID_WIDTH_3D_HALF = GRID_WIDTH_3D / 2;
@@ -21,7 +21,7 @@ export const screenToGrid3d = (point: ScreenPoint) => {
     return { col, row };
 };
 
-export const screenToGrid2d = (point: ScreenPoint) => {
+const screenToGrid2d = (point: ScreenPoint) => {
     const { x, y } = point;
     const col = x / GRID_SIZE_2D;
     const row = y / GRID_SIZE_2D;
@@ -29,11 +29,19 @@ export const screenToGrid2d = (point: ScreenPoint) => {
     return { col, row };
 };
 
-export const gridToScreen2d = (point: GridPoint) => {
+const gridToScreen2d = (point: GridPoint) => {
     const { col, row } = point;
     const x = col * GRID_SIZE_2D;
     const y = row * GRID_SIZE_2D;
     return { x, y };
+};
+
+export const gridToScreen = (point: GridPoint, dimension: Dimension) => {
+    return dimension === '3d' ? gridToScreen3d(point) : gridToScreen2d(point);
+};
+
+export const screenToGrid = (point: ScreenPoint, dimension: Dimension) => {
+    return dimension === '3d' ? screenToGrid3d(point) : screenToGrid2d(point);
 };
 
 export const getSvgPoint = (svg: SVGSVGElement, point: ScreenPoint) => {

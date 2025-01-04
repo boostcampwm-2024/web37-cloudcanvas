@@ -1,5 +1,5 @@
 import type { Dimension, Node as NodeType, ScreenPoint } from '@/types';
-import { gridToScreen2d, gridToScreen3d } from '@/utils';
+import { gridToScreen } from '@/utils';
 import { useMemo } from 'react';
 
 type NodeProps = {
@@ -35,10 +35,7 @@ function Node(props: NodeProps) {
     };
 
     const transform = useMemo(() => {
-        const screenPoint =
-            dimension === '3d'
-                ? gridToScreen3d(node.point)
-                : gridToScreen2d(node.point);
+        const screenPoint = gridToScreen(node.point, dimension);
         return `translate(${screenPoint.x}, ${screenPoint.y})`;
     }, [node.point, dimension]);
 
