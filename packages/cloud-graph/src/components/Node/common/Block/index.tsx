@@ -8,7 +8,11 @@ type BlockProps = {
 };
 
 function Box({ dimension, size }: BlockProps) {
-    return dimension === '3d' ? <Box3D size={size} /> : <Box2D size={size} />;
+    return dimension === '3d' ? (
+        <Box3D size={size as Required<GridSize>} />
+    ) : (
+        <Box2D size={size} />
+    );
 }
 
 export default Box;

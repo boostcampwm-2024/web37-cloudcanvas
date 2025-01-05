@@ -1,3 +1,4 @@
+import { GRID_HEIGHT_3D } from '@/constants';
 import { GridPoint, Node } from '@/types';
 import { lazy } from 'react';
 import { create } from 'zustand';
@@ -15,18 +16,19 @@ type GraphStoreAction = {
 
 const server = {
     id: 'server1',
-    point: { col: 1, row: 1 },
+    point: { col: 0, row: 0 },
     size: {
         '2d': {
             cols: 1,
             rows: 1,
         },
         '3d': {
-            cols: 1,
-            rows: 1,
+            cols: 3,
+            rows: 3,
+            depth: GRID_HEIGHT_3D / 4,
         },
     },
-    Component: lazy(() => import('@/components/Node/common/Box')),
+    Component: lazy(() => import('@/components/Node/common/Block')),
     connectors: [
         { col: 0.5, row: 0 }, // right
         { col: 0, row: 0.5 }, // bottom
@@ -78,7 +80,7 @@ const container = {
         { col: 0, row: -2 }, //top
     ],
 };
-const nodes = [server, storage, container];
+const nodes = [server, container];
 
 const useGraphStore = create<GraphStoreState & GraphStoreAction>((set) => ({
     selectedId: null,
