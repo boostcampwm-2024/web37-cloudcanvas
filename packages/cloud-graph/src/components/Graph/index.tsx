@@ -22,10 +22,12 @@ const Graph = forwardRef<SVGSVGElement, GraphProps>(function (props, ref) {
         onMovePan,
         onDragNode,
         onStopDragNode,
+        onDeselect,
         ...svgProps
     } = props;
 
     const handleMouseDown = (e: React.MouseEvent<SVGSVGElement>) => {
+        onDeselect();
         const { clientX, clientY } = e;
         onStartPan({ x: clientX, y: clientY });
     };

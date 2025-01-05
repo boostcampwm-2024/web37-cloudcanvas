@@ -8,13 +8,11 @@ export type ServerProps = {
     dimension: Dimension;
     isSelected: boolean;
     onSelect: (nodeId: string) => void;
-    onDeselect: () => void;
     onStartDrag: (nodeId: string, point: ScreenPoint) => void;
 };
 
 function Server(props: ServerProps) {
-    const { dimension, node, isSelected, onSelect, onDeselect, onStartDrag } =
-        props;
+    const { dimension, node, onSelect, onStartDrag } = props;
 
     const screenPoint = gridToScreen(node.point, dimension);
     const transform = `translate(${screenPoint.x}, ${screenPoint.y})`;
@@ -22,11 +20,7 @@ function Server(props: ServerProps) {
     const handleMouseDown = (e: React.MouseEvent) => {
         e.stopPropagation();
 
-        if (isSelected) {
-            onDeselect();
-        } else {
-            onSelect(node.id);
-        }
+        onSelect(node.id);
 
         const { clientX, clientY } = e;
         onStartDrag(node.id, { x: clientX, y: clientY });

@@ -62,7 +62,6 @@ function App() {
                                 dimension={dimension}
                                 isSelected={selectedId === node.id}
                                 onSelect={handleSelect}
-                                onDeselect={handleDeselect}
                                 onStartDrag={handleStartDragNode}
                             />
                         </Suspense>
