@@ -1,8 +1,7 @@
 import Graph from '@/components/Graph';
 import GridBackground from '@/components/GridBackground';
-import Node from '@/components/Node';
 import { Suspense, useRef } from 'react';
-import useDragNode from './hooks/useDragNode';
+import useDragNode from './hooks/useDrag';
 import useZoomPan from './hooks/useZoomPan';
 import useGraphStore from './store/useGraphStore';
 import useSvgStore from './store/useSvgStore';
@@ -53,19 +52,22 @@ function App() {
                 onStopDragNode={handleStopDragNode}
             >
                 <GridBackground viewBox={viewBox} dimension={dimension} />
-                {Object.values(nodes).map((node) => (
-                    <Suspense fallback={null} key={node.id}>
-                        <Node
-                            key={node.id}
-                            node={node}
-                            dimension={dimension}
-                            isSelected={selectedId === node.id}
-                            onSelect={handleSelect}
-                            onDeselect={handleDeselect}
-                            onStartDragNode={handleStartDragNode}
-                        />
-                    </Suspense>
-                ))}
+                {Object.values(nodes).map((node) => {
+                    const { Component, ...restNode } = node;
+                    return (
+                        <Suspense fallback={null} key={node.id}>
+                            <Component
+                                key={node.id}
+                                node={restNode}
+                                dimension={dimension}
+                                isSelected={selectedId === node.id}
+                                onSelect={handleSelect}
+                                onDeselect={handleDeselect}
+                                onStartDrag={handleStartDragNode}
+                            />
+                        </Suspense>
+                    );
+                })}
             </Graph>
         </div>
     );

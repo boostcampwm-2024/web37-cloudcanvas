@@ -3,12 +3,12 @@ import type { Dimension, ScreenPoint } from '@/types';
 import { getSvgPoint, snapToGrid } from '@/utils';
 import { useRef } from 'react';
 
-type UseDragSelectionProps = {
+type UseDragNodeProps = {
     svgRef: React.RefObject<SVGSVGElement>;
     dimension: Dimension;
 };
 
-const useDragSelection = (props: UseDragSelectionProps) => {
+const useDragNode = (props: UseDragNodeProps) => {
     const { svgRef, dimension } = props;
 
     const moveNode = useGraphStore((state) => state.moveNode);
@@ -66,4 +66,4 @@ const useDragSelection = (props: UseDragSelectionProps) => {
     };
 };
 
-export default useDragSelection;
+export default useDragNode;
