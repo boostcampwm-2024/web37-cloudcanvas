@@ -1,7 +1,7 @@
 import Graph from '@/components/Graph';
 import GridBackground from '@/components/GridBackground';
 import { Suspense, useRef } from 'react';
-import useDragNode from './hooks/useDrag';
+import useDragNode from './hooks/useDragNode';
 import useZoomPan from './hooks/useZoomPan';
 import useGraphStore from './store/useGraphStore';
 import useSvgStore from './store/useSvgStore';

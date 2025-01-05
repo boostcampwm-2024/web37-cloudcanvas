@@ -1,6 +1,6 @@
 import Rect from '@/components/Svg/Rect';
-import { GRID_SIZE_2D } from '@/constants';
 import Stroke from '@/components/Svg/Stroke';
+import { GRID_SIZE_2D } from '@/constants';
 import { GridSize } from '@/types';
 
 type Container2DProps = {

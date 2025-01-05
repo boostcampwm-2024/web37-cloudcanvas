@@ -14,28 +14,28 @@ type GraphStoreAction = {
     deselect: () => void;
 };
 
-// const server = {
-//     id: 'server1',
-//     point: { col: 0, row: 0 },
-//     size: {
-//         '2d': {
-//             cols: 1,
-//             rows: 1,
-//         },
-//         '3d': {
-//             cols: 1,
-//             rows: 1,
-//             depth: GRID_HEIGHT_3D / 2,
-//         },
-//     },
-//     Component: lazy(() => import('@/components/Node/common/Block')),
-//     connectors: [
-//         { col: 0.5, row: 0 }, // right
-//         { col: 0, row: 0.5 }, // bottom
-//         { col: -0.5, row: 0 }, //left
-//         { col: 0, row: -0.5 }, //top
-//     ],
-// };
+const server = {
+    id: 'server1',
+    point: { col: 0, row: 0 },
+    size: {
+        '2d': {
+            cols: 1,
+            rows: 1,
+        },
+        '3d': {
+            cols: 1,
+            rows: 1,
+            depth: GRID_HEIGHT_3D / 2,
+        },
+    },
+    Component: lazy(() => import('@/components/Node/cloud/Server')),
+    connectors: [
+        { col: 0.5, row: 0 }, // right
+        { col: 0, row: 0.5 }, // bottom
+        { col: -0.5, row: 0 }, //left
+        { col: 0, row: -0.5 }, //top
+    ],
+};
 
 const storage = {
     id: 'storage1',
@@ -83,7 +83,7 @@ const container = {
         { col: 0, row: -2 }, //top
     ],
 };
-const nodes = [container];
+const nodes = [server, container];
 
 const useGraphStore = create<GraphStoreState & GraphStoreAction>((set) => ({
     selectedId: null,
