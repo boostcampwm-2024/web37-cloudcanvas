@@ -7,7 +7,7 @@ type Block2DProps = {
     size: GridSize;
 };
 
-const calculate2DBoxPoints = (size: GridSize) => {
+const calculate2DBlockPoints = (size: GridSize) => {
     const width = GRID_SIZE_2D * size.cols;
     const height = GRID_SIZE_2D * size.rows;
 
@@ -19,9 +19,9 @@ const calculate2DBoxPoints = (size: GridSize) => {
     ];
 };
 
-function Box2D(props: Block2DProps) {
+function Block2D(props: Block2DProps) {
     const { size } = props;
-    const points = calculate2DBoxPoints(size);
+    const points = calculate2DBlockPoints(size);
     return (
         <>
             <Polygon points={points} fill="#ececed" stroke="#000000" />
@@ -30,4 +30,4 @@ function Box2D(props: Block2DProps) {
     );
 }
 
-export default Box2D;
+export default Block2D;

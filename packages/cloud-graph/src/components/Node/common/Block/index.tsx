@@ -1,18 +1,18 @@
 import { Dimension, GridSize } from '@/types';
-import Box3D from './Block3D';
-import Box2D from './Block2D';
+import Block3D from './Block3D';
+import Block2D from './Block2D';
 
 type BlockProps = {
     dimension: Dimension;
     size: GridSize;
 };
 
-function Box({ dimension, size }: BlockProps) {
+function Block({ dimension, size }: BlockProps) {
     return dimension === '3d' ? (
-        <Box3D size={size as Required<GridSize>} />
+        <Block3D size={size as Required<GridSize>} />
     ) : (
-        <Box2D size={size} />
+        <Block2D size={size} />
     );
 }
 
-export default Box;
+export default Block;

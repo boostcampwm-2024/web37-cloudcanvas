@@ -7,7 +7,7 @@ type Block3DProps = {
     size: Required<GridSize>;
 };
 
-const calculate3DBoxPoints = (size: Required<GridSize>) => {
+const calculate3DBlockPoints = (size: Required<GridSize>) => {
     const { cols, rows, depth } = size;
     const width = GRID_WIDTH_3D * cols;
     const height = GRID_HEIGHT_3D * rows;
@@ -20,10 +20,10 @@ const calculate3DBoxPoints = (size: Required<GridSize>) => {
     ];
 };
 
-function Box3D(props: Block3DProps) {
+function Block3D(props: Block3DProps) {
     const { size } = props;
     const { depth } = size;
-    const points = calculate3DBoxPoints(size);
+    const points = calculate3DBlockPoints(size);
 
     return (
         <>
@@ -62,4 +62,4 @@ function Box3D(props: Block3DProps) {
     );
 }
 
-export default Box3D;
+export default Block3D;
