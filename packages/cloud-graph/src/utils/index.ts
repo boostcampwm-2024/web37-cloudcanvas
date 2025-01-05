@@ -1,5 +1,5 @@
 import { GRID_HEIGHT_3D, GRID_SIZE_2D, GRID_WIDTH_3D } from '@/constants';
-import { Dimension, GridPoint, ScreenPoint } from '@/types';
+import { Dimension, GridPoint, Node, ScreenPoint } from '@/types';
 
 const gridToScreen3d = (point: GridPoint) => {
     const { col, row } = point;
@@ -76,4 +76,22 @@ export const snapToGrid = (
         screen: { x: snappedX, y: snappedY },
         grid: screenToGrid({ x: snappedX, y: snappedY }),
     };
+};
+
+export const getConnectorPoints = (node: Node, dimension: Dimension) => {
+    const nodeSize = node.size[dimension];
+    const centerGridPoint = {
+        col: node.point.col + nodeSize.cols / 2,
+        row: node.point.row + nodeSize.rows / 2,
+    };
+
+    return node.connectors.map((connector) =>
+        gridToScreen(
+            {
+                col: centerGridPoint.col + connector.col,
+                row: centerGridPoint.row + connector.row,
+            },
+            dimension,
+        ),
+    );
 };

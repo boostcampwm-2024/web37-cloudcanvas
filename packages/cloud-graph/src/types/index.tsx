@@ -17,15 +17,23 @@ export type ViewBox = {
     height: number;
 };
 
+export type GridSize = {
+    cols: number;
+    rows: number;
+};
+
+export type DimensionGridSize = {
+    '2d': GridSize;
+    '3d': GridSize;
+};
+
 export type Node = {
     id: string;
     point: GridPoint;
-    size: {
-        cols: number;
-        rows: number;
-    };
+    size: DimensionGridSize;
     //eslint-disable-next-line  @typescript-eslint/no-explicit-any
     Component: React.FC<any>;
+    connectors: GridPoint[];
 };
 
 export type Edge = {

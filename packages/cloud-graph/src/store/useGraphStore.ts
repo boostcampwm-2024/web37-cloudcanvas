@@ -13,33 +13,72 @@ type GraphStoreAction = {
     deselect: () => void;
 };
 
-const node1 = {
-    id: 'a1',
-    point: { col: 0, row: 0 },
-    size: { cols: 1, rows: 1 },
-    Component: lazy(() => import('@/components/Node/common/Rect')),
-};
-const node2 = {
-    id: 'a2',
-    point: { col: 1, row: 0 },
-    size: { cols: 1, rows: 1 },
-    Component: lazy(() => import('@/components/Node/common/Rect')),
-};
 const server = {
     id: 'server1',
     point: { col: 1, row: 1 },
-    size: { cols: 1, rows: 1 },
+    size: {
+        '2d': {
+            cols: 1,
+            rows: 1,
+        },
+        '3d': {
+            cols: 1,
+            rows: 1,
+        },
+    },
     Component: lazy(() => import('@/components/Node/common/Box')),
+    connectors: [
+        { col: 0.5, row: 0 }, // right
+        { col: 0, row: 0.5 }, // bottom
+        { col: -0.5, row: 0 }, //left
+        { col: 0, row: -0.5 }, //top
+    ],
 };
 
 const storage = {
     id: 'storage1',
     point: { col: 1, row: 2 },
-    size: { cols: 1, rows: 1 },
+    size: {
+        '2d': {
+            cols: 1,
+            rows: 1,
+        },
+        '3d': {
+            cols: 1,
+            rows: 1,
+        },
+    },
     Component: lazy(() => import('@/components/Node/cloud/Storage')),
+    connectors: [
+        { col: 0.2, row: 0 }, // right
+        { col: 0, row: 0.2 }, // bottom
+        { col: -0.2, row: 0 }, //left
+        { col: 0, row: -0.2 }, //top
+    ],
 };
 
-const nodes = [node1, node2, server, storage];
+const container = {
+    id: 'container1',
+    point: { col: 5, row: 5 },
+    size: {
+        '2d': {
+            cols: 4,
+            rows: 4,
+        },
+        '3d': {
+            cols: 4,
+            rows: 4,
+        },
+    },
+    Component: lazy(() => import('@/components/Node/cloud/Container')),
+    connectors: [
+        { col: 0, row: 0 }, // right
+        { col: 0, row: 2 }, // bottom
+        { col: -2, row: 0 }, //left
+        { col: 0, row: -2 }, //top
+    ],
+};
+const nodes = [server, storage, container];
 
 const useGraphStore = create<GraphStoreState & GraphStoreAction>((set) => ({
     selectedId: null,
