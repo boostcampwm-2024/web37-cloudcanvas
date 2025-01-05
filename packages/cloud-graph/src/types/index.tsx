@@ -20,6 +20,7 @@ export type ViewBox = {
 export type GridSize = {
     cols: number;
     rows: number;
+    depth?: number;
 };
 
 export type DimensionGridSize = {

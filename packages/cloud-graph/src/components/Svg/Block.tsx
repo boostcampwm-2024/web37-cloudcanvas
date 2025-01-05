@@ -1,13 +1,13 @@
 import Polygon from '@/components/Svg/Polygon';
-import Stroke from '@/components/Svg/Stroke';
 import { GRID_HEIGHT_3D, GRID_WIDTH_3D } from '@/constants';
 import { GridSize } from '@/types';
 
-type Block3DProps = {
+type BlockProps = {
     size: Required<GridSize>;
+    children?: React.ReactNode;
 };
 
-const calculate3DBlockPoints = (size: Required<GridSize>) => {
+export const calculateBlockPoints = (size: Required<GridSize>) => {
     const { cols, rows, depth } = size;
     const width = GRID_WIDTH_3D * cols;
     const height = GRID_HEIGHT_3D * rows;
@@ -20,10 +20,10 @@ const calculate3DBlockPoints = (size: Required<GridSize>) => {
     ];
 };
 
-function Block3D(props: Block3DProps) {
-    const { size } = props;
-    const { depth } = size;
-    const points = calculate3DBlockPoints(size);
+function Block(props: BlockProps) {
+    const { size, children } = props;
+    const { depth } = size as Required<GridSize>;
+    const points = calculateBlockPoints(size as Required<GridSize>);
 
     return (
         <>
@@ -48,18 +48,9 @@ function Block3D(props: Block3DProps) {
                 fill="#b8b8bb"
                 stroke="#83838a"
             />
-            <Stroke
-                points={[
-                    points[0],
-                    points[1],
-                    { x: points[1].x, y: points[1].y + depth },
-                    { x: points[2].x, y: points[2].y + depth },
-                    { x: points[3].x, y: points[3].y + depth },
-                    { x: points[3].x, y: points[3].y },
-                ]}
-            />
+            {children && children}
         </>
     );
 }
 
-export default Block3D;
+export default Block;
