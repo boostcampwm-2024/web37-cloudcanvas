@@ -58,23 +58,15 @@ export const snapToGrid = (
     dimension: Dimension,
     denominator = 4,
 ) => {
-    const cellWidth = dimension === '3d' ? GRID_WIDTH_3D : GRID_SIZE_2D;
-    const cellHeight = dimension === '3d' ? GRID_HEIGHT_3D : GRID_SIZE_2D;
+    const gridPoint = screenToGrid(point, dimension);
+    const snappedSize = 1 / denominator;
 
-    const snapWidth = cellWidth / denominator;
-    const snapHeight = cellHeight / denominator;
-
-    if (Math.abs(point.x) < snapWidth && Math.abs(point.y) < snapHeight)
-        return null;
-
-    const snappedX = Math.round(point.x / snapWidth) * snapWidth;
-    const snappedY = Math.round(point.y / snapHeight) * snapHeight;
-
-    const screenToGrid = dimension === '3d' ? screenToGrid3d : screenToGrid2d;
+    const snappedCol = Math.round(gridPoint.col / snappedSize) * snappedSize;
+    const snappedRow = Math.round(gridPoint.row / snappedSize) * snappedSize;
 
     return {
-        screen: { x: snappedX, y: snappedY },
-        grid: screenToGrid({ x: snappedX, y: snappedY }),
+        screen: gridToScreen({ col: snappedCol, row: snappedRow }, dimension),
+        grid: { col: snappedCol, row: snappedRow },
     };
 };
 
