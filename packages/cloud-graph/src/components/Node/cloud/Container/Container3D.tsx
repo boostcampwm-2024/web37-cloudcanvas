@@ -2,9 +2,10 @@ import Block, { calculateBlockPoints } from '@/components/Svg/Block';
 import Polygon from '@/components/Svg/Polygon';
 import Stroke from '@/components/Svg/Stroke';
 import { GridSize } from '@/types';
-import { ContainerProps } from '.';
 
-type Container3DProps = Omit<ContainerProps, 'dimension'>;
+type Container3DProps = {
+    size: Required<GridSize>;
+};
 
 function Container3D(props: Container3DProps) {
     const { size } = props;

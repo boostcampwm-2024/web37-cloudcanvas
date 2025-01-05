@@ -1,9 +1,11 @@
 import Rect from '@/components/Svg/Rect';
 import { GRID_SIZE_2D } from '@/constants';
-import { ContainerProps } from '.';
 import Stroke from '@/components/Svg/Stroke';
+import { GridSize } from '@/types';
 
-type Container2DProps = Omit<ContainerProps, 'dimension'>;
+type Container2DProps = {
+    size: GridSize;
+};
 
 function Container2D(props: Container2DProps) {
     const { size } = props;
