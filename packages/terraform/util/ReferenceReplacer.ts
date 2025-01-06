@@ -4,9 +4,12 @@ type ReferenceMap = Map<string, string>;
 
 export class ReferenceReplacer {
     private referenceCache = new Map<string, string>();
+
     constructor(private resourceNameMap: ReferenceMap) {}
 
-    replaceReferences(properties: { [key: string]: any }): { [key: string]: any } {
+    replaceReferences(properties: { [key: string]: any }): {
+        [key: string]: any;
+    } {
         const result = { ...properties };
 
         for (const [key, value] of Object.entries(result)) {
@@ -22,7 +25,7 @@ export class ReferenceReplacer {
         }
 
         if (Array.isArray(value)) {
-            return value.map(item => this.transformValue(item));
+            return value.map((item) => this.transformValue(item));
         }
 
         if (typeof value === 'object' && value !== null) {
@@ -44,7 +47,6 @@ export class ReferenceReplacer {
             return result;
         }
 
-
         const resolvedReference = this.resolveReference(value);
         this.referenceCache.set(value, resolvedReference);
 
@@ -64,7 +66,7 @@ export class ReferenceReplacer {
             ['server', 'ncloud_server'],
             ['loginkey', 'ncloud_login_key'],
             ['nacl', 'ncloud_network_acl'],
-            ['publicip', 'ncloud_public_ip']
+            ['publicip', 'ncloud_public_ip'],
         ]);
 
         if (value.endsWith('.default_network_acl_no')) {
@@ -74,11 +76,12 @@ export class ReferenceReplacer {
 
         if (value.endsWith('.id')) {
             const resourceName = value.split('.')[0];
-            const resourceType = resourceTypeMap.get(resourceName.split('-')[0]);
+            const resourceType = resourceTypeMap.get(
+                resourceName.split('-')[0],
+            );
             return `${resourceType}.${resourceName}.id`;
         }
 
         return value;
     }
 }
-

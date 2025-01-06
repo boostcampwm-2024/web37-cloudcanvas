@@ -34,7 +34,7 @@ export const resolveReference = (resourceId: string): string => {
 
 export function replaceReferences(
     properties: { [key: string]: any },
-    resourceNameMap: ReferenceMap
+    resourceNameMap: ReferenceMap,
 ): { [key: string]: any } {
     const replacer = new ReferenceReplacer(resourceNameMap);
     return replacer.replaceReferences(properties);
