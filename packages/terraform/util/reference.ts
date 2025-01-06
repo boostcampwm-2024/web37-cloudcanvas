@@ -1,3 +1,5 @@
+import { ReferenceReplacer } from './ReferenceReplacer';
+
 type ReferenceMap = Map<string, string>;
 
 export const resolveReference = (resourceId: string): string => {
@@ -30,24 +32,10 @@ export const resolveReference = (resourceId: string): string => {
     return resourceId;
 };
 
-export const replaceReferences = (
+export function replaceReferences(
     properties: { [key: string]: any },
-    resourceNameMap: ReferenceMap,
-): { [key: string]: any } => {
-    const result = { ...properties };
-    for (const [key, value] of Object.entries(result)) {
-        if (typeof value === 'string') {
-            result[key] = resolveReference(value);
-        } else if (Array.isArray(value)) {
-            result[key] = value.map((item) =>
-                typeof item === 'string'
-                    ? resolveReference(item)
-                    : replaceReferences({ value: item }, resourceNameMap).value,
-            );
-        } else if (typeof value === 'object' && value !== null) {
-            result[key] = replaceReferences(value, resourceNameMap);
-        }
-    }
-
-    return result;
-};
+    resourceNameMap: ReferenceMap
+): { [key: string]: any } {
+    const replacer = new ReferenceReplacer(resourceNameMap);
+    return replacer.replaceReferences(properties);
+}
