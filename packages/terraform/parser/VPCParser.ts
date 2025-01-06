@@ -7,7 +7,11 @@ export class VPCParser extends BaseResourceParser {
 
     protected validateProperties(properties: any) {
         if (!properties.cidrBlock) {
-            throw new ValidationError('VPC', 'ipv4CidrBlock', '필수 속성이 없습니다.');
+            throw new ValidationError(
+                'VPC',
+                'ipv4CidrBlock',
+                '필수 속성이 없습니다.',
+            );
         }
     }
 
@@ -15,6 +19,6 @@ export class VPCParser extends BaseResourceParser {
         return new NCloudVPC({
             name: this.getNameOrDefault(properties, 'vpc'),
             ipv4CidrBlock: properties.cidrBlock,
-        })
+        });
     }
 }

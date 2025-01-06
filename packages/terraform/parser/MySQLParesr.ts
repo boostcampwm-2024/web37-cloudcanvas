@@ -77,7 +77,7 @@ export class MySQLParesr extends BaseResourceParser {
             hostIp: properties.hostIp,
             databaseName: properties.databaseName,
             subnet: properties.subnet,
-            vpc: properties.vpc
-        })
+            vpc: properties.vpc,
+        });
     }
 }

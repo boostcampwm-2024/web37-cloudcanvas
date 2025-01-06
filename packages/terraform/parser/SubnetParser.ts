@@ -7,16 +7,38 @@ export class SubnetParser extends BaseResourceParser {
 
     protected validateProperties(properties: any): void {
         if (!properties.subnet) {
-            throw new ValidationError('Subnet', 'subnet', 'CIDR block 이 필수 속성입니다.');
+            throw new ValidationError(
+                'Subnet',
+                'subnet',
+                'CIDR block 이 필수 속성입니다.',
+            );
         }
         if (!properties.zone) {
-            throw new ValidationError('Subnet', 'zone', 'zone 이 필수 속성입니다.');
+            throw new ValidationError(
+                'Subnet',
+                'zone',
+                'zone 이 필수 속성입니다.',
+            );
         }
-        if (!properties.subnetType || !['PUBLIC', 'PRIVATE'].includes(properties.subnetType)) {
-            throw new ValidationError('Subnet', 'subnetType', 'PUBLIC 또는 PRIVATE 이어야 합니다');
+        if (
+            !properties.subnetType ||
+            !['PUBLIC', 'PRIVATE'].includes(properties.subnetType)
+        ) {
+            throw new ValidationError(
+                'Subnet',
+                'subnetType',
+                'PUBLIC 또는 PRIVATE 이어야 합니다',
+            );
         }
-        if (properties.usageType && !['GEN', 'LOADB', 'BM', 'NATGW'].includes(properties.usageType)) {
-            throw new ValidationError('Subnet', 'usageType', 'GEN, LOADB, BM, NATGW 중 하나여야 합니다');
+        if (
+            properties.usageType &&
+            !['GEN', 'LOADB', 'BM', 'NATGW'].includes(properties.usageType)
+        ) {
+            throw new ValidationError(
+                'Subnet',
+                'usageType',
+                'GEN, LOADB, BM, NATGW 중 하나여야 합니다',
+            );
         }
     }
 
@@ -28,7 +50,7 @@ export class SubnetParser extends BaseResourceParser {
             subnetType: properties.subnetType,
             usageType: properties.usageType || 'GEN',
             vpcName: properties.vpcName,
-            networkAclNo: properties.networkAclNo
+            networkAclNo: properties.networkAclNo,
         });
     }
 }
