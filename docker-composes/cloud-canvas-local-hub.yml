@@ -78,11 +78,11 @@ services:
             - cloud-canvas-network
         restart: unless-stopped
 
-    front:
+    front-hub:
         build:
             context: ../
-            dockerfile: apps/client/Dockerfile
-        container_name: front
+            dockerfile: apps/hub/Dockerfile
+        container_name: hub
         ports:
             - '5001:5000'
         networks:
