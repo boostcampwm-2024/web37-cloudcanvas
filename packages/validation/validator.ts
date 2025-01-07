@@ -6,7 +6,7 @@ export class ValidationError extends Error {
         public readonly field: string,
         message: string,
     ) {
-        super(`${resource} validation failed at ${field}: ${message}`);
+        super(`${resource}에서 ${field}속성 검증이 실패했습니다`);
         this.name = 'ValidationError';
     }
 }

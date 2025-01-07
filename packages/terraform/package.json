@@ -56,5 +56,9 @@
         ],
         "coverageDirectory": "../coverage",
         "testEnvironment": "node"
+    },
+    "dependencies": {
+        "validation": "^0.0.1",
+        "property_validation": "file:../../packages/validation"
     }
 }
