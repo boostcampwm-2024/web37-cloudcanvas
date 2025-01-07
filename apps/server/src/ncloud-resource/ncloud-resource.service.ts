@@ -104,7 +104,7 @@ export class NcloudResourcesService {
         });
     }
 
-    async onApplicationBootstrap() {
-        await this.insertNcloudResource();
-    }
+    // async onApplicationBootstrap() {
+    //     await this.insertNcloudResource();
+    // }
 }

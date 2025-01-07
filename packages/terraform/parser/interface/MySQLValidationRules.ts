@@ -1,6 +1,6 @@
 interface MySQLValidationRules {
-    fieldName: string,
-    minLength?: number,
-    maxLength?: number,
+    fieldName: string;
+    minLength?: number;
+    maxLength?: number;
     required: boolean;
 }
