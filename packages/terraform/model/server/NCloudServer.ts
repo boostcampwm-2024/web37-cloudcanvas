@@ -35,7 +35,8 @@ export class NCloudServer implements Server, NCloudModel {
         this.description = json.description;
         this.isProtectServerTermination = json.isProtectServerTermination;
         this.initScriptNo = json.initScriptNo;
-        this.isEncryptedBaseBlockStorageVolume = json.isEncryptedBaseBlockStorageVolume;
+        this.isEncryptedBaseBlockStorageVolume =
+            json.isEncryptedBaseBlockStorageVolume;
 
         if (json.loginKeyName) {
             this.loginKeyName = `ncloud_login_key.${json.loginKeyName.toLowerCase()}.key_name`;
@@ -44,10 +45,9 @@ export class NCloudServer implements Server, NCloudModel {
         if (json.networkInterface) {
             this.networkInterface = json.networkInterface.map((nic: any) => ({
                 networkInterfaceNo: `ncloud_network_interface.${nic.networkInterfaceNo.toLowerCase()}.id`,
-                order: nic.order || 0
+                order: nic.order || 0,
             }));
         }
-
     }
 
     getProperties() {
@@ -80,7 +80,8 @@ export class NCloudServer implements Server, NCloudModel {
             properties.login_key_name = this.loginKeyName;
         }
         if (this.isProtectServerTermination !== undefined) {
-            properties.is_protect_server_termination = this.isProtectServerTermination;
+            properties.is_protect_server_termination =
+                this.isProtectServerTermination;
         }
         if (this.initScriptNo) {
             properties.init_script_no = this.initScriptNo;
@@ -89,10 +90,10 @@ export class NCloudServer implements Server, NCloudModel {
             properties.network_interface = this.networkInterface;
         }
         if (this.isEncryptedBaseBlockStorageVolume !== undefined) {
-            properties.is_encrypted_base_block_storage_volume = this.isEncryptedBaseBlockStorageVolume;
+            properties.is_encrypted_base_block_storage_volume =
+                this.isEncryptedBaseBlockStorageVolume;
         }
 
         return properties;
     }
-
 }

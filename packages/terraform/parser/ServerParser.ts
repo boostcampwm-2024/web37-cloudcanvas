@@ -1,5 +1,4 @@
 import { BaseResourceParser } from './BaseResourceParser';
-import { ValidationError } from '../util/ValidationError';
 import { NCloudServer } from '../model/server/NCloudServer';
 
 export class ServerParser extends BaseResourceParser {

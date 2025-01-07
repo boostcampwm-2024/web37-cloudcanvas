@@ -1,5 +1,4 @@
 import { BaseResourceParser } from './BaseResourceParser';
-import { ValidationError } from '../util/ValidationError';
 import { NCloudNKsCluster } from '../model/kubernetesService/NCloudNKsCluster';
 
 export class NKsClusterParser extends BaseResourceParser {

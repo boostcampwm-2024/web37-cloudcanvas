@@ -1,5 +1,4 @@
 import { BaseResourceParser } from './BaseResourceParser';
-import { ValidationError } from '../util/ValidationError';
 import { NCloudVPC } from '../model/vpc/NCloudVPC';
 
 export class VPCParser extends BaseResourceParser {

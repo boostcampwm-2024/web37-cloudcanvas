@@ -1,5 +1,4 @@
 import { BaseResourceParser } from './BaseResourceParser';
-import { ValidationError } from '../util/ValidationError';
 import { NCloudLaunchConfiguration } from '../model/autoScaling/NCloudLaunchConfiguration';
 
 export class LaunchConfigurationParser extends BaseResourceParser {

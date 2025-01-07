@@ -1,5 +1,4 @@
 import { BaseResourceParser } from './BaseResourceParser';
-import { ValidationError } from '../util/ValidationError';
 import { NCloudObjectStorageBucket } from '../model/objectstorage/NCloudObjectStorageBucket';
 
 export class ObjectStorageBucketParser extends BaseResourceParser {

@@ -6,4 +6,5 @@ export interface Subnet {
     networkAclNo: string;
     subnetType: 'PUBLIC' | 'PRIVATE';
     usageType?: 'GEN' | 'LOADB' | 'BM' | 'NATGW';
+    subnetNo?: string;
 }

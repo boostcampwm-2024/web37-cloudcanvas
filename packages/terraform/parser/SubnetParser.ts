@@ -1,5 +1,4 @@
 import { BaseResourceParser } from './BaseResourceParser';
-import { ValidationError } from '../util/ValidationError';
 import { NCloudSubnet } from '../model/vpc/NCloudSubnet';
 
 export class SubnetParser extends BaseResourceParser {

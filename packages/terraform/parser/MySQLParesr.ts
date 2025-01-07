@@ -1,5 +1,4 @@
 import { BaseResourceParser } from './BaseResourceParser';
-import { ValidationError } from '../util/ValidationError';
 import { NCloudModel } from '../interface/NCloudModel';
 import { NCloudMySQL } from '../model/mysql/NCloudMySQL';
 

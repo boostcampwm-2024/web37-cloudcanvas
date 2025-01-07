@@ -1,5 +1,4 @@
 import { BaseResourceParser } from './BaseResourceParser';
-import { ValidationError } from '../util/ValidationError';
 import { NCloudRedis } from '../model/redis/NCloudRedis';
 
 export class RedisParser extends BaseResourceParser {

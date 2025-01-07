@@ -5,7 +5,7 @@ import {
     generateTerraformBlock,
 } from '../util/generator';
 import { ResourceManager } from './ResourceManager';
-import { NCloudProvider } from '../model/NCloudProvider';
+import { NCloudProvider } from '../model/ncloudProvider/NCloudProvider';
 
 export class CodeGenerator {
     private resourceManager: ResourceManager;
