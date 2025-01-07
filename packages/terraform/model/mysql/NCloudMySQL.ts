@@ -1,6 +1,6 @@
-import { MySQL } from '../interface/MySQL';
-import { NCloudModel } from '../interface/NCloudModel';
-import { ResourcePriority } from '../enum/ResourcePriority';
+import { MySQL } from '../../interface/MySQL';
+import { NCloudModel } from '../../interface/NCloudModel';
+import { ResourcePriority } from '../../enum/ResourcePriority';
 
 export class NCloudMySQL implements MySQL, NCloudModel {
     id: string;

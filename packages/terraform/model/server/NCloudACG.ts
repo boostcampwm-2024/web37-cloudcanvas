@@ -1,6 +1,6 @@
-import { ACG } from '../interface/ACG';
-import { NCloudModel } from '../interface/NCloudModel';
-import { ResourcePriority } from '../enum/ResourcePriority';
+import { ACG } from '../../interface/ACG';
+import { NCloudModel } from '../../interface/NCloudModel';
+import { ResourcePriority } from '../../enum/ResourcePriority';
 
 export class NCloudACG implements ACG, NCloudModel {
     id: string;

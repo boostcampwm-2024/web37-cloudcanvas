@@ -1,16 +1,17 @@
-import { ResourcePriority } from '../enum/ResourcePriority';
-import { NCloudModel } from '../interface/NCloudModel';
-import { Subnet } from '../interface/Subnet';
+import { ResourcePriority } from '../../enum/ResourcePriority';
+import { NCloudModel } from '../../interface/NCloudModel';
+import { Subnet } from '../../interface/Subnet';
 
 export class NCloudSubnet implements Subnet, NCloudModel {
     id: string;
+    name?: string;
     vpcNo: string;
     subnet: string;
     zone: string;
     networkAclNo: string;
     subnetType: 'PUBLIC' | 'PRIVATE';
-    name?: string;
     usageType?: 'GEN' | 'LOADB' | 'BM' | 'NATGW';
+    subnetNo?: string;
     serviceType: string;
     priority: ResourcePriority;
 
@@ -18,36 +19,11 @@ export class NCloudSubnet implements Subnet, NCloudModel {
         this.serviceType = 'ncloud_subnet';
         this.priority = ResourcePriority.SUBNET;
         this.id = json.id || `subnet-${Date.now()}`;
-        if (!json.subnet) {
-            throw new Error('subnet CIDR block is required');
-        }
-        if (!json.zone) {
-            throw new Error('zone is required');
-        }
-        if (
-            !json.subnetType ||
-            !['PUBLIC', 'PRIVATE'].includes(json.subnetType)
-        ) {
-            throw new Error('subnetType must be either PUBLIC or PRIVATE');
-        }
-
         this.subnet = json.subnet;
         this.zone = json.zone;
         this.subnetType = json.subnetType;
-
-        if (json.name) {
-            this.name = json.name.toLowerCase();
-        }
-
-        if (
-            json.usageType &&
-            ['GEN', 'LOADB', 'BM', 'NATGW'].includes(json.usageType)
-        ) {
-            this.usageType = json.usageType;
-        } else {
-            this.usageType = 'GEN';
-        }
-
+        this.name = json.name?.toLowerCase();
+        this.usageType = json.usageType || 'GEN';
         this.vpcNo = `ncloud_vpc.${json.vpcName.toLowerCase()}.id`;
         this.networkAclNo = `ncloud_vpc.${json.vpcName.toLowerCase()}.default_network_acl_no`;
     }

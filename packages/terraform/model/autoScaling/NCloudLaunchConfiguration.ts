@@ -1,6 +1,6 @@
-import { ResourcePriority } from '../enum/ResourcePriority';
-import { LaunchConfiguration } from '../interface/LaunchConfiguration';
-import { NCloudModel } from '../interface/NCloudModel';
+import { ResourcePriority } from '../../enum/ResourcePriority';
+import { LaunchConfiguration } from '../../interface/LaunchConfiguration';
+import { NCloudModel } from '../../interface/NCloudModel';
 
 export class NCloudLaunchConfiguration
     implements LaunchConfiguration, NCloudModel

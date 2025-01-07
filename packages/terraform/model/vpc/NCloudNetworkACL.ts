@@ -1,6 +1,6 @@
-import { NetworkACL } from '../interface/NetworkACL';
-import { NCloudModel } from '../interface/NCloudModel';
-import { ResourcePriority } from '../enum/ResourcePriority';
+import { NetworkACL } from '../../interface/NetworkACL';
+import { NCloudModel } from '../../interface/NCloudModel';
+import { ResourcePriority } from '../../enum/ResourcePriority';
 
 export class NCloudNetworkACL implements NetworkACL, NCloudModel {
     id: string;

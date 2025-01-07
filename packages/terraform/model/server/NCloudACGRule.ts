@@ -1,6 +1,6 @@
-import { NCloudModel } from '../interface/NCloudModel';
-import { ResourcePriority } from '../enum/ResourcePriority';
-import { ACGRule } from '../interface/ACGRule';
+import { NCloudModel } from '../../interface/NCloudModel';
+import { ResourcePriority } from '../../enum/ResourcePriority';
+import { ACGRule } from '../../interface/ACGRule';
 
 export class NCloudACGRule implements ACGRule, NCloudModel {
     name: string;

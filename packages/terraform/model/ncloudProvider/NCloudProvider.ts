@@ -1,4 +1,4 @@
-import { Provider } from '../interface/Provider';
+import { Provider } from '../../interface/Provider';
 
 export class NCloudProvider implements Provider {
     accessKey: string;

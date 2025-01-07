@@ -1,6 +1,6 @@
-import { NetworkInterface } from '../interface/NetworkInterface';
-import { NCloudModel } from '../interface/NCloudModel';
-import { ResourcePriority } from '../enum/ResourcePriority';
+import { NetworkInterface } from '../../interface/NetworkInterface';
+import { NCloudModel } from '../../interface/NCloudModel';
+import { ResourcePriority } from '../../enum/ResourcePriority';
 
 export class NCloudNetworkInterface implements NetworkInterface, NCloudModel {
     id: string;

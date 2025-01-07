@@ -1,5 +1,5 @@
-import { ObjectStorageBucket } from '../interface/ObjectStorageBucket';
-import { ResourcePriority } from '../enum/ResourcePriority';
+import { ObjectStorageBucket } from '../../interface/ObjectStorageBucket';
+import { ResourcePriority } from '../../enum/ResourcePriority';
 
 export class NCloudObjectStorageBucket implements ObjectStorageBucket {
     bucketName: string;

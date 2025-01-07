@@ -1,6 +1,6 @@
-import { Redis } from '../interface/Redis';
-import { NCloudModel } from '../interface/NCloudModel';
-import { ResourcePriority } from '../enum/ResourcePriority';
+import { Redis } from '../../interface/Redis';
+import { NCloudModel } from '../../interface/NCloudModel';
+import { ResourcePriority } from '../../enum/ResourcePriority';
 
 export class NCloudRedis implements Redis, NCloudModel {
     serviceType: string;

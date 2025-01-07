@@ -1,6 +1,6 @@
-import { RedisConfigGroup } from '../interface/RedisConfigGroup';
-import { NCloudModel } from '../interface/NCloudModel';
-import { ResourcePriority } from '../enum/ResourcePriority';
+import { RedisConfigGroup } from '../../interface/RedisConfigGroup';
+import { NCloudModel } from '../../interface/NCloudModel';
+import { ResourcePriority } from '../../enum/ResourcePriority';
 
 export class NCloudRedisConfigGroup implements RedisConfigGroup, NCloudModel {
     name: string;

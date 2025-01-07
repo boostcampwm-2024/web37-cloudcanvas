@@ -1,6 +1,6 @@
-import { KsCluster } from '../interface/KsCluster';
-import { NCloudModel } from '../interface/NCloudModel';
-import { ResourcePriority } from '../enum/ResourcePriority';
+import { KsCluster } from '../../interface/KsCluster';
+import { NCloudModel } from '../../interface/NCloudModel';
+import { ResourcePriority } from '../../enum/ResourcePriority';
 
 export class NCloudNKsCluster implements KsCluster, NCloudModel {
     name?: string;

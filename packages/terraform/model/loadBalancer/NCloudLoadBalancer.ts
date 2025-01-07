@@ -1,6 +1,6 @@
-import { LoadBalancer } from '../interface/LoadBalancer';
-import { NCloudModel } from '../interface/NCloudModel';
-import { ResourcePriority } from '../enum/ResourcePriority';
+import { LoadBalancer } from '../../interface/LoadBalancer';
+import { NCloudModel } from '../../interface/NCloudModel';
+import { ResourcePriority } from '../../enum/ResourcePriority';
 
 export class NCloudLoadBalancer implements LoadBalancer, NCloudModel {
     id: string;
