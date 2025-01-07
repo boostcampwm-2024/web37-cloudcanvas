@@ -11,11 +11,8 @@ export abstract class BaseResourceParser implements ResourceParsingStrategy {
     }
 
     parse(properties: any): NCloudModel {
-        this.validateProperties(properties);
         return this.createModel(properties);
     }
-
-    protected validateProperties(properties: any): void {}
 
     protected getNameOrDefault(properties: any, defaultPrefix: string): string {
         return (

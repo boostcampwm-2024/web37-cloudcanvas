@@ -1,43 +1,27 @@
 import { BaseResourceParser } from './BaseResourceParser';
 import { ValidationError } from '../util/ValidationError';
-import { NCloudServer } from '../model/NCloudServer';
+import { NCloudServer } from '../model/server/NCloudServer';
 
 export class ServerParser extends BaseResourceParser {
     protected resourceType = ['server'];
 
-    protected validateProperties(properties: any): void {
-        if (!properties.server_image_number) {
-            throw new ValidationError(
-                'Server',
-                'serverImageNumber',
-                'server image number 가 필수입니다.',
-            );
-        }
-        if (!properties.server_spec_code) {
-            throw new ValidationError(
-                'Server',
-                'serverSpecCode',
-                'server spec code 가 필수입니다.',
-            );
-        }
-        if (!properties.subnet) {
-            throw new ValidationError(
-                'Server',
-                'subnet',
-                'subnet 이 필수입니다.',
-            );
-        }
-    }
-
     protected createModel(properties: any): NCloudServer {
         return new NCloudServer({
             name: this.getNameOrDefault(properties, 'server'),
+            subnetName: properties.subnet,
             serverImageNumber: properties.server_image_number,
             serverSpecCode: properties.server_spec_code,
-            subnetName: properties.subnet,
-            loginKeyName: properties.loginKeyName,
-            nicName: properties.nicName,
-            acgName: properties.acgName,
+            serverImageProductCode: properties.server_image_product_code,
+            serverProductCode: properties.server_product_code,
+            memberServerImageNo: properties.member_server_image_no,
+            description: properties.description,
+            loginKeyName: properties.login_key_name,
+            isProtectServerTermination:
+                properties.is_protect_server_termination,
+            initScriptNo: properties.init_script_no,
+            networkInterface: properties.network_interface,
+            isEncryptedBaseBlockStorageVolume:
+                properties.is_encrypted_base_block_storage_volume,
         });
     }
 }
