@@ -81,30 +81,6 @@ services:
             - cloud-canvas-network
         restart: unless-stopped
 
-    front-hub:
-        build:
-            context: ../
-            dockerfile: apps/hub/Dockerfile
-        container_name: hub
-        environment:
-            BACK_URL: ${BACK_URL}
-        ports:
-            - '3001:3000'
-        networks:
-            - cloud-canvas-network
-        restart: unless-stopped
-
-    front:
-        build:
-            context: ../
-            dockerfile: apps/client/Dockerfile
-        container_name: front
-        ports:
-            - '5001:5000'
-        networks:
-            - cloud-canvas-network
-        restart: unless-stopped
-
     # 로깅이 필요할 경우 사용
     # fluentd:
     #     build: ./monitorin/logging/fluentd/

@@ -89,7 +89,7 @@ services:
         environment:
             BACK_URL: ${BACK_URL}
         ports:
-            - '3001:3000'
+            - '5001:3000'
         networks:
             - cloud-canvas-network
         restart: unless-stopped

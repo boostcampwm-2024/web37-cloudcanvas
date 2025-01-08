@@ -23,7 +23,7 @@
 # EXPOSE 5000
 # CMD ["nginx", "-g", "daemon off;"]
 
-FROM node:20 AS build
+FROM node:20-alpine AS build
  
 WORKDIR /build
  
@@ -39,5 +39,5 @@ COPY --from=build /build/apps/client/dist /usr/share/nginx/html
 COPY ./apps/nginx/nginx.conf /etc/nginx/conf.d/default.conf
 
 ENV PORT=5000
-EXPOSE 5000
+EXPOSE $PORT
 CMD ["nginx", "-g", "daemon off;"]
