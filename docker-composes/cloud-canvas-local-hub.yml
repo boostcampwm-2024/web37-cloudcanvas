@@ -86,8 +86,10 @@ services:
             context: ../
             dockerfile: apps/hub/Dockerfile
         container_name: hub
+        environment:
+            BACK_URL: ${BACK_URL}
         ports:
-            - '5001:3000'
+            - '3001:3000'
         networks:
             - cloud-canvas-network
         restart: unless-stopped
