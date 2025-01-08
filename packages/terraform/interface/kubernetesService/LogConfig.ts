@@ -1,0 +1,3 @@
+interface LogConfig {
+    audit: boolean;
+}
