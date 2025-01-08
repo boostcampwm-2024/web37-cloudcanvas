@@ -76,8 +76,7 @@ services:
                 condition: service_healthy
             redis:
                 condition: service_healthy
-        entrypoint: sh -c "cd apps/server/ && npx prisma generate && npx prisma migrate reset --force && npx prisma migrate dev && node ./dist/src/main.js"
-        # entrypoint: sh -c "sleep 1000"
+        entrypoint: sh -c "cd apps/server/ && npx prisma migrate reset --force && npx prisma generate && node ./dist/src/main.js"
         networks:
             - cloud-canvas-network
         restart: unless-stopped

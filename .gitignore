@@ -30,3 +30,4 @@ tsconfig.tsbuildinfo
 
 node.json
 test.json
+out
