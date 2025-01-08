@@ -1,4 +1,4 @@
-import { MySQL } from '../../interface/MySQL';
+import { MySQL } from '../../interface/mysql/MySQL';
 import { NCloudModel } from '../../interface/NCloudModel';
 import { ResourcePriority } from '../../enum/ResourcePriority';
 
@@ -39,18 +39,23 @@ export class NCloudMySQL implements MySQL, NCloudModel {
         this.databaseName = json.databaseName;
         this.subnetNo = `ncloud_subnet.${json.subnet.toLowerCase()}.id`;
 
-        if (json.imageProductCode) this.imageProductCode = json.imageProductCode;
+        if (json.imageProductCode)
+            this.imageProductCode = json.imageProductCode;
         if (json.productCode) this.productCode = json.productCode;
         if (json.dataStorageType) this.dataStorageType = json.dataStorageType;
         if (json.isHa !== undefined) this.isHa = json.isHa;
         if (json.isMultiZone !== undefined) this.isMultiZone = json.isMultiZone;
-        if (json.isStorageEncryption !== undefined) this.isStorageEncryption = json.isStorageEncryption;
+        if (json.isStorageEncryption !== undefined)
+            this.isStorageEncryption = json.isStorageEncryption;
         if (json.isBackup !== undefined) this.isBackup = json.isBackup;
-        if (json.backupFileRetentionPeriod) this.backupFileRetentionPeriod = json.backupFileRetentionPeriod;
+        if (json.backupFileRetentionPeriod)
+            this.backupFileRetentionPeriod = json.backupFileRetentionPeriod;
         if (json.backupTime) this.backupTime = json.backupTime;
-        if (json.isAutomaticBackup !== undefined) this.isAutomaticBackup = json.isAutomaticBackup;
+        if (json.isAutomaticBackup !== undefined)
+            this.isAutomaticBackup = json.isAutomaticBackup;
         if (json.port) this.port = json.port;
-        if (json.standbyMasterSubnetNo) this.standbyMasterSubnetNo = json.standbyMasterSubnetNo;
+        if (json.standbyMasterSubnetNo)
+            this.standbyMasterSubnetNo = json.standbyMasterSubnetNo;
     }
 
     getProperties() {
@@ -64,20 +69,27 @@ export class NCloudMySQL implements MySQL, NCloudModel {
             subnet_no: this.subnetNo,
         };
 
-        if (this.imageProductCode) properties.image_product_code = this.imageProductCode;
+        if (this.imageProductCode)
+            properties.image_product_code = this.imageProductCode;
         if (this.productCode) properties.product_code = this.productCode;
-        if (this.dataStorageType) properties.data_storage_type = this.dataStorageType;
+        if (this.dataStorageType)
+            properties.data_storage_type = this.dataStorageType;
         if (this.isHa !== undefined) properties.is_ha = this.isHa;
-        if (this.isMultiZone !== undefined) properties.is_multi_zone = this.isMultiZone;
-        if (this.isStorageEncryption !== undefined) properties.is_storage_encryption = this.isStorageEncryption;
+        if (this.isMultiZone !== undefined)
+            properties.is_multi_zone = this.isMultiZone;
+        if (this.isStorageEncryption !== undefined)
+            properties.is_storage_encryption = this.isStorageEncryption;
         if (this.isBackup !== undefined) properties.is_backup = this.isBackup;
-        if (this.backupFileRetentionPeriod) properties.backup_file_retention_period = this.backupFileRetentionPeriod;
+        if (this.backupFileRetentionPeriod)
+            properties.backup_file_retention_period =
+                this.backupFileRetentionPeriod;
         if (this.backupTime) properties.backup_time = this.backupTime;
-        if (this.isAutomaticBackup !== undefined) properties.is_automatic_backup = this.isAutomaticBackup;
+        if (this.isAutomaticBackup !== undefined)
+            properties.is_automatic_backup = this.isAutomaticBackup;
         if (this.port) properties.port = this.port;
-        if (this.standbyMasterSubnetNo) properties.standby_master_subnet_no = this.standbyMasterSubnetNo;
+        if (this.standbyMasterSubnetNo)
+            properties.standby_master_subnet_no = this.standbyMasterSubnetNo;
 
         return properties;
     }
-
 }

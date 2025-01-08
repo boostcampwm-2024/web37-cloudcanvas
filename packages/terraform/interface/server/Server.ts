@@ -1,4 +1,4 @@
-import { NetworkInterface } from './NetworkInterface';
+import { NetworkInterface } from '../vpc/NetworkInterface';
 
 export interface Server {
     id: string;
