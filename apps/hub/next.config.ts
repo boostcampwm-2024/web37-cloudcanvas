@@ -4,7 +4,7 @@ const nextConfig: NextConfig = {
     /* config options here */
     output: 'standalone',
     env: {
-        BACK_URL: 'https://api.cloudcanvas.kro.kr',
+        BACK_URL: process.env.BACK_URL ?? 'http://localhost:3000',
     },
 };
 

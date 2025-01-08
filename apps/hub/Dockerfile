@@ -38,11 +38,11 @@ RUN cd /build/apps/hub && pnpm build
 
 FROM node:20-alpine AS production
 WORKDIR /app
-COPY --from=build /build/apps/hub/.next/standalone ./apps/hub/standalone
-COPY --from=build /build/apps/hub/.next/static ./apps/hub/standalone/.next/static
-COPY --from=build /build/apps/hub/public ./apps/hub/standalone/public
+COPY --from=build /build/apps/hub/.next/standalone/ ./standalone/
+COPY --from=build /build/apps/hub/.next/static/ ./standalone/.next/static
+COPY --from=build /build/apps/hub/public/ ./standalone/public
 COPY --from=dependencies /dependencies/node_modules ./node_modules
-COPY --from=dependencies /dependencies/apps/hub/node_modules ./apps/hub/node_modules
+COPY --from=dependencies /dependencies/apps/hub/node_modules ./standalone/node_modules
 
 ENV BACK_URL=http://localhost:3000
-ENTRYPOINT ["sh", "-c", "node ./apps/hub/standalone/apps/hub/server.js"]
+ENTRYPOINT ["sh", "-c", "node ../standalone/apps/hub/server.js"]
