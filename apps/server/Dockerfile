@@ -146,25 +146,91 @@
 # EXPOSE 3000
 # ENTRYPOINT ["sh", "-c", "node apps/server/dist/src/main.js"]
 
-FROM node:20
+# FROM node:20
  
-WORKDIR /usr/src/app
+# WORKDIR /usr/src/app
  
-COPY . .
+# COPY . .
  
-RUN npm install -g pnpm && pnpm install && pnpm build
+# RUN npm install -g pnpm && pnpm install && pnpm build
  
-# Copy app source
+# # Copy app source
 
+# ENV DATABASE_URL=mysql://seogeonhyuk:rhdrhdCLF@192.168.64.3:3306/cloud_canvas
+# ENV MYSQL_HOST=1
+# ENV MYSQL_PORT=3306
+# ENV REDIS_HOST=3
+# ENV REDIS_PORT=6379
+# ENV NCLOUD_ACCESS_KEY=0
+# ENV NCLOUD_SECRET_KEY=0
+# ENV PORT=3000
+# ENV NODE_ENV=development
+# EXPOSE 3000
+ 
+# CMD [ "node", "apps/server/dist/src/main.js" ]
+
+# FROM node:20 AS development
+
+# WORKDIR /dir
+# COPY . .
+# RUN npm install -g pnpm && cd apps/server/ && pnpm install --prod --ignore-scripts
+
+# FROM node:20-alpine AS production
+# WORKDIR /app
+# RUN apk add --no-cache openssl
+# RUN mkdir -p /app/node_modules
+# COPY --from=development /dir/apps/server/node_modules ./node_modules
+# COPY --from=development /dir/apps/server/dist ./dist
+# RUN mkdir -p /app/prisma
+# COPY ./apps/server/prisma/ /app/prisma/
+# CMD [ "node", "./dist/src/main.js" ]
+
+
+# FROM node:20 AS development
+
+# WORKDIR /dir
+# COPY . .
+# RUN npm install -g pnpm && pnpm install --prod --frozen-lockfile --ignore-scripts --filter server --shamefully-hoist
+
+# FROM node:20-alpine AS production
+# WORKDIR /app
+# COPY ./apps/server/prisma ./prisma
+# COPY --from=development /dir/apps/server/node_modules/ ./node_modules/
+# COPY ./apps/server/dist ./dist
+# CMD [ "node", "./dist/src/main.js" ]
+
+FROM node:20-alpine AS prune
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
+WORKDIR /prune
+COPY . .
+RUN npm install -g turbo && turbo prune server --docker
+
+FROM node:20-alpine AS build
+WORKDIR /build
+COPY --from=prune /prune/out/json/ .
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store npm install -g pnpm && pnpm install --frozen-lockfile
+COPY --from=prune /prune/out/full/ .
+RUN apk add --no-cache openssl && cd ./apps/server && pnpm build && cd ../../packages/ncloud-sdk && pnpm build
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm prune --prod --no-optional
+
+# FROM node:20-alpine AS dependencies
+# WORKDIR /dependencies
+# COPY --from=prune /prune/out/json/ .
+# RUN npm install -g pnpm && pnpm install --ignore-scripts --prod
+
+FROM node:20-alpine AS production
+WORKDIR /app
+RUN apk add --no-cache openssl
+COPY ./apps/server/prisma ./apps/server/prisma
+COPY --from=build /build/node_modules ./node_modules
+COPY --from=build /build/apps/server ./apps/server
+COPY --from=build /build/packages/ncloud-sdk ./packages/ncloud-sdk
+ENV NODE_ENV=development
 ENV DATABASE_URL=mysql://seogeonhyuk:rhdrhdCLF@192.168.64.3:3306/cloud_canvas
-ENV MYSQL_HOST=1
-ENV MYSQL_PORT=3306
 ENV REDIS_HOST=3
 ENV REDIS_PORT=6379
 ENV NCLOUD_ACCESS_KEY=0
 ENV NCLOUD_SECRET_KEY=0
-ENV PORT=3000
-ENV NODE_ENV=development
-EXPOSE 3000
- 
-CMD [ "node", "apps/server/dist/src/main.js" ]
+CMD [ "node", "./apps/server/dist/src/main.js" ]

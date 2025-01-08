@@ -24,9 +24,9 @@ services:
         image: mysql:8.0
         container_name: mysql
         environment:
-            MYSQL_ROOT_PASSWORD: rootpassword
-            MYSQL_USER: cloud_canvas_user
-            MYSQL_PASSWORD: password
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+            MYSQL_USER: ${MYSQL_USER}
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
         ports:
             - '3306:3306'
         volumes:
@@ -63,9 +63,12 @@ services:
             dockerfile: apps/server/Dockerfile
         container_name: back
         environment:
-            DATABASE_URL: mysql://cloud_canvas_user:password@mysql:3306/cloud_canvas
+            NODE_ENV: ${NODE_ENV}
+            DATABASE_URL: ${DATABASE_URL}
             NCLOUD_ACCESS_KEY: ${NCLOUD_ACCESS_KEY}
             NCLOUD_SECRET_KEY: ${NCLOUD_SECRET_KEY}
+            REDIS_HOST: ${REDIS_HOST}
+            REDIS_PORT: ${REDIS_PORT}
         ports:
             - '3000:3000'
         depends_on:
@@ -73,21 +76,22 @@ services:
                 condition: service_healthy
             redis:
                 condition: service_healthy
-        entrypoint: sh -c "cd apps/server && npx prisma migrate dev && node ./dist/src/main.js"
+        entrypoint: sh -c "cd apps/server/ && npx prisma generate && npx prisma migrate reset --force && npx prisma migrate dev && node ./dist/src/main.js"
+        # entrypoint: sh -c "sleep 1000"
         networks:
             - cloud-canvas-network
         restart: unless-stopped
 
-    front-hub:
-        build:
-            context: ../
-            dockerfile: apps/hub/Dockerfile
-        container_name: hub
-        ports:
-            - '5001:5000'
-        networks:
-            - cloud-canvas-network
-        restart: unless-stopped
+    # front-hub:
+    #     build:
+    #         context: ../
+    #         dockerfile: apps/hub/Dockerfile
+    #     container_name: hub
+    #     ports:
+    #         - '5001:5000'
+    #     networks:
+    #         - cloud-canvas-network
+    #     restart: unless-stopped
 
     # 로깅이 필요할 경우 사용
     # fluentd:
