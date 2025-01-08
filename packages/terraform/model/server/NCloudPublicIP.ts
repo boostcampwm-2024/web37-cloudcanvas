@@ -1,6 +1,6 @@
 import { ResourcePriority } from '../../enum/ResourcePriority';
 import { NCloudModel } from '../../interface/NCloudModel';
-import { PublicIp } from '../../interface/PublicIp';
+import { PublicIp } from '../../interface/server/PublicIp';
 
 export class NCloudPublicIP implements PublicIp, NCloudModel {
     id: string;

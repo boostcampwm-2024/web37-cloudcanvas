@@ -1,4 +1,4 @@
-import { NetworkInterface } from '../../interface/NetworkInterface';
+import { NetworkInterface } from '../../interface/vpc/NetworkInterface';
 import { NCloudModel } from '../../interface/NCloudModel';
 import { ResourcePriority } from '../../enum/ResourcePriority';
 

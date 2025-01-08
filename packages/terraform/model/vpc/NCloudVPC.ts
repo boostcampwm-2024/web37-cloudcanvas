@@ -1,4 +1,4 @@
-import { VPC } from '../../interface/VPC';
+import { VPC } from '../../interface/vpc/VPC';
 import { NCloudModel } from '../../interface/NCloudModel';
 import { ResourcePriority } from '../../enum/ResourcePriority';
 

@@ -1,4 +1,4 @@
-import { NetworkACL } from '../../interface/NetworkACL';
+import { NetworkACL } from '../../interface/vpc/NetworkACL';
 import { NCloudModel } from '../../interface/NCloudModel';
 import { ResourcePriority } from '../../enum/ResourcePriority';
 

@@ -1,7 +1,7 @@
-import { Server } from '../../interface/Server';
+import { Server } from '../../interface/server/Server';
 import { NCloudModel } from '../../interface/NCloudModel';
 import { ResourcePriority } from '../../enum/ResourcePriority';
-import { NetworkInterface } from '../../interface/NetworkInterface';
+import { NetworkInterface } from '../../interface/vpc/NetworkInterface';
 
 export class NCloudServer implements Server, NCloudModel {
     id: string;

@@ -1,6 +1,6 @@
 import { ResourcePriority } from '../../enum/ResourcePriority';
 import { NCloudModel } from '../../interface/NCloudModel';
-import { Subnet } from '../../interface/Subnet';
+import { Subnet } from '../../interface/vpc/Subnet';
 
 export class NCloudSubnet implements Subnet, NCloudModel {
     id: string;

@@ -1,4 +1,4 @@
-import { ACG } from '../../interface/ACG';
+import { ACG } from '../../interface/server/ACG';
 import { NCloudModel } from '../../interface/NCloudModel';
 import { ResourcePriority } from '../../enum/ResourcePriority';
 

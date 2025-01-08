@@ -1,4 +1,4 @@
-import { LoadBalancer } from '../../interface/LoadBalancer';
+import { LoadBalancer } from '../../interface/loadBalancer/LoadBalancer';
 import { NCloudModel } from '../../interface/NCloudModel';
 import { ResourcePriority } from '../../enum/ResourcePriority';
 

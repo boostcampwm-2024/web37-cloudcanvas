@@ -1,6 +1,6 @@
 import { NCloudModel } from '../../interface/NCloudModel';
 import { ResourcePriority } from '../../enum/ResourcePriority';
-import { LoginKey } from '../../interface/LoginKey';
+import { LoginKey } from '../../interface/server/LoginKey';
 
 export class NCloudLoginKey implements LoginKey, NCloudModel {
     name: string;
