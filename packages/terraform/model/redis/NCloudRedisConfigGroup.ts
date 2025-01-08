@@ -1,4 +1,4 @@
-import { RedisConfigGroup } from '../../interface/RedisConfigGroup';
+import { RedisConfigGroup } from '../../interface/redis/RedisConfigGroup';
 import { NCloudModel } from '../../interface/NCloudModel';
 import { ResourcePriority } from '../../enum/ResourcePriority';
 
