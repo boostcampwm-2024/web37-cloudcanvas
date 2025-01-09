@@ -31,11 +31,11 @@ export class NCloudPublicIP implements PublicIp, NCloudModel {
     getProperties() {
         const properties: { [key: string]: any } = {};
 
-        if (this.serverInstanceNo) properties.server_instance_no = this.serverInstanceNo;
+        if (this.serverInstanceNo)
+            properties.server_instance_no = this.serverInstanceNo;
         if (this.description) properties.description = this.description;
         if (this.zone) properties.zone = this.zone;
 
         return properties;
     }
 }
-

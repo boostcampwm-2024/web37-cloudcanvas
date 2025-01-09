@@ -41,4 +41,3 @@ export class NCloudACGRule implements ACGRule, NCloudModel {
         return properties;
     }
 }
-

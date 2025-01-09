@@ -21,7 +21,8 @@ export class NCloudACG implements ACG, NCloudModel {
         if (json.name) this.name = json.name.toLowerCase();
         if (json.description) this.description = json.description;
         if (json.isDefault !== undefined) this.isDefault = json.isDefault;
-        if (json.accessControlGroupNo) this.accessControlGroupNo = json.accessControlGroupNo;
+        if (json.accessControlGroupNo)
+            this.accessControlGroupNo = json.accessControlGroupNo;
     }
 
     getProperties() {

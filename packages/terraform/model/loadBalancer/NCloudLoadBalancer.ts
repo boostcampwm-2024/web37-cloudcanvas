@@ -49,8 +49,10 @@ export class NCloudLoadBalancer implements LoadBalancer, NCloudModel {
         if (json.name) this.name = json.name.toLowerCase();
         if (json.algorithmType) this.algorithmType = json.algorithmType;
         if (json.description) this.description = json.description;
-        if (json.serverInstanceNoList) this.serverInstanceNoList = json.serverInstanceNoList;
-        if (json.networkUsageType) this.networkUsageType = json.networkUsageType;
+        if (json.serverInstanceNoList)
+            this.serverInstanceNoList = json.serverInstanceNoList;
+        if (json.networkUsageType)
+            this.networkUsageType = json.networkUsageType;
         if (json.region) this.region = json.region;
         if (json.zone) this.zone = json.zone;
 
@@ -58,19 +60,24 @@ export class NCloudLoadBalancer implements LoadBalancer, NCloudModel {
         if (json.virtualIp) this.virtualIp = json.virtualIp;
         if (json.createDate) this.createDate = json.createDate;
         if (json.domainName) this.domainName = json.domainName;
-        if (json.instanceStatusName) this.instanceStatusName = json.instanceStatusName;
+        if (json.instanceStatusName)
+            this.instanceStatusName = json.instanceStatusName;
         if (json.instanceStatus) this.instanceStatus = json.instanceStatus;
-        if (json.instanceOperation) this.instanceOperation = json.instanceOperation;
-        if (json.isHttpKeepAlive !== undefined) this.isHttpKeepAlive = json.isHttpKeepAlive;
-        if (json.connectionTimeout) this.connectionTimeout = json.connectionTimeout;
+        if (json.instanceOperation)
+            this.instanceOperation = json.instanceOperation;
+        if (json.isHttpKeepAlive !== undefined)
+            this.isHttpKeepAlive = json.isHttpKeepAlive;
+        if (json.connectionTimeout)
+            this.connectionTimeout = json.connectionTimeout;
         if (json.loadBalancedServerInstanceList) {
-            this.loadBalancedServerInstanceList = json.loadBalancedServerInstanceList;
+            this.loadBalancedServerInstanceList =
+                json.loadBalancedServerInstanceList;
         }
     }
 
     getProperties() {
         const properties: { [key: string]: any } = {
-            rule_list: this.ruleList.map(rule => ({
+            rule_list: this.ruleList.map((rule) => ({
                 protocol_type: rule.protocolType,
                 load_balancer_port: rule.loadBalancerPort,
                 server_port: rule.serverPort,
@@ -86,7 +93,8 @@ export class NCloudLoadBalancer implements LoadBalancer, NCloudModel {
         if (this.serverInstanceNoList) {
             properties.server_instance_no_list = this.serverInstanceNoList;
         }
-        if (this.networkUsageType) properties.network_usage_type = this.networkUsageType;
+        if (this.networkUsageType)
+            properties.network_usage_type = this.networkUsageType;
         if (this.region) properties.region = this.region;
         if (this.zone) properties.zone = this.zone;
 

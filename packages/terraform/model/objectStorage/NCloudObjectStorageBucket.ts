@@ -2,7 +2,9 @@ import { ObjectStorageBucket } from '../../interface/objectStorage/ObjectStorage
 import { ResourcePriority } from '../../enum/ResourcePriority';
 import { NCloudModel } from '../../interface/NCloudModel';
 
-export class NCloudObjectStorageBucket implements ObjectStorageBucket, NCloudModel {
+export class NCloudObjectStorageBucket
+    implements ObjectStorageBucket, NCloudModel
+{
     bucketName: string;
     creationDate?: string;
     serviceType: string;
