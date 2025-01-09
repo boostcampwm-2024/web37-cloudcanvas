@@ -7,6 +7,8 @@ import { SubnetParser } from './SubnetParser';
 import { LaunchConfigurationParser } from './LaunchConfigurationParser';
 import { RedisParser } from './RedisParser';
 import { NKsClusterParser } from './NKsClusterParser';
+import { RedisConfigGroupParser } from './RedisConfigGroupParser';
+import { ObjectStorageBucketParser } from './ObjectStorageBucketParser';
 
 export class ResourceParserFactory {
     private static strategy: ResourceParsingStrategy[] = [
@@ -16,7 +18,9 @@ export class ResourceParserFactory {
         new SubnetParser(),
         new LaunchConfigurationParser(),
         new RedisParser(),
+        new RedisConfigGroupParser(),
         new NKsClusterParser(),
+        new ObjectStorageBucketParser(),
     ];
 
     static getParser(type: string): ResourceParsingStrategy {

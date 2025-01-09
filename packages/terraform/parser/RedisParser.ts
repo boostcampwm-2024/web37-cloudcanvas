@@ -6,11 +6,11 @@ export class RedisParser extends BaseResourceParser {
 
     protected createModel(properties: any): NCloudRedis {
         return new NCloudRedis({
-            serviceName: properties.serviceName,
-            serverNamePrefix: properties.serverNamePrefix,
+            serviceName: properties.service_name,
+            serverNamePrefix: properties.server_name_prefix,
             vpcNo: properties.vpc,
             subnetNo: properties.subnet,
-            configGroupNo: properties.configGroup,
+            configGroupNo: properties.config_group,
             mode: properties.mode,
         });
     }
