@@ -3,7 +3,7 @@ import { ResourcePriority } from '../../enum/ResourcePriority';
 import { LoginKey } from '../../interface/server/LoginKey';
 
 export class NCloudLoginKey implements LoginKey, NCloudModel {
-    name: string;
+    keyName: string;
     privateKey?: string;
     fingerprint?: string;
     serviceType: string;
@@ -13,15 +13,14 @@ export class NCloudLoginKey implements LoginKey, NCloudModel {
         this.serviceType = 'ncloud_login_key';
         this.priority = ResourcePriority.LOGIN_KEY;
 
-        if (!json.name && !json.name) {
-            throw new Error('key_name is required for Login Key');
-        }
-        this.name = json.name.toLowerCase();
+        this.keyName = json.keyName.toLowerCase();
+        if (json.privateKey) this.privateKey = json.privateKey;
+        if (json.fingerprint) this.fingerprint = json.fingerprint;
     }
 
     getProperties() {
         return {
-            key_name: this.name,
+            key_name: this.keyName,
         };
     }
 }

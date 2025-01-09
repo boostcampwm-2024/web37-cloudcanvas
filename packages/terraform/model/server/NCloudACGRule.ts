@@ -3,32 +3,42 @@ import { ResourcePriority } from '../../enum/ResourcePriority';
 import { ACGRule } from '../../interface/server/ACGRule';
 
 export class NCloudACGRule implements ACGRule, NCloudModel {
-    name: string;
-    protocol: string;
-    ipBlock: string;
-    portRange: string;
+    accessControlGroupNo: string;
+    inbound?: {
+        protocol: 'TCP' | 'UDP' | 'ICMP';
+        ipBlock?: string;
+        sourceAccessControlGroupNo?: string;
+        portRange?: string;
+        description?: string;
+    }[];
+    outbound?: {
+        protocol: 'TCP' | 'UDP' | 'ICMP';
+        ipBlock?: string;
+        sourceAccessControlGroupNo?: string;
+        portRange?: string;
+        description?: string;
+    }[];
     serviceType: string;
     priority: ResourcePriority;
-    accessControlGroupNo: string;
 
     constructor(json: any) {
         this.serviceType = 'ncloud_access_control_group_rule';
         this.priority = ResourcePriority.ACG_RULE;
-        this.name = json.name.toLowerCase();
-        this.protocol = json.protocol;
-        this.ipBlock = json.ipBlock;
-        this.portRange = json.portRange;
         this.accessControlGroupNo = `ncloud_access_control_group.${json.acgName.toLowerCase()}.id`;
+
+        if (json.inbound) this.inbound = json.inbound;
+        if (json.outbound) this.outbound = json.outbound;
     }
 
     getProperties() {
-        return {
+        const properties: { [key: string]: any } = {
             access_control_group_no: this.accessControlGroupNo,
-            inbound: {
-                protocol: this.protocol,
-                ip_block: this.ipBlock,
-                port_range: this.portRange,
-            },
         };
+
+        if (this.inbound) properties.inbound = this.inbound;
+        if (this.outbound) properties.outbound = this.outbound;
+
+        return properties;
     }
 }
+

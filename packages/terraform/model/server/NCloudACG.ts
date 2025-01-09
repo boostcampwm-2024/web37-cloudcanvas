@@ -4,9 +4,11 @@ import { ResourcePriority } from '../../enum/ResourcePriority';
 
 export class NCloudACG implements ACG, NCloudModel {
     id: string;
-    vpcNo: string;
     name?: string;
+    vpcNo: string;
+    description?: string;
     isDefault?: boolean;
+    accessControlGroupNo?: string;
     serviceType: string;
     priority: ResourcePriority;
 
@@ -14,11 +16,12 @@ export class NCloudACG implements ACG, NCloudModel {
         this.serviceType = 'ncloud_access_control_group';
         this.priority = ResourcePriority.ACG;
         this.id = json.id || `ACG-${Date.now()}`;
-        if (json.name) {
-            this.name = json.name.toLowerCase();
-        }
-
         this.vpcNo = `ncloud_vpc.${json.vpcName.toLowerCase()}.id`;
+
+        if (json.name) this.name = json.name.toLowerCase();
+        if (json.description) this.description = json.description;
+        if (json.isDefault !== undefined) this.isDefault = json.isDefault;
+        if (json.accessControlGroupNo) this.accessControlGroupNo = json.accessControlGroupNo;
     }
 
     getProperties() {
@@ -26,9 +29,8 @@ export class NCloudACG implements ACG, NCloudModel {
             vpc_no: this.vpcNo,
         };
 
-        if (this.name) {
-            properties.name = this.name;
-        }
+        if (this.name) properties.name = this.name;
+        if (this.description) properties.description = this.description;
 
         return properties;
     }
