@@ -7,12 +7,12 @@ export class MySQLParesr extends BaseResourceParser {
 
     protected createModel(properties: any): NCloudModel {
         return new NCloudMySQL({
-            serviceName: properties.serviceName || 'mysql',
-            serverNamePrefix: properties.serverNamePrefix,
-            userName: properties.userName,
-            userPassword: properties.userPassword,
-            hostIp: properties.hostIp,
-            databaseName: properties.databaseName,
+            serviceName: properties.service_name || 'mysql',
+            serverNamePrefix: properties.server_name_prefix,
+            userName: properties.user_name,
+            userPassword: properties.user_password,
+            hostIp: properties.host_ip,
+            databaseName: properties.database_name,
             subnet: properties.subnet,
             vpc: properties.vpc,
         });

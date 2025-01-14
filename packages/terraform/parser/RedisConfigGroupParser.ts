@@ -7,7 +7,7 @@ export class RedisConfigGroupParser extends BaseResourceParser {
     protected createModel(properties: any): NCloudRedisConfigGroup {
         return new NCloudRedisConfigGroup({
             name: properties.name,
-            redis_version: properties.redisVersion,
+            redis_version: properties.redis_version,
         });
     }
 }

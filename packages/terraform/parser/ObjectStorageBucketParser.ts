@@ -6,7 +6,7 @@ export class ObjectStorageBucketParser extends BaseResourceParser {
 
     protected createModel(properties: any): NCloudObjectStorageBucket {
         return new NCloudObjectStorageBucket({
-            bucketName: properties.bucketName,
+            bucketName: properties.bucket_name,
         });
     }
 }

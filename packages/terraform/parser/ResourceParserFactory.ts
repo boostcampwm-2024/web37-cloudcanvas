@@ -9,6 +9,7 @@ import { RedisParser } from './RedisParser';
 import { NKsClusterParser } from './NKsClusterParser';
 import { RedisConfigGroupParser } from './RedisConfigGroupParser';
 import { ObjectStorageBucketParser } from './ObjectStorageBucketParser';
+import { NatGatewayParser } from './NatGatewayParser';
 
 export class ResourceParserFactory {
     private static strategy: ResourceParsingStrategy[] = [
@@ -21,6 +22,7 @@ export class ResourceParserFactory {
         new RedisConfigGroupParser(),
         new NKsClusterParser(),
         new ObjectStorageBucketParser(),
+        new NatGatewayParser(),
     ];
 
     static getParser(type: string): ResourceParsingStrategy {
