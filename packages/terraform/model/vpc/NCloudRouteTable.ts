@@ -1,38 +1,37 @@
+import { RouteTable } from './RouteTable';
+import { NCloudModel } from '../NCloudModel';
 import { ResourcePriority } from '../../enum/ResourcePriority';
-import { NCloudModel } from '../../interface/NCloudModel';
-import { NetworkAclDenyAllowGroup } from '../../interface/vpc/NetworkAclDenyAllowGroup';
 
-export class NCloudNetworkAclDenyAllowGroup
-    implements NetworkAclDenyAllowGroup, NCloudModel
-{
+export class NCloudRouteTable implements RouteTable, NCloudModel {
     id: string;
     vpcNo: string;
-    ipList: string[];
+    supportedSubnetType: 'PUBLIC' | 'PRIVATE';
     name?: string;
     description?: string;
-    networkAclDenyAllowGroupNo?: string;
+    routeTableNo?: string;
+    isDefault?: boolean;
     serviceType: string;
     priority: ResourcePriority;
 
     constructor(json: any) {
-        this.serviceType = 'ncloud_network_acl_deny_allow_group';
-        this.priority = ResourcePriority.NETWORK_ACL_DENY_ALLOW_GROUP;
+        this.serviceType = 'ncloud_route_table';
+        this.priority = ResourcePriority.ROUTE_TABLE;
 
-        this.id = json.id || `deny-allow-group-${Date.now()}`;
+        this.id = json.id || `route-table-${Date.now()}`;
         this.vpcNo = `ncloud_vpc.${json.vpcName.toLowerCase()}.id`;
-        this.ipList = json.ipList;
+        this.supportedSubnetType = json.supportedSubnetType;
 
         if (json.name) this.name = json.name.toLowerCase();
         if (json.description) this.description = json.description;
-        if (json.networkAclDenyAllowGroupNo) {
-            this.networkAclDenyAllowGroupNo = json.networkAclDenyAllowGroupNo;
-        }
+
+        if (json.routeTableNo) this.routeTableNo = json.routeTableNo;
+        if (json.isDefault !== undefined) this.isDefault = json.isDefault;
     }
 
     getProperties() {
         const properties: { [key: string]: any } = {
             vpc_no: this.vpcNo,
-            ip_list: this.ipList,
+            supported_subnet_type: this.supportedSubnetType,
         };
 
         if (this.name) properties.name = this.name;

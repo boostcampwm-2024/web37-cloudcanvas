@@ -41,7 +41,7 @@ export class NCloudNetworkAclRule implements NetworkAclRule, NCloudModel {
         };
 
         if (this.inbound) {
-            properties.inbound = this.inbound.map(rule => ({
+            properties.inbound = this.inbound.map((rule) => ({
                 priority: rule.priority,
                 protocol: rule.protocol,
                 rule_action: rule.ruleAction,
@@ -53,7 +53,7 @@ export class NCloudNetworkAclRule implements NetworkAclRule, NCloudModel {
         }
 
         if (this.outbound) {
-            properties.outbound = this.outbound.map(rule => ({
+            properties.outbound = this.outbound.map((rule) => ({
                 priority: rule.priority,
                 protocol: rule.protocol,
                 rule_action: rule.ruleAction,
