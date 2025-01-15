@@ -1,5 +1,5 @@
-import { BaseResourceParser } from './BaseResourceParser';
-import { NCloudObjectStorageBucket } from '../model/objectStorage/NCloudObjectStorageBucket';
+import { BaseResourceParser } from '../BaseResourceParser';
+import { NCloudObjectStorageBucket } from '../../model/objectStorage/NCloudObjectStorageBucket';
 
 export class ObjectStorageBucketParser extends BaseResourceParser {
     protected resourceType = ['object-storage', 'objectstoragebucket'];

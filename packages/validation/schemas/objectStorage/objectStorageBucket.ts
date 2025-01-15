@@ -1,4 +1,4 @@
-import { commonSchema } from './base';
+import { commonSchema } from '../base';
 import { z } from 'zod';
 
 export const objectStorageBucketSchema = z.object({
