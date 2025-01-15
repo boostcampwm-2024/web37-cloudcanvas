@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { commonSchema } from './base';
+import { commonSchema } from '../base';
 
 const lbRuleSchema = z
     .object({
