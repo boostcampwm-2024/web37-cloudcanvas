@@ -17,9 +17,11 @@ export class NCloudPlacementGroup implements PlacementGroup, NCloudModel {
         this.id = json.id || `placement-group-${Date.now()}`;
 
         if (json.name) this.name = json.name.toLowerCase();
-        if (json.placementGroupType) this.placementGroupType = json.placementGroupType;
+        if (json.placementGroupType)
+            this.placementGroupType = json.placementGroupType;
 
-        if (json.placementGroupNo) this.placementGroupNo = json.placementGroupNo;
+        if (json.placementGroupNo)
+            this.placementGroupNo = json.placementGroupNo;
     }
 
     getProperties() {

@@ -1,5 +1,5 @@
-import { BaseResourceParser } from './BaseResourceParser';
-import { NCloudPlacementGroup } from '../model/server/NCloudPlacementGroup';
+import { BaseResourceParser } from '../BaseResourceParser';
+import { NCloudPlacementGroup } from '../../model/server/NCloudPlacementGroup';
 
 export class PlacementGroupParser extends BaseResourceParser {
     protected resourceType = ['placement_group'];

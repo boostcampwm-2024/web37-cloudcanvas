@@ -1,5 +1,5 @@
-import { BaseResourceParser } from './BaseResourceParser';
-import { NCloudServer } from '../model/server/NCloudServer';
+import { BaseResourceParser } from '../BaseResourceParser';
+import { NCloudServer } from '../../model/server/NCloudServer';
 
 export class ServerParser extends BaseResourceParser {
     protected resourceType = ['server'];

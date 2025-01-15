@@ -1,5 +1,5 @@
-import { BaseResourceParser } from './BaseResourceParser';
-import { NCloudInitScript } from '../model/server/NCloudInitSciprt';
+import { BaseResourceParser } from '../BaseResourceParser';
+import { NCloudInitScript } from '../../model/server/NCloudInitSciprt';
 
 export class InitScriptParser extends BaseResourceParser {
     protected resourceType = ['init_script'];

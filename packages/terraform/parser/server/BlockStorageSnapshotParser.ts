@@ -1,5 +1,5 @@
-import { BaseResourceParser } from './BaseResourceParser';
-import { NCloudBlockStorageSnapshot } from '../model/server/NCloudBlockStorageSnapshot';
+import { BaseResourceParser } from '../BaseResourceParser';
+import { NCloudBlockStorageSnapshot } from '../../model/server/NCloudBlockStorageSnapshot';
 
 export class BlockStorageSnapshotParser extends BaseResourceParser {
     protected resourceType = ['block_storage_snapshot'];

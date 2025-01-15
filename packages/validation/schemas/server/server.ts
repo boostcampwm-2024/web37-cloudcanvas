@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import { commonSchema } from './base';
-import { networkInterfaceSchema } from './vpc/networkinterface';
+import { commonSchema } from '../base';
+import { networkInterfaceSchema } from '../vpc/networkinterface';
 
 const serverTagSchema = z.object({
     tag_key: z.string(),

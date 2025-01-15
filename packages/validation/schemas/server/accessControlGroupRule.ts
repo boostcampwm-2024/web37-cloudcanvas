@@ -1,5 +1,5 @@
-import { commonSchema } from './base';
-import { networkRuleSchema } from './networkRule';
+import { commonSchema } from '../base';
+import { networkRuleSchema } from '../vpc/networkRule';
 import { z } from 'zod';
 
 export const accessControlGroupRuleSchema = z

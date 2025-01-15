@@ -2,7 +2,9 @@ import { ResourcePriority } from '../../enum/ResourcePriority';
 import { NCloudModel } from '../../interface/NCloudModel';
 import { PortForwardingRule } from '../../interface/server/PortForwardingRule';
 
-export class NCloudPortForwardingRule implements PortForwardingRule, NCloudModel {
+export class NCloudPortForwardingRule
+    implements PortForwardingRule, NCloudModel
+{
     id: string;
     serverInstanceNo: string;
     portForwardingExternalPort: string;
@@ -21,11 +23,13 @@ export class NCloudPortForwardingRule implements PortForwardingRule, NCloudModel
         this.portForwardingExternalPort = json.portForwardingExternalPort;
         this.portForwardingInternalPort = json.portForwardingInternalPort;
 
-        this.id = json.id ||
+        this.id =
+            json.id ||
             `${json.portForwardingConfigurationNo}:${json.zone}:${this.portForwardingExternalPort}`;
 
         if (json.portForwardingConfigurationNo) {
-            this.portForwardingConfigurationNo = json.portForwardingConfigurationNo;
+            this.portForwardingConfigurationNo =
+                json.portForwardingConfigurationNo;
         }
 
         if (json.portForwardingPublicIp) {
@@ -42,7 +46,8 @@ export class NCloudPortForwardingRule implements PortForwardingRule, NCloudModel
         };
 
         if (this.portForwardingConfigurationNo) {
-            properties.port_forwarding_configuration_no = this.portForwardingConfigurationNo;
+            properties.port_forwarding_configuration_no =
+                this.portForwardingConfigurationNo;
         }
 
         return properties;

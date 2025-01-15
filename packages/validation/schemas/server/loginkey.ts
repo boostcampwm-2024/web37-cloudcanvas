@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { commonSchema } from './base';
+import { commonSchema } from '../base';
 
 export const loginKeySchema = z.object({
     ...commonSchema,
