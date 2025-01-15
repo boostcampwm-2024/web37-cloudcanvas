@@ -1,5 +1,5 @@
-import { BaseResourceParser } from './BaseResourceParser';
-import { NCloudNKsCluster } from '../model/kubernetesService/NCloudNKsCluster';
+import { BaseResourceParser } from '../BaseResourceParser';
+import { NCloudNKsCluster } from '../../model/kubernetesService/NCloudNKsCluster';
 
 export class NKsClusterParser extends BaseResourceParser {
     protected resourceType = ['nkscluster'];

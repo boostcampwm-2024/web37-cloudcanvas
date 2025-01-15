@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { commonSchema } from './base';
+import { commonSchema } from '../base';
 
 const oidcSchema = z.object({
     issuer_url: z.string(),
