@@ -1,5 +1,5 @@
-import { BaseResourceParser } from './BaseResourceParser';
-import { NCloudNatGateway } from '../model/vpc/NCloudNatGateway';
+import { BaseResourceParser } from '../BaseResourceParser';
+import { NCloudNatGateway } from '../../model/vpc/NCloudNatGateway';
 
 export class NatGatewayParser extends BaseResourceParser {
     protected resourceType = ['nat_gateway'];

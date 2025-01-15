@@ -1,6 +1,6 @@
 // vpc.ts schema
 import { z } from 'zod';
-import { commonSchema } from './base';
+import { commonSchema } from '../base';
 
 export const vpcSchema = z.object({
     ...commonSchema,

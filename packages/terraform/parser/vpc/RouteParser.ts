@@ -1,5 +1,5 @@
-import { BaseResourceParser } from './BaseResourceParser';
-import { NCloudRoute } from '../model/vpc/NCloudRoute';
+import { BaseResourceParser } from '../BaseResourceParser';
+import { NCloudRoute } from '../../model/vpc/NCloudRoute';
 
 export class RouteParser extends BaseResourceParser {
     protected resourceType = ['route'];

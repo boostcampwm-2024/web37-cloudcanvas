@@ -1,5 +1,5 @@
-import { BaseResourceParser } from './BaseResourceParser';
-import { NCloudSubnet } from '../model/vpc/NCloudSubnet';
+import { BaseResourceParser } from '../BaseResourceParser';
+import { NCloudSubnet } from '../../model/vpc/NCloudSubnet';
 
 export class SubnetParser extends BaseResourceParser {
     protected resourceType = ['subnet'];

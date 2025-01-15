@@ -1,5 +1,5 @@
-import { BaseResourceParser } from './BaseResourceParser';
-import { NCloudNetworkAclDenyAllowGroup } from '../model/vpc/NcloudNetworkAclDenyAllowGroup';
+import { BaseResourceParser } from '../BaseResourceParser';
+import { NCloudNetworkAclDenyAllowGroup } from '../../model/vpc/NcloudNetworkAclDenyAllowGroup';
 
 export class NetworkAclDenyAllowGroupParser extends BaseResourceParser {
     protected resourceType = ['network_acl_deny_allow_group'];

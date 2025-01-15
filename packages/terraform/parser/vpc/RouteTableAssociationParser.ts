@@ -1,5 +1,5 @@
-import { BaseResourceParser } from './BaseResourceParser';
-import { NCloudRouteTableAssociation } from '../model/vpc/NCloudRouteTableAssociation';
+import { BaseResourceParser } from '../BaseResourceParser';
+import { NCloudRouteTableAssociation } from '../../model/vpc/NCloudRouteTableAssociation';
 
 export class RouteTableAssociationParser extends BaseResourceParser {
     protected resourceType = ['route_table_association'];
