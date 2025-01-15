@@ -36,13 +36,17 @@ export class NCloudAutoScalingGroup implements AutoScalingGroup, NCloudModel {
         this.maxSize = json.maxSize;
 
         if (json.name) this.name = json.name;
-        if (json.desiredCapacity !== undefined) this.desiredCapacity = json.desiredCapacity;
+        if (json.desiredCapacity !== undefined)
+            this.desiredCapacity = json.desiredCapacity;
         if (json.ignoreCapacityChanges !== undefined) {
             this.ignoreCapacityChanges = json.ignoreCapacityChanges;
         }
-        if (json.defaultCooldown !== undefined) this.defaultCooldown = json.defaultCooldown;
-        if (json.healthCheckTypeCode) this.healthCheckTypeCode = json.healthCheckTypeCode;
-        if (json.waitForCapacityTimeout) this.waitForCapacityTimeout = json.waitForCapacityTimeout;
+        if (json.defaultCooldown !== undefined)
+            this.defaultCooldown = json.defaultCooldown;
+        if (json.healthCheckTypeCode)
+            this.healthCheckTypeCode = json.healthCheckTypeCode;
+        if (json.waitForCapacityTimeout)
+            this.waitForCapacityTimeout = json.waitForCapacityTimeout;
         if (json.healthCheckGracePeriod !== undefined) {
             this.healthCheckGracePeriod = json.healthCheckGracePeriod;
         }
@@ -55,10 +59,13 @@ export class NCloudAutoScalingGroup implements AutoScalingGroup, NCloudModel {
             this.accessControlGroupNoList = json.accessControlGroupNoList;
         }
         if (json.targetGroupList) this.targetGroupList = json.targetGroupList;
-        if (json.serverNamePrefix) this.serverNamePrefix = json.serverNamePrefix;
+        if (json.serverNamePrefix)
+            this.serverNamePrefix = json.serverNamePrefix;
 
-        if (json.autoScalingGroupNo) this.autoScalingGroupNo = json.autoScalingGroupNo;
-        if (json.serverInstanceNoList) this.serverInstanceNoList = json.serverInstanceNoList;
+        if (json.autoScalingGroupNo)
+            this.autoScalingGroupNo = json.autoScalingGroupNo;
+        if (json.serverInstanceNoList)
+            this.serverInstanceNoList = json.serverInstanceNoList;
         if (json.vpcNo) this.vpcNo = json.vpcNo;
     }
 
@@ -92,13 +99,14 @@ export class NCloudAutoScalingGroup implements AutoScalingGroup, NCloudModel {
         if (this.zoneNoList) properties.zone_no_list = this.zoneNoList;
         if (this.subnetNo) properties.subnet_no = this.subnetNo;
         if (this.accessControlGroupNoList) {
-            properties.access_control_group_no_list = this.accessControlGroupNoList;
+            properties.access_control_group_no_list =
+                this.accessControlGroupNoList;
         }
-        if (this.targetGroupList) properties.target_group_list = this.targetGroupList;
-        if (this.serverNamePrefix) properties.server_name_prefix = this.serverNamePrefix;
+        if (this.targetGroupList)
+            properties.target_group_list = this.targetGroupList;
+        if (this.serverNamePrefix)
+            properties.server_name_prefix = this.serverNamePrefix;
 
         return properties;
     }
 }
-
-

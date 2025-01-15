@@ -2,7 +2,9 @@ import { NCloudModel } from '../../interface/NCloudModel';
 import { ResourcePriority } from '../../enum/ResourcePriority';
 import { AutoScalingSchedule } from '../../interface/autoScaling/AutoScalingSchedule';
 
-export class NCloudAutoScalingSchedule implements AutoScalingSchedule, NCloudModel {
+export class NCloudAutoScalingSchedule
+    implements AutoScalingSchedule, NCloudModel
+{
     id: string;
     name: string;
     desiredCapacity: number;

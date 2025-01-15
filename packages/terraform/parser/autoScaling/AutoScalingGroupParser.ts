@@ -1,7 +1,6 @@
 import { BaseResourceParser } from '../BaseResourceParser';
 import { NCloudAutoScalingGroup } from '../../model/autoScaling/NCloudAutoScalingGroup';
 
-
 export class AutoScalingGroupParser extends BaseResourceParser {
     protected resourceType = ['auto_scaling_group'];
 

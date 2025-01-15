@@ -1,7 +1,6 @@
 import { BaseResourceParser } from '../BaseResourceParser';
 import { NCloudAutoScalingPolicy } from '../../model/autoScaling/NCloudAutoScalingPolicy';
 
-
 export class AutoScalingPolicyParser extends BaseResourceParser {
     protected resourceType = ['auto_scaling_policy'];
 
