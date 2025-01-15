@@ -1,5 +1,5 @@
-import { BaseResourceParser } from './BaseResourceParser';
-import { NCloudMySQLDatabases } from '../model/mysql/NCloudMySQLDatabase';
+import { BaseResourceParser } from '../BaseResourceParser';
+import { NCloudMySQLDatabases } from '../../model/mysql/NCloudMySQLDatabase';
 export class MySQLDatabasesParser extends BaseResourceParser {
     protected resourceType = ['mysql_databases'];
 

@@ -1,6 +1,6 @@
-import { BaseResourceParser } from './BaseResourceParser';
-import { NCloudModel } from '../interface/NCloudModel';
-import { NCloudMySQL } from '../model/mysql/NCloudMySQL';
+import { BaseResourceParser } from '../BaseResourceParser';
+import { NCloudModel } from '../../interface/NCloudModel';
+import { NCloudMySQL } from '../../model/mysql/NCloudMySQL';
 
 export class MySQLParesr extends BaseResourceParser {
     protected resourceType = ['db-mysql', 'mysql'];

@@ -1,5 +1,5 @@
-import { BaseResourceParser } from './BaseResourceParser';
-import { NCloudMySQLRecovery } from '../model/mysql/NCloudMySQLRecovery';
+import { BaseResourceParser } from '../BaseResourceParser';
+import { NCloudMySQLRecovery } from '../../model/mysql/NCloudMySQLRecovery';
 
 export class MySQLRecoveryParser extends BaseResourceParser {
     protected resourceType = ['mysql_recovery'];
