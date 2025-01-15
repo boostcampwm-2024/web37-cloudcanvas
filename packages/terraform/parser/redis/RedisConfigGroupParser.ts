@@ -1,5 +1,5 @@
-import { BaseResourceParser } from './BaseResourceParser';
-import { NCloudRedisConfigGroup } from '../model/redis/NCloudRedisConfigGroup';
+import { BaseResourceParser } from '../BaseResourceParser';
+import { NCloudRedisConfigGroup } from '../../model/redis/NCloudRedisConfigGroup';
 
 export class RedisConfigGroupParser extends BaseResourceParser {
     protected resourceType = ['redisconfiggroup'];
