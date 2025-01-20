@@ -1,15 +1,15 @@
 import { ResourceParsingStrategy } from '../util/interface/ResourceParsingStrategy';
-import { VPCParser } from './VPCParser';
+import { VPCParser } from './vpc/VPCParser';
 import { NCloudModel } from '../interface/NCloudModel';
-import { MySQLParesr } from './MySQLParesr';
-import { ServerParser } from './ServerParser';
-import { SubnetParser } from './SubnetParser';
-import { LaunchConfigurationParser } from './LaunchConfigurationParser';
-import { RedisParser } from './RedisParser';
-import { NKsClusterParser } from './NKsClusterParser';
-import { RedisConfigGroupParser } from './RedisConfigGroupParser';
-import { ObjectStorageBucketParser } from './ObjectStorageBucketParser';
-import { NatGatewayParser } from './NatGatewayParser';
+import { MySQLParesr } from './mysql/MySQLParesr';
+import { ServerParser } from './server/ServerParser';
+import { SubnetParser } from './vpc/SubnetParser';
+import { LaunchConfigurationParser } from './autoScaling/LaunchConfigurationParser';
+import { RedisParser } from './redis/RedisParser';
+import { NKsClusterParser } from './kubernetesService/NKsClusterParser';
+import { RedisConfigGroupParser } from './redis/RedisConfigGroupParser';
+import { ObjectStorageBucketParser } from './objectStorage/ObjectStorageBucketParser';
+import { NatGatewayParser } from './vpc/NatGatewayParser';
 
 export class ResourceParserFactory {
     private static strategy: ResourceParsingStrategy[] = [
