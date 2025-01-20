@@ -4,6 +4,12 @@ import { NCloudModel } from '../interface/NCloudModel';
 import { MySQLParesr } from './MySQLParesr';
 import { ServerParser } from './ServerParser';
 import { SubnetParser } from './SubnetParser';
+import { LaunchConfigurationParser } from './LaunchConfigurationParser';
+import { RedisParser } from './RedisParser';
+import { NKsClusterParser } from './NKsClusterParser';
+import { RedisConfigGroupParser } from './RedisConfigGroupParser';
+import { ObjectStorageBucketParser } from './ObjectStorageBucketParser';
+import { NatGatewayParser } from './NatGatewayParser';
 
 export class ResourceParserFactory {
     private static strategy: ResourceParsingStrategy[] = [
@@ -11,6 +17,12 @@ export class ResourceParserFactory {
         new MySQLParesr(),
         new ServerParser(),
         new SubnetParser(),
+        new LaunchConfigurationParser(),
+        new RedisParser(),
+        new RedisConfigGroupParser(),
+        new NKsClusterParser(),
+        new ObjectStorageBucketParser(),
+        new NatGatewayParser(),
     ];
 
     static getParser(type: string): ResourceParsingStrategy {

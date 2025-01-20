@@ -1,5 +1,3 @@
-import { ReferenceMetrics } from './ReferenceMetrics';
-
 type ReferenceMap = Map<string, string>;
 
 export class ReferenceReplacer {
