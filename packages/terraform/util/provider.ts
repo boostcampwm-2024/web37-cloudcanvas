@@ -1,4 +1,4 @@
-import { NCloudProvider } from '../model/NCloudProvider';
+import { NCloudProvider } from '../model/ncloudProvider/NCloudProvider';
 import { CloudCanvasNode } from '../interface/CloudCanvasNode';
 
 export const createProvider = (region: string): NCloudProvider =>
