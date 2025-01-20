@@ -1,3 +1,23 @@
+interface LogConfig {
+    audit: boolean;
+}
+
+interface IpAcl {
+    action: 'allow' | 'deny';
+    address: string;
+    comment?: string;
+}
+
+interface OidcConfig {
+    issuerUrl: string;
+    clientId: string;
+    usernamePrefix?: string;
+    usernameClaim?: string;
+    groupsPrefix?: string;
+    groupsClaim?: string;
+    requiredClaim?: string;
+}
+
 export interface KsCluster {
     name: string;
     hypervisorType?: 'XEN' | 'KVM' | 'RHV';

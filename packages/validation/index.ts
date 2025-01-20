@@ -1,22 +1,22 @@
-import { mysqlSchema } from './schemas/mysql';
+import { mysqlSchema } from './schemas/mysql/mysql';
 
 export * from './validator';
 export * from './schemas/base';
-export * from './schemas/vpc';
-export * from './schemas/subnet';
-export * from './schemas/server';
-export * from './schemas/mysql';
-export * from './schemas/redis';
-export * from './schemas/redisConfigGroup';
-export * from './schemas/launchConfiguration';
+export * from './schemas/vpc/vpc';
+export * from './schemas/vpc/subnet';
+export * from './schemas/server/server';
+export * from './schemas/mysql/mysql';
+export * from './schemas/redis/redis';
+export * from './schemas/redis/redisConfigGroup';
+export * from './schemas/autoScaling/launchConfiguration';
 
 import { ResourceValidator } from './validator';
-import { vpcSchema } from './schemas/vpc';
-import { subnetSchema } from './schemas/subnet';
-import { serverSchema } from './schemas/server';
-import { redisSchema } from './schemas/redis';
-import { redisConfigGroupSchema } from './schemas/redisConfigGroup';
-import { launchConfigurationSchema } from './schemas/launchConfiguration';
+import { vpcSchema } from './schemas/vpc/vpc';
+import { subnetSchema } from './schemas/vpc/subnet';
+import { serverSchema } from './schemas/server/server';
+import { redisSchema } from './schemas/redis/redis';
+import { redisConfigGroupSchema } from './schemas/redis/redisConfigGroup';
+import { launchConfigurationSchema } from './schemas/autoScaling/launchConfiguration';
 
 export function initializeValidation(): void {
     ResourceValidator.registerSchema('vpc', vpcSchema);
