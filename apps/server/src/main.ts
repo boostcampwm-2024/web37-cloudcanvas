@@ -34,7 +34,7 @@ async function bootstrap() {
 
     if (environment !== 'production') {
         app.enableCors({
-            origin: 'http://localhost',
+            origin: ['http://localhost:3001', 'http://localhost:5001'],
             methods: [
                 'GET',
                 'HEAD',
@@ -47,9 +47,9 @@ async function bootstrap() {
             allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
             credentials: true,
         });
-    } else {
+    } else if (environment === 'production') {
         app.enableCors({
-            origin: 'https://cloudcanvas.kro.kr',
+            origin: '*',
             methods: [
                 'GET',
                 'HEAD',

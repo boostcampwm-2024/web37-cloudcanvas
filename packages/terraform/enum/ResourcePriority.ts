@@ -47,6 +47,5 @@ export enum ResourcePriority {
     LOAD_BALANCER_LISTENER = 46,
     LOAD_BALANCER_TARGET_GROUP = 47,
     SES_CLUSTER = 48,
-    POSTGRESQL = 49
-
+    POSTGRESQL = 49,
 }

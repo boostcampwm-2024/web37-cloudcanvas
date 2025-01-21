@@ -86,8 +86,10 @@ services:
             context: ../
             dockerfile: apps/client/Dockerfile
         container_name: front
+        environment:
+            VITE_API_URL: ${VITE_API_URL}
         ports:
-            - '3001:5000'
+            - '5001:5000'
         networks:
             - cloud-canvas-network
         restart: unless-stopped
