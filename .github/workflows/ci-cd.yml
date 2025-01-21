@@ -10,10 +10,31 @@ concurrency:
 jobs:
     CI:
         runs-on: ubuntu-latest
-
+        env:
+            TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+            TURBO_TEAM: ${{ vars.TURBO_TEAM }}
         steps:
-            - name: Check out repository
-              uses: actions/checkout@v3
+            - uses: actions/checkout@v4
+            - name: Install pnpm
+              uses: pnpm/action-setup@v4
+              with:
+                  version: 9.12.3
+            - name: Use Node.js ${{ matrix.node-version }}
+              uses: actions/setup-node@v4
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  cache: 'pnpm'
+            - name: Install dependencies
+              run: pnpm install
+
+            - name: Install turbo
+              run: npm install -g turbo
+
+            - name: Install dependencies
+              run: pnpm install
+
+            - name: Build applications
+              run: pnpm turbo build
 
             - name: NCP registry login
               uses: docker/login-action@v3
@@ -26,7 +47,7 @@ jobs:
               uses: docker/build-push-action@v3
               with:
                   context: .
-                  file: ./apps/client/Dockerfile
+                  file: ./apps/client/Dockerfile.CI
                   push: true
                   tags: |
                       cloud-canvas.kr.ncr.ntruss.com/front:dev
@@ -36,7 +57,7 @@ jobs:
               uses: docker/build-push-action@v3
               with:
                   context: .
-                  file: ./apps/hub/Dockerfile
+                  file: ./apps/hub/Dockerfile.CI
                   push: true
                   tags: |
                       cloud-canvas.kr.ncr.ntruss.com/front-hub:dev
@@ -46,7 +67,7 @@ jobs:
               uses: docker/build-push-action@v3
               with:
                   context: .
-                  file: ./apps/server/Dockerfile
+                  file: ./apps/server/Dockerfile.CI
                   push: true
                   tags: |
                       cloud-canvas.kr.ncr.ntruss.com/back:dev
