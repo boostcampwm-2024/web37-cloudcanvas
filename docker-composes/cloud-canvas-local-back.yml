@@ -60,7 +60,7 @@ services:
     back:
         build:
             context: ../
-            dockerfile: apps/server/Dockerfile
+            dockerfile: apps/server/Dockerfile.CI
         container_name: back
         environment:
             NODE_ENV: ${NODE_ENV}

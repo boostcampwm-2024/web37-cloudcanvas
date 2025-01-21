@@ -1,0 +1,30 @@
+FROM node:20-alpine AS prune
+WORKDIR /prune
+COPY . .
+RUN npm install -g turbo && turbo prune server --docker
+
+FROM node:20-alpine AS dependencies
+WORKDIR /dependencies
+COPY --from=prune /prune/out/json/ .
+RUN npm install -g pnpm && pnpm install --frozen-lockfile --prod
+
+FROM node:20-alpine AS production
+WORKDIR /app
+RUN apk add --no-cache openssl
+COPY ./apps/server/prisma ./apps/server/prisma
+COPY --from=dependencies /dependencies/node_modules ./node_modules
+COPY --from=dependencies /dependencies/pnpm-workspace.yaml .
+COPY --from=dependencies /dependencies/package.json .
+COPY --from=dependencies /dependencies/packages/ncloud-sdk/node_modules ./packages/ncloud-sdk/node_modules
+COPY ./packages/ncloud-sdk/dist ./packages/ncloud-sdk/dist
+COPY ./packages/ncloud-sdk/package.json ./packages/ncloud-sdk/package.json
+COPY --from=dependencies /dependencies/apps/server/node_modules ./apps/server/node_modules
+COPY ./apps/server/dist ./apps/server/dist
+
+ENV NODE_ENV=''
+ENV DATABASE_URL=''
+ENV REDIS_HOST=''
+ENV REDIS_PORT=''
+ENV NCLOUD_ACCESS_KEY=''
+ENV NCLOUD_SECRET_KEY=''
+CMD [ "node", "./apps/server/dist/src/main.js" ]

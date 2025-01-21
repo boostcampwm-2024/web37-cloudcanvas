@@ -60,7 +60,7 @@ services:
     back:
         build:
             context: ../
-            dockerfile: apps/server/Dockerfile
+            dockerfile: apps/server/Dockerfile.CI
         container_name: back
         environment:
             NODE_ENV: ${NODE_ENV}
@@ -84,7 +84,7 @@ services:
     front:
         build:
             context: ../
-            dockerfile: apps/client/Dockerfile
+            dockerfile: apps/client/Dockerfile.CI
         container_name: front
         environment:
             VITE_API_URL: ${VITE_API_URL}
